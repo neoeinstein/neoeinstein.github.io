@@ -1,0 +1,18 @@
+<rss version="2.0">
+  <channel>
+    <title>Grim's Grapes</title>
+    <link>https://neoeinstein.github.io/</link>
+    <description>Writings on software engineering focusing on my journey into functional programming practices. I am often found writing in F#, PowerShell, and C#. Former contributor to the Boo programming language. Views expressed here are mine and do not represent the views of my employer or any other party.
+</description>
+    <item>
+      <title>Hello, FsBlog!</title>
+      <guid>https://neoeinstein.github.io//blog/2015/11-29-hello-fsblog</guid>
+      <link>https://neoeinstein.github.io//blog/2015/11-29-hello-fsblog/index.html</link>
+      <pubDate>Mon, 30 Nov 2015 04:27:31 GMT</pubDate>
+      <description>&lt;p&gt;It has been a long time since I have done any sort of blogging. Now that I've committed to an F# Advent post, it's time that I pulled a fork off &lt;a href="https://github.com/fsprojects/FsBlog"&gt;FsBlog&lt;/a&gt; and set up shop on &lt;code&gt;gh‑pages&lt;/code&gt;.&lt;/p&gt;
+
+
+</description>
+    </item>
+  </channel>
+</rss>

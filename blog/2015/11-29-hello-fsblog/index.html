@@ -1,0 +1,106 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+       <title>Grim's Grapes — Hello, FsBlog!</title>
+    <link rel="stylesheet" href="https://neoeinstein.github.io/fonts/firacode/FiraCode-Regular.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="shortcut icon" href="https://neoeinstein.github.io/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!-- FSharp.Formatting Styles -->
+  	<link rel="stylesheet" type="text/css" media="screen" href="https://neoeinstein.github.io/fsharp.formatting/tooltips.css" />
+  	<script type="text/javascript" src="https://neoeinstein.github.io/fsharp.formatting/tooltips.js"></script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="stylesheet" href="https://neoeinstein.github.io/stylesheets/styles.css">
+    <link rel="stylesheet" href="https://neoeinstein.github.io/stylesheets/pygment_trac.css">
+    <script language="javascript" type="text/javascript">
+        function init()
+        {
+            websocket = new WebSocket("ws://localhost:8080/websocket");
+            websocket.onmessage = function(evt) { location.reload(); };
+        }
+        window.addEventListener("load", init, false);
+    </script>
+  </head>
+  <body>
+  	<div class="wrapper">
+	  <header>
+	  	  <a href="https://neoeinstein.github.io/index.html" class="falseheader">Grim's Grapes</a>
+        <div><strong><em>Marcus Griep</em></strong></div>
+        <p>Writings on software engineering.</p>
+        <ul>
+          <li><a href="https://twitter.com/neoeinstein"><strong>Follow Me</strong> on <span class="fa fa-twitter"></span> twitter</a></li>
+          <li><a href="https://github.com/neoeinstein"><strong>Find My Code</strong> on <span class="fa fa-github"></span> github</a></li>
+        </ul>
+
+        <h2>Recent posts</h2>
+    		    <h3 class="h2link"><a href="https://neoeinstein.github.io/blog/2015/11-29-hello-fsblog/index.html">Hello, FsBlog!</a></h3>
+    		    <p class="view"><small>    <time datetime="2015-11-29T23:27:31" pubdate data-updated="true">Nov 29, 2015</time>
+</small><br /><p>It has been a long time since I have done any sort of blogging. Now that I've committed to an F# Advent post, it's time that I pulled a fork off <a href="https://github.com/fsprojects/FsBlog">FsBlog</a> and set up shop on <code>gh‑pages</code>.</p>
+
+
+</p>
+      </header>
+      <section>
+		    
+<h1>Hello, FsBlog!</h1>
+<div class="view"><small>    <time datetime="2015-11-29T23:27:31" pubdate data-updated="true">Nov 29, 2015</time>
+</small></div>
+
+<p>It has been a long time since I have done any sort of blogging. Now that I've committed to an F# Advent post, it's time that I pulled a fork off <a href="https://github.com/fsprojects/FsBlog">FsBlog</a> and set up shop on <code>gh‑pages</code>.</p>
+
+<!--more-->
+
+<p>I don't often find the time to sit down and write a proper post, and the hosting solutions that I've used in the past have been just as much a hassle as anything. In the past, I've journeyed the depths of Blogger, Livejournal, Wordpress, and a few self-hosted Wordpress instances. I've never been quite happy with the way that I can do things on sites like Blogger, and Livejournal is a relic of the early 2000's. Wordpress has been the general standard for blogging for the past few years, but it's written on PHP, and even the Wordpress folks <a href="https://developer.wordpress.com/2015/11/23/the-story-behind-the-new-wordpress-com/">are getting tired of PHP</a> as a language for web development. I don't blame them. Anytime I've done anything with PHP, I've been worried about security and never was sure if the ball of yarn I had just stood up for a blog was actually going to still be there when I looked back at it.</p>
+
+<p>The new rage in the blogging world seems to be to use static site generators, and it's easy to see why. Static sites provide a wealth of benefits with very little downside. Web servers know how to serve up static files and attach all the caching headers they can. There's no need to invoke any sort of web engine on some under-performant piece of leased virtual hardware. Since there's no real logic to invoke, the attack surface is greatly minimized to any bugs inherent in the web server itself. And, since they don't have to run any of our unsanitary code, Github offers static site hosting for free through its <a href="https://pages.github.com/">Github Pages</a> offering.</p>
+
+<p>This is pretty great all around. It means that I no longer have to be limited to 140 characters on Twitter (or multiple tweets), and I can avoid the headache of setting up some virtual machine that needs a port left open for the public to try to attack. Instead, generators like <a href="https://jekyllrb.com/">Jekyll</a> and <a href="https://github.com/fsprojects/FsBlog">FsBlog</a> have become the better way to start a new blog these days. Since the entire site is literally generated out of a Git repository, there is no more fiddling with databases or backups. You get clean static files that are generally host agnostic, which means that if Github decides to take it's ball and go home, it's no big deal to migrate those static files to another host.</p>
+
+<p>For me, I also jumped at the chance to be writing blog posts in Markdown and F# script files. Thanks to the wonderful work of <a href="https://twitter.com/MattDrivenDev">Matt Ball</a> and <a href="https://twitter.com/tomaspetricek">Tomas Petricek</a>, FsBlog allows me to incorporate snippets of F# code inline. For example:</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+<span class="l">5: </span>
+<span class="l">6: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="c">/// Represents the Natural numbers starting from zero</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs1', 1)" onmouseover="showTip(event, 'fs1', 1)" class="i">ℕ</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs2', 2)" onmouseover="showTip(event, 'fs2', 2)" class="t">Seq</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs3', 3)" onmouseover="showTip(event, 'fs3', 3)" class="f">initInfinite</span> <span class="o">&lt;|</span> <span class="k">fun</span> <span onmouseout="hideTip(event, 'fs4', 4)" onmouseover="showTip(event, 'fs4', 4)" class="i">i</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs4', 5)" onmouseover="showTip(event, 'fs4', 5)" class="i">i</span>
+<span onmouseout="hideTip(event, 'fs1', 6)" onmouseover="showTip(event, 'fs1', 6)" class="i">ℕ</span>
+<span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs2', 7)" onmouseover="showTip(event, 'fs2', 7)" class="t">Seq</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs5', 8)" onmouseover="showTip(event, 'fs5', 8)" class="f">take</span> <span class="n">200</span>
+<span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs2', 9)" onmouseover="showTip(event, 'fs2', 9)" class="t">Seq</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs6', 10)" onmouseover="showTip(event, 'fs6', 10)" class="f">iteri</span> <span class="o">&lt;|</span> <span class="k">fun</span> <span onmouseout="hideTip(event, 'fs7', 11)" onmouseover="showTip(event, 'fs7', 11)" class="i">idx</span> <span class="k">-&gt;</span>
+  <span onmouseout="hideTip(event, 'fs8', 12)" onmouseover="showTip(event, 'fs8', 12)" class="f">printfn</span> <span class="s">&quot;Natural number </span><span class="pf">%i</span><span class="s"> is </span><span class="pf">%i</span><span class="s">&quot;</span> (<span onmouseout="hideTip(event, 'fs7', 13)" onmouseover="showTip(event, 'fs7', 13)" class="i">idx</span> <span class="o">+</span> <span class="n">1</span>)
+</code></pre></td>
+</tr>
+</table>
+
+<p><a href="https://tpetricek.github.io/FSharp.Formatting">FSharp.Formatting</a> provides rich tooltips to better understand what's going on in the code, like giving the signature for the <code>Seq.iteri</code> function. There are even more crazy awesome things that can be done, including <a href="https://tpetricek.github.io/FSharp.Formatting/evaluation.html">live evaluation and embedding of results</a>. I plan on using these to their fullest as I continue to write about what I've been doing with F#.</p>
+
+<div class="tip" id="fs1">val ℕ : seq&lt;int&gt;<br /><br />Full name: hellofsblog.ℕ<br /><em><br /><br />&#160;Represents the Natural numbers starting from zero</em></div>
+<div class="tip" id="fs2">module Seq<br /><br />from Microsoft.FSharp.Collections</div>
+<div class="tip" id="fs3">val initInfinite : initializer:(int -&gt; &#39;T) -&gt; seq&lt;&#39;T&gt;<br /><br />Full name: Microsoft.FSharp.Collections.Seq.initInfinite</div>
+<div class="tip" id="fs4">val i : int</div>
+<div class="tip" id="fs5">val take : count:int -&gt; source:seq&lt;&#39;T&gt; -&gt; seq&lt;&#39;T&gt;<br /><br />Full name: Microsoft.FSharp.Collections.Seq.take</div>
+<div class="tip" id="fs6">val iteri : action:(int -&gt; &#39;T -&gt; unit) -&gt; source:seq&lt;&#39;T&gt; -&gt; unit<br /><br />Full name: Microsoft.FSharp.Collections.Seq.iteri</div>
+<div class="tip" id="fs7">val idx : int</div>
+<div class="tip" id="fs8">val printfn : format:Printf.TextWriterFormat&lt;&#39;T&gt; -&gt; &#39;T<br /><br />Full name: Microsoft.FSharp.Core.ExtraTopLevelOperators.printfn</div>
+
+      </section>
+      <footer>
+        <ul class="fa-ul">
+          <li><span class="fa fa-github-alt"></span> <a href="https://github.com/neoeinstein/FsBlog"><strong>Source</strong> on GitHub</a></li>
+          <li><span class="fa fa-exclamation-triangle"></span> <a href="https://github.com/neoeinstein/FsBlog/issues"><strong>Report</strong> an error</a></li>
+        </ul>
+        <p>Based on the <span class="fa fa-code-fork"></span> <a href="https://github.com/fsprojects/FsBlog">FsBlog</a> project.</p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+  	</div>
+    <script src="https://neoeinstein.github.io/javascripts/scale.fix.js"></script>
+    <script src="https://neoeinstein.github.io/javascripts/fontsmoothie.min.js"></script>
+  </body>
+</html>

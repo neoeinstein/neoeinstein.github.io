@@ -1,0 +1,9 @@
+@{
+    Layout = "default";
+}
+@helper PostDate(DateTime rawDate) {
+    <time datetime="@rawDate.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss")" pubdate data-updated="true">@rawDate.ToString("MMM d, yyyy")</time>
+}
+<h1>@Title</h1>
+<div class="view"><small>@PostDate(System.DateTime.Parse(ViewBag.Date))</small></div>
+@RenderBody()

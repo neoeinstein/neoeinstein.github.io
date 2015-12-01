@@ -8,6 +8,10 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+.disable-ligatures {
+  text-rendering: initial;
+}
+
 h1, h2, h3, h4, h5, h6, .falseheader {
   color:#222;
   margin:0 0 20px;
@@ -198,10 +202,24 @@ footer {
   float:left;
   position:fixed;
   bottom:10px;
+  font-size:90%;
 }
 
 footer p, footer ul {
   margin: 0
+}
+
+footer ul {
+  padding-left:0;
+  margin-left:1em;
+  list-style-type:none;
+}
+
+.draft {
+  background-image: url(/images/draft.svg);
+  background-attachment: fixed;
+  background-position: center;
+  background-size: 100px;
 }
 
 @media print, screen and (max-width: 1260px) {
@@ -274,6 +292,10 @@ footer p, footer ul {
     padding:0.4in;
     font-size:12pt;
     color:#444;
+  }
+
+  div.tip, .noprint {
+    display:none!important;
   }
 }
 

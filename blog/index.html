@@ -25,7 +25,7 @@
         window.addEventListener("load", init, false);
     </script>
   </head>
-  <body>
+  <body class="">
   	<div class="wrapper">
 	  <header>
 	  	  <a href="https://neoeinstein.github.io/index.html" class="falseheader">Grim's Grapes</a>
@@ -36,14 +36,12 @@
           <li><a href="https://github.com/neoeinstein"><strong>See My Code</strong> on <span class="fa fa-github"></span> github</a></li>
           <li><a href="https://neoeinstein.github.io/cv.html">Check out <strong>My CV</strong></a></li>
         </ul>
-
+        <div class="noprint">
         <h2>Recent posts</h2>
     		    <h3 class="h2link"><a href="https://neoeinstein.github.io/blog/2015/11-29-hello-fsblog/index.html">Hello, FsBlog!</a></h3>
     		    <p class="view"><small>    <time datetime="2015-11-29T23:27:31" pubdate data-updated="true">Nov 29, 2015</time>
-</small><br /><p>It has been a long time since I have done any sort of blogging. Now that I've committed to an F# Advent post, it's time that I pulled a fork off <a href="https://github.com/fsprojects/FsBlog">FsBlog</a> and set up shop on <code>gh‑pages</code>.</p>
-
-
-</p>
+</small><br />Getting started — all over again.</p>
+        </div>
       </header>
       <section>
 		    
@@ -59,9 +57,10 @@
 
       </section>
       <footer>
-        <ul class="fa-ul">
-          <li><span class="fa fa-github-alt"></span> <a href="https://github.com/neoeinstein/FsBlog"><strong>Source</strong> on GitHub</a></li>
-          <li><span class="fa fa-exclamation-triangle"></span> <a href="https://github.com/neoeinstein/FsBlog/issues"><strong>Report</strong> an error</a></li>
+        <ul>
+          <li><span class="fa fa-github-alt fa-fw"></span> <a href="https://github.com/neoeinstein/FsBlog"><strong>Source</strong> on GitHub</a></li>
+          <li><span class="fa fa-exclamation-triangle fa-fw"></span> <a href="https://github.com/neoeinstein/FsBlog/issues"><strong>Report</strong> an error</a></li>
+          <li><span class="fa fa-terminal fa-fw"></span> <a href="javascript:function f(n){for(var i=0;i<n.length;++i)n[i].classList.toggle('disable-ligatures')}f(document.querySelectorAll('code'));"><strong>Toggle</strong> code ligatures</a></li>
         </ul>
         <p>Based on the <span class="fa fa-code-fork"></span> <a href="https://github.com/fsprojects/FsBlog">FsBlog</a> project.</p>
         <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>

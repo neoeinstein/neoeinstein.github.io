@@ -1,8 +1,8 @@
-@import url(https://fonts.googleapis.com/css?family=Lato:300italic,700italic,300,700);
+@import url(https://fonts.googleapis.com/css?family=Lato:300italic,400italic,700italic,300,400,700);
 
 body {
   padding:50px;
-  font:14px/1.5 Lato, "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font:10pt/1.5 Lato, "Helvetica Neue", Helvetica, Arial, sans-serif;
   color:#444;
   font-weight:300;
   text-rendering: optimizeLegibility;
@@ -26,7 +26,11 @@ h1, h2, h3, .falseheader {
 }
 
 h1, .falseheader {
-  font-size:28px;
+  font-size:150%;
+}
+
+header .falseheader {
+  font-size: 200%
 }
 
 h2 {
@@ -44,7 +48,7 @@ a {
 }
 
 a small {
-  font-size:11px;
+  font-size:90%;
   color:#777;
   margin-top:-0.6em;
   display:block;
@@ -64,7 +68,6 @@ blockquote {
 
 code, pre {
   font-family:FiraCode-Regular, Monaco, Bitstream Vera Sans Mono, Lucida Console, Terminal;
-  font-size:12px;
   padding:2px 4px;
   color:#d14;
   background-color:#f7f7f9;
@@ -80,7 +83,7 @@ pre {
   overflow-x: auto;
 }
 
-pre.fssnip, pre.fssnip code {
+table.pre pre, table.pre code {
   font-family: inherit;
   color: inherit;
   background-color: inherit;
@@ -88,8 +91,8 @@ pre.fssnip, pre.fssnip code {
   border: 0;
 }
 
-pre.fssnip, pre.fssnip code, pre.fssnip span {
-  font-size: 12px;
+table.pre pre, table.pre code, table.pre span {
+  font-size: 12pt;
   line-height: 1.35;
 }
 
@@ -151,7 +154,7 @@ header li {
 
 header ul a {
   line-height:1;
-  font-size:11px;
+  font-size:90%;
   color:#999;
   display:block;
   text-align:center;
@@ -175,7 +178,7 @@ header ul li + li + li {
 }
 
 header ul a strong {
-  font-size:14px;
+  font-size:110%;
   display:block;
   color:#222;
 }
@@ -184,10 +187,11 @@ section {
   width:800px;
   float:right;
   padding-bottom:50px;
+  font-size: 140%;
 }
 
 small {
-  font-size:11px;
+  font-size:75%;
 }
 
 hr {
@@ -290,8 +294,12 @@ footer ul {
 @media print {
   body {
     padding:0.4in;
-    font-size:12pt;
+    font-size:8pt;
     color:#444;
+  }
+
+  pre.fssnip, pre.fssnip code, pre.fssnip span {
+    font-size: 10pt;
   }
 
   div.tip, .noprint {

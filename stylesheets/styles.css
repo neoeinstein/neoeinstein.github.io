@@ -1,8 +1,9 @@
-@import url(//fonts.googleapis.com/css?family=Fira+Sans:400,300,300italic,400italic,500,500italic,700,700italic&subset=latin,latin-ext);
+@import url(//code.cdn.mozilla.net/fonts/fira.css);
+@import url(/fonts/firacode/firacode.css);
 
 body {
   padding:50px;
-  font:10pt/1.5 'Fira Sans', "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font:10pt/1.5 'Fira Sans','Helvetica Neue',Helvetica,Arial,sans-serif;
   color:#444;
   font-weight:300;
   text-rendering: optimizeLegibility;
@@ -67,7 +68,7 @@ blockquote {
 }
 
 code, pre {
-  font-family:FiraCode-Regular, Monaco, Bitstream Vera Sans Mono, Lucida Console, Terminal;
+  font-family:'Fira Code','Fira Mono','Monaco','Bitstream Vera Sans Mono','Lucida Console','Terminal';
   padding:2px 4px;
   color:#d14;
   background-color:#f7f7f9;
@@ -93,6 +94,10 @@ table.pre pre, table.pre code {
 table.pre pre, table.pre code, table.pre span {
   font-size: 12pt;
   line-height: 1.35;
+}
+
+div.tip {
+  font-family:'Fira Sans','Helvetica Neue',Helvetica,Arial,sans-serif
 }
 
 table {

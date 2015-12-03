@@ -1,4 +1,4 @@
-@import url(https://fonts.googleapis.com/css?family=Fira+Sans:400,300,300italic,400italic,500,500italic,700,700italic&subset=latin,latin-ext);
+@import url(//fonts.googleapis.com/css?family=Fira+Sans:400,300,300italic,400italic,500,500italic,700,700italic&subset=latin,latin-ext);
 
 body {
   padding:50px;
@@ -319,18 +319,4 @@ footer ul {
 
 .h2link {
 	margin: 0 0 8px;
-}
-
-/* Chrome CSS fix per https://stackoverflow.com/questions/22011139/google-fonts-are-not-rendering-on-google-chrome */
-body {
-    -webkit-animation-delay: 0.1s;
-    -webkit-animation-name: fontfix;
-    -webkit-animation-duration: 0.1s;
-    -webkit-animation-iteration-count: 1;
-    -webkit-animation-timing-function: linear;
-}
-
-@-webkit-keyframes fontfix {
-    from { opacity: 1; }
-    to   { opacity: 1; }
 }

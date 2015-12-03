@@ -190,6 +190,10 @@ section {
   font-size: 140%;
 }
 
+section p {
+  text-align: justify;
+}
+
 small {
   font-size:75%;
 }

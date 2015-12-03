@@ -84,10 +84,9 @@ pre {
 }
 
 table.pre pre, table.pre code {
-  font-family: inherit;
   color: inherit;
   background-color: inherit;
-  padding: inherit;
+  padding: 0;
   border: 0;
 }
 
@@ -302,8 +301,15 @@ footer ul {
     color:#444;
   }
 
-  pre.fssnip, pre.fssnip code, pre.fssnip span {
-    font-size: 10pt;
+  table.pre {
+    width:auto;
+    border:#ddd 2px dotted;
+    -webkit-border-radius:5px;-moz-border-radius:5px;border-radius:5px;
+  }
+
+  table.pre pre, table.pre code, table.pre span {
+    font-size:9pt;
+    margin:0;
   }
 
   div.tip, .noprint {

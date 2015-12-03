@@ -1,0 +1,251 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+       <title>Grim's Scythe — The Reactive Manifesto and Synchronous Messaging</title>
+    <link rel="stylesheet" href="https://neoeinstein.github.io/fonts/firacode/FiraCode-Regular.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="shortcut icon" href="https://neoeinstein.github.io/favicon.png">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!-- FSharp.Formatting Styles -->
+  	<link rel="stylesheet" type="text/css" media="screen" href="https://neoeinstein.github.io/fsharp.formatting/tooltips.css" />
+  	<script type="text/javascript" src="https://neoeinstein.github.io/fsharp.formatting/tooltips.js"></script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="stylesheet" href="https://neoeinstein.github.io/stylesheets/styles.css">
+    <link rel="stylesheet" href="https://neoeinstein.github.io/stylesheets/pygment_trac.css">
+    <script language="javascript" type="text/javascript">
+        function init()
+        {
+            websocket = new WebSocket("ws://localhost:8080/websocket");
+            websocket.onmessage = function(evt) { location.reload(); };
+        }
+        window.addEventListener("load", init, false);
+    </script>
+  </head>
+  <body class="draft">
+  	<div class="wrapper">
+	  <header>
+	  	  <a href="https://neoeinstein.github.io/index.html" class="falseheader">Grim's Scythe</a>
+        <div><strong><em>Marcus Griep</em></strong></div>
+        <p>Writings on software engineering.</p>
+        <ul>
+          <li><a href="https://twitter.com/neoeinstein"><strong>Follow Me</strong> on <span class="fa fa-twitter"></span> twitter</a></li>
+          <li><a href="https://github.com/neoeinstein"><strong>See My Code</strong> on <span class="fa fa-github"></span> github</a></li>
+          <li><a href="https://neoeinstein.github.io/cv.html">Check out <strong>My CV</strong></a></li>
+        </ul>
+        <div class="noprint">
+        <h2>Recent posts</h2>
+    		    <h3 class="h2link"><a href="https://neoeinstein.github.io/blog/2015/11-29-hello-fsblog/index.html">Hello, FsBlog!</a></h3>
+    		    <p class="view"><small>    <time datetime="2015-11-29T23:27:31" pubdate data-updated="true">Nov 29, 2015</time>
+</small><br />Getting started — all over again.</p>
+        </div>
+      </header>
+      <section>
+		    
+<h1>The Reactive Manifesto and Synchronous Messaging</h1>
+<div class="view"><small>Draft Post</small></div>
+
+<p>Concurrency. It's a concept that is becoming increasingly important to mainstream software engineers. For over a
+decade, the speed of processors has been steady. Limits imposed by quantum physics and manufacturing processes have
+induced manufacturers to increase the number cores on a chip instead of increasing speed. <a href="https://blog.codinghorror.com/threading-concurrency-and-the-most-powerful-psychokinetic-explosive-in-the-univ/">The free lunch is over</a>.
+Applications no longer get faster just by dropping in a faster processor. Now applications must be written to take
+advantage of concurrency and parallelism, and understanding these concepts is key to writing the highly-performant
+software of tomorrow.</p>
+
+<p>Enter the <em><a href="http://www.reactivemanifesto.org/">Reactive Manifesto</a></em>. This document establishes four properties—responsive, resilient, elastic,
+and message-driven—that systems need to exhibit in order to meet demands that they be highly‐available, fault‐tolerant,
+and scalable. I want to focus on the fourth property: message-driven. As the manifesto explains:</p>
+
+<blockquote>
+  <p>Reactive Systems rely on asynchronous message-passing to establish a boundary between components that ensures loose
+coupling, isolation, location transparency, and provides the means to delegate errors as messages. …
+—[<a href="http://www.reactivemanifesto.org/">Reactive Manifesto</a>]</p>
+</blockquote>
+
+<p>Breaking this explanation down, the <em>Reactive Manifesto</em>'s Glossary defines "asynchronous":</p>
+
+<blockquote>
+  <p>In the context of this manifesto we mean that the processing of a request occurs at an arbitrary point in time,
+sometime after it has been transmitted from client to service. The client cannot directly observe, or synchronize with,
+the execution that occurs within the service. This is the antonym of synchronous processing which implies that the
+client only resumes its own execution once the service has processed the request.
+—[<a href="http://www.reactivemanifesto.org/glossary#Asynchronous">Reactive Manifesto Glossary</a>]</p>
+</blockquote>
+
+<p>By this definition, the manifesto asserts that synchronous message-passing is antithetical to a reactive system. A
+client must not wait to ensure that the server has received the message. Before we handle that argument, let's take a
+look at the differences between asynchronous and synchronous message-passing.</p>
+
+<p>Asynchronous message-passing is similar to dropping a letter in the mail and relying on the postal system to deliver the
+message. Keywords here are <code>send</code> or <code>post</code> for the client and <code>receive</code> for the server with a <code>mailbox</code> being the means
+of addressing messages.</p>
+
+<p>In synchronous message-passing, the client and the server have a common rendezvous point. When both are at the
+rendezvous, the client hands the message to the server directly. If only one party is at the rendezvous, they may wait
+for their counterpart to arrive in order to perform the handoff. Keywords here are <code>give</code> for the client and <code>take</code> for
+the server with a <code>channel</code> as the rendezvous point.</p>
+
+<p>Asynchronous message-passing fits well into the postal system analogy. Each user has their own mailbox. The postal
+service provides at-most-once delivery by default. They also offer at-least-once (bulk mail) and exactly-once (signature
+confirmation) services, but at an additional cost. Sending a message to a mailbox is as simple as attaching the mailbox
+address to the message. In order to get a response, you must include a self-addressed reference to your own mailbox.</p>
+
+<p>Synchronous message-passing is similar to two agents meeting at a pre-arranged location in order to exchange
+information. The sender doesn't need to rely on anyone else to guarantee that his message has been delivered as he gives
+the message directly to the recipient. If the sender really doesn't care about that guarantee, he can
+instead hire a courier to wait with the message at the rendezvous point for minimal cost. A message may also contain a
+future location where the sender will be waiting for a reply from the recipient.</p>
+
+<p>The manifesto bases its claims on the assertion that synchronous processing necessarily prevents concurrency, but this
+assertion is faulty. As noted above, a synchronous rendezvous can be turned into an asynchronous send by spawning a new
+process to manage passing the message. In order to guarantee exactly-once delivery on top of an asynchronous send
+requires significant additional costs and tracking by the messaging system.
+In addition, many messages between components are queries for information and are not sent just for their side-effects.
+Often, within a thread of execution, there is no other beneficial work to be done until the query has been answered. In
+the asynchronous context, a client must either be written as a finite-state machine or be structured as a series of
+continuations with state tracked and passed along. In addition, because these messages only receive a best-effort
+guarantee, the system must be able to handle dropped messages at any of the interaction points.</p>
+
+<p>I propose that the use of asynchronous in the <em>Reactive Manifesto</em> is better served by the term "non-blocking". Indeed,
+the term is used later in the manifesto's statement of the "message-driven" property.</p>
+
+<blockquote>
+  <p>… Non-blocking communication allows recipients to only consume resources while active, leading to less system
+overhead. —[<a href="http://www.reactivemanifesto.org/">Reactive Manifesto</a>]</p>
+</blockquote>
+
+<p>The manifesto goes on to define "non-blocking":</p>
+
+<blockquote>
+  <p>In concurrent programming an algorithm is considered non-blocking if threads competing for a resource do not have
+their execution indefinitely postponed by mutual exclusion protecting that resource. In practice this usually manifests
+as an API that allows access to the resource if it is available otherwise it immediately returns informing the caller
+that the resource is not currently available or that the operation has been initiated and not yet completed. A
+non-blocking API to a resource allows the caller the option to do other work rather than be blocked waiting on the
+resource to become available. This may be complemented by allowing the client of the resource to register for getting
+notified when the resource is available or the operation has completed. —[<a href="http://www.reactivemanifesto.org/glossary#Non-Blocking">Reactive Manifesto Glossary</a>]</p>
+</blockquote>
+
+<p>"Non-blocking" and "synchronous message-passing" as defined above are not mutually exclusive. The manifesto asserts that
+they are, but the server portion of asynchronous message-passing is still bound to wait by the mailbox if it is empty.
+The server's wait for new messages is inherently synchronized, yet in doing so, it frees up its resources so that other
+processes may execute. This is the fundamental principle of concurrency. Processes need to be written such that if a
+needed resource is not available, a process can suspend and allow other ready processes to execute without blocking
+their flow. The server's side of asynchronous message-passing proves that waiting by one process does not imply blocking
+all others.</p>
+
+<p>In fact, as demonstrated in the analogies above, the mechanisms of asynchronous message-passing can be succinctly built
+from the primitives of synchronous rendezvous. A synchronous <code>give</code> can be converted into an asynchronous <code>send</code> by
+spawning a short-lived process to wait for the server to <code>take</code>. Multiple offers to <code>give</code> can be prioritized by the
+server. By freeing ourselves from the constraints of explicitly asynchronous communication, applications can gain access
+to a more powerful set of constructs.</p>
+
+<p>Languages and libraries that provide synchronous message-passing primatives also provide mechanisms to allow for
+non-deterministic handling of rendezvous, selecting from among several possible alternatives. In <a href="https://hopac.github.io/Hopac/Hopac.html">Hopac</a>, an F#
+library modeled after <a href="http://cml.cs.uchicago.edu/">Concurrent ML</a>, a process can offer to <code>give</code> a message and await a timeout at the same
+time. The process will commit to the set of actions associated with which event occurs first. For example, here we have
+a server which takes a message if one is available and says "Hello". If no message is available within one second, the
+server will instead commit to saying "Timed out...".</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+<span class="l">5: </span>
+<span class="l">6: </span>
+<span class="l">7: </span>
+<span class="l">8: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs6', 7)" onmouseover="showTip(event, 'fs6', 7)" class="i">ch</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs7', 8)" onmouseover="showTip(event, 'fs7', 8)" class="t">Ch</span><span class="o">&lt;</span><span onmouseout="hideTip(event, 'fs8', 9)" onmouseover="showTip(event, 'fs8', 9)" class="t">string</span><span class="o">&gt;</span>()
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs9', 10)" onmouseover="showTip(event, 'fs9', 10)" class="i">tryHello</span> <span class="o">=</span>
+  <span onmouseout="hideTip(event, 'fs4', 11)" onmouseover="showTip(event, 'fs4', 11)" class="t">Alt</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs10', 12)" onmouseover="showTip(event, 'fs10', 12)" class="f">choose</span> [
+    <span onmouseout="hideTip(event, 'fs7', 13)" onmouseover="showTip(event, 'fs7', 13)" class="t">Ch</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs11', 14)" onmouseover="showTip(event, 'fs11', 14)" class="f">take</span> <span onmouseout="hideTip(event, 'fs6', 15)" onmouseover="showTip(event, 'fs6', 15)" class="i">ch</span> <span class="o">^-&gt;</span> <span onmouseout="hideTip(event, 'fs12', 16)" onmouseover="showTip(event, 'fs12', 16)" class="f">sprintf</span> <span class="s">&quot;Hello, </span><span class="pf">%s</span><span class="s">!&quot;</span>
+    <span onmouseout="hideTip(event, 'fs13', 17)" onmouseover="showTip(event, 'fs13', 17)" class="f">timeOutMillis</span> <span class="n">1000</span> <span class="o">^-&gt;.</span> <span class="s">&quot;Timed out...&quot;</span>
+  ]
+<span onmouseout="hideTip(event, 'fs14', 18)" onmouseover="showTip(event, 'fs14', 18)" class="f">queue</span> <span class="o">&lt;|</span> <span onmouseout="hideTip(event, 'fs7', 19)" onmouseover="showTip(event, 'fs7', 19)" class="t">Ch</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs15', 20)" onmouseover="showTip(event, 'fs15', 20)" class="f">give</span> <span onmouseout="hideTip(event, 'fs6', 21)" onmouseover="showTip(event, 'fs6', 21)" class="i">ch</span> <span class="s">&quot;World&quot;</span>
+<span onmouseout="hideTip(event, 'fs3', 22)" onmouseover="showTip(event, 'fs3', 22)" class="f">run</span> <span onmouseout="hideTip(event, 'fs9', 23)" onmouseover="showTip(event, 'fs9', 23)" class="i">tryHello</span>
+</code></pre></td>
+</tr>
+</table>
+
+<p>produces</p>
+
+<table class="pre"><tr><td><pre><code>"Hello, World!"</code></pre></td></tr></table>
+
+<p>By introducing a two-second delay before the give:</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span onmouseout="hideTip(event, 'fs14', 24)" onmouseover="showTip(event, 'fs14', 24)" class="f">queue</span> <span class="o">&lt;|</span> <span onmouseout="hideTip(event, 'fs13', 25)" onmouseover="showTip(event, 'fs13', 25)" class="f">timeOutMillis</span> <span class="n">2000</span> <span class="o">^=&gt;.</span> <span onmouseout="hideTip(event, 'fs7', 26)" onmouseover="showTip(event, 'fs7', 26)" class="t">Ch</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs15', 27)" onmouseover="showTip(event, 'fs15', 27)" class="f">give</span> <span onmouseout="hideTip(event, 'fs6', 28)" onmouseover="showTip(event, 'fs6', 28)" class="i">ch</span> <span class="s">&quot;Panda&quot;</span>
+<span onmouseout="hideTip(event, 'fs3', 29)" onmouseover="showTip(event, 'fs3', 29)" class="f">run</span> <span onmouseout="hideTip(event, 'fs9', 30)" onmouseover="showTip(event, 'fs9', 30)" class="i">tryHello</span>
+</code></pre></td>
+</tr>
+</table>
+
+<p><code>tryHello</code> times out and instead produces</p>
+
+<table class="pre"><tr><td><pre><code>"Timed out..."</code></pre></td></tr></table>
+
+<p>This exposes the real power of synchronous message-passing. The type of <code>tryHello</code> is <code>Alt&lt;string&gt;</code>. That means it can
+be composed with other <code>Alt</code>-types to build larger components. <code>tryHello</code> could be one of several alternatives that a
+higher-level abstraction could use in in its own processing.</p>
+
+<blockquote>
+  <p>By starting with base-event values to represent the communication operations, and providing combinators to
+associate actions with events and to build nondeterministic choices of events, we provide a flexible mechanism for
+building new synchronization and communication abstractions. —[John Reppy, <a href="http://www.cambridge.org/tv/academic/subjects/computer-science/distributed-networked-and-mobile-computing/concurrent-programming-ml">Concurrent Programming in ML</a>, p. 124]</p>
+</blockquote>
+
+<p>John Reppy also contends that synchronous message-passing has the advantage that its typical failure mode is deadlock,
+which can be detected quickly, whereas asynchronous message-passing typically delays the detection of errors until a
+mailbox is full (which in the case of an unbounded mailbox, may mean the entire process is out of memory).</p>
+
+<p><em>Concurrent Programming in ML</em>, quoted above, presents Concurrent ML as a set of extensions built upon Standard ML.
+These extensions provide first-class synchronous primitives and the constructs which allow for their composition.
+When CML was created in the early 1990's, the dominant architecture was the single-core uniprocessor so CML was
+designed to enable concurrency on these machines. Hopac provides similar primitives F# as a library, while <a href="https://golang.org/">Go</a>
+provides "<a href="https://golang.org/doc/effective_go.html#concurrency">goroutines</a>" and other synchronous programming constructs as part of the language.
+<a href="https://vimeo.com/49718712">Concurrency is not parallelism</a>, but software that is written to leverage concurrency is better enabled to
+take advantage of the parallelism provided by modern hardware.</p>
+
+<p>The importance of designing systems that can take leverage concurrency will only increase as time goes on. The
+<em>Reactive Manifesto</em> lays out some good principles, but its claims should be taken with a grain of salt. The goals of
+the manifesto can be achieved without solely relying on asynchronous message-passing. Indeed, synchronous
+message-passing can provide a more powerful set of abstractions while still being easier to reason about.</p>
+
+<div class="tip" id="fs1">namespace Hopac</div>
+<div class="tip" id="fs2">module Infixes<br /><br />from Hopac</div>
+<div class="tip" id="fs3">val run : Job&lt;&#39;x&gt; -&gt; &#39;x<br /><br />Full name: Hopac.TopLevel.run</div>
+<div class="tip" id="fs4">type Alt&lt;&#39;T&gt; =<br />&#160;&#160;inherit Job&lt;&#39;T&gt;<br /><br />Full name: Hopac.Alt&lt;_&gt;</div>
+<div class="tip" id="fs5">val unit : unit -&gt; Alt&lt;unit&gt;<br /><br />Full name: Hopac.Alt.unit</div>
+<div class="tip" id="fs6">val ch : Ch&lt;string&gt;<br /><br />Full name: Reactive-manifesto-and-synchronous-messaging_.ch</div>
+<div class="tip" id="fs7">Multiple items<br />type Ch&lt;&#39;T&gt; =<br />&#160;&#160;inherit Alt&lt;&#39;T&gt;<br />&#160;&#160;new : unit -&gt; Ch&lt;&#39;T&gt;<br /><br />Full name: Hopac.Ch&lt;_&gt;<br /><br />--------------------<br />Ch() : unit</div>
+<div class="tip" id="fs8">Multiple items<br />val string : value:&#39;T -&gt; string<br /><br />Full name: Microsoft.FSharp.Core.Operators.string<br /><br />--------------------<br />type string = System.String<br /><br />Full name: Microsoft.FSharp.Core.string</div>
+<div class="tip" id="fs9">val tryHello : Alt&lt;string&gt;<br /><br />Full name: Reactive-manifesto-and-synchronous-messaging_.tryHello</div>
+<div class="tip" id="fs10">val choose : seq&lt;#Alt&lt;&#39;x&gt;&gt; -&gt; Alt&lt;&#39;x&gt;<br /><br />Full name: Hopac.Alt.choose</div>
+<div class="tip" id="fs11">val take : Ch&lt;&#39;x&gt; -&gt; Alt&lt;&#39;x&gt;<br /><br />Full name: Hopac.Ch.take</div>
+<div class="tip" id="fs12">val sprintf : format:Printf.StringFormat&lt;&#39;T&gt; -&gt; &#39;T<br /><br />Full name: Microsoft.FSharp.Core.ExtraTopLevelOperators.sprintf</div>
+<div class="tip" id="fs13">val timeOutMillis : int -&gt; Alt&lt;unit&gt;<br /><br />Full name: Hopac.TopLevel.timeOutMillis</div>
+<div class="tip" id="fs14">val queue : Job&lt;unit&gt; -&gt; unit<br /><br />Full name: Hopac.TopLevel.queue</div>
+<div class="tip" id="fs15">val give : Ch&lt;&#39;x&gt; -&gt; &#39;x -&gt; Alt&lt;unit&gt;<br /><br />Full name: Hopac.Ch.give</div>
+
+
+      </section>
+      <footer>
+        <ul>
+          <li><span class="fa fa-github-alt fa-fw"></span> <a href="https://github.com/neoeinstein/FsBlog/tree/master/source/drafts/reactive-manifesto-and-synchronous-messaging.fsx"><strong>Source</strong> on GitHub</a></li>
+          <li><span class="fa fa-exclamation-triangle fa-fw"></span> <a href="https://github.com/neoeinstein/FsBlog/issues/new?title=Error on 'The Reactive Manifesto and Synchronous Messaging'" target="_blank"><strong>Report</strong> an error</a></li>
+          <li><span class="fa fa-terminal fa-fw"></span> <a href="javascript:function f(n){for(var i=0;i<n.length;++i)n[i].classList.toggle('disable-ligatures')}f(document.querySelectorAll('code'));"><strong>Toggle</strong> code ligatures</a></li>
+        </ul>
+        <p>Based on the <span class="fa fa-code-fork"></span> <a href="https://github.com/fsprojects/FsBlog">FsBlog</a> project.</p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+  	</div>
+    <script src="https://neoeinstein.github.io/javascripts/scale.fix.js"></script>
+    <script src="https://neoeinstein.github.io/javascripts/fontsmoothie.min.js"></script>
+  </body>
+</html>

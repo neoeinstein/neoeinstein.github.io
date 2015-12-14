@@ -37,6 +37,9 @@
         </ul>
         <div class="noprint">
         <h2>Recent posts</h2>
+    		    <h3 class="h2link"><a href="https://neoeinstein.github.io/blog/2015/12-13-working-with-chiron/index.html">Chiron: JSON + Ducks + Monads</a></h3>
+    		    <p class="view"><small>    <time datetime="2015-12-13T20:00:00" pubdate data-updated="true">Dec 13, 2015</time>
+</small><br />Getting started with Chiron.</p>
     		    <h3 class="h2link"><a href="https://neoeinstein.github.io/blog/2015/11-29-hello-fsblog/index.html">Hello, FsBlog!</a></h3>
     		    <p class="view"><small>    <time datetime="2015-11-29T23:27:31" pubdate data-updated="true">Nov 29, 2015</time>
 </small><br />Getting started — all over again.</p>
@@ -48,12 +51,12 @@
 <div class="view"><small>Draft Post</small></div>
 
 <p>Concurrency. It's a concept that is becoming increasingly important to mainstream software engineers. Processor speeds,
-which increased greatly in the 1990s, have generally plateaued over the last decade. Over that time, manufacturers have
-increased the number of cores in a processor to increase processing power. Most mainstream computers today have at least
-two cores; the laptop used to compose this article has four. <a href="https://blog.codinghorror.com/threading-concurrency-and-the-most-powerful-psychokinetic-explosive-in-the-univ/">The free lunch is over</a>; there is no faster
-processor that will speed up a sequential application. Today's software must be written to take advantage of concurrency
-and parallelism, and understanding these concepts is the key to writing software which is highly-performant and
-responsive.</p>
+which increased greatly in the 1990s, have plateaued over the last decade. These days, processor manufacturers are
+adding more cores to their processors. Most mainstream computers today have at least two cores.
+<a href="https://blog.codinghorror.com/threading-concurrency-and-the-most-powerful-psychokinetic-explosive-in-the-univ/">The free lunch is over</a>. We can no longer just drop in the latest and greatest processor to boost performace.
+This shift in the underlying architecture requires a corresponding shift in the programs that it executes.
+In order to write software which is highly-performant and responsive, we must understand how
+to leverage concurrency. By doing so, we can unlock the benefits of the parallelism afforded by modern processors.</p>
 
 <p>Enter the <em><a href="http://www.reactivemanifesto.org/">Reactive Manifesto</a></em>. This document establishes four key attributes—responsive, resilient, elastic,
 and message-driven—that systems need to exhibit in order to meet demands that they be highly‐available, fault‐tolerant,
@@ -245,7 +248,7 @@ rendezvous can provide a more powerful set of abstractions while still being eas
         <ul>
           <li><span class="fa fa-github-alt fa-fw"></span> <a href="https://github.com/neoeinstein/FsBlog/tree/master/source/drafts/reactive-manifesto-and-synchronous-messaging.fsx"><strong>Source</strong> on GitHub</a></li>
           <li><span class="fa fa-exclamation-triangle fa-fw"></span> <a href="https://github.com/neoeinstein/FsBlog/issues/new?title=Error on 'The Reactive Manifesto and Synchronous Messaging'" target="_blank"><strong>Report</strong> an error</a></li>
-          <li><span class="fa fa-terminal fa-fw"></span> <a href="javascript:function f(n){for(var i=0;i<n.length;++i)n[i].classList.toggle('disable-ligatures')}f(document.querySelectorAll('code'));"><strong>Toggle</strong> code ligatures</a></li>
+          <li><span class="fa fa-terminal fa-fw"></span> <a href="javascript:function f(n){for(var i=0;i<n.length;++i)n[i].classList.toggle('enable-ligatures')}f(document.querySelectorAll('code'));"><strong>Toggle</strong> code ligatures</a></li>
         </ul>
         <p>Based on the <span class="fa fa-code-fork"></span> <a href="https://github.com/fsprojects/FsBlog">FsBlog</a> project.</p>
         <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>

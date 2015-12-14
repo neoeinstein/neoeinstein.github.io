@@ -1,0 +1,146 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+       <title>Grim's Scythe — Taming the Live Wire</title>
+     <link rel="shortcut icon" href="https://neoeinstein.github.io/favicon.png">
+     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!-- FSharp.Formatting Styles -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+  	<link rel="stylesheet" type="text/css" media="screen" href="https://neoeinstein.github.io/fsharp.formatting/tooltips.css" />
+  	<script type="text/javascript" src="https://neoeinstein.github.io/fsharp.formatting/tooltips.js"></script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="stylesheet" href="https://neoeinstein.github.io/stylesheets/styles.css">
+    <link rel="stylesheet" href="https://neoeinstein.github.io/stylesheets/pygment_trac.css">
+    <script language="javascript" type="text/javascript">
+        function init()
+        {
+            websocket = new WebSocket("ws://localhost:8080/websocket");
+            websocket.onmessage = function(evt) { location.reload(); };
+        }
+        window.addEventListener("load", init, false);
+    </script>
+  </head>
+  <body class="draft">
+  	<div class="wrapper">
+	  <header>
+	  	  <a href="https://neoeinstein.github.io/index.html" class="falseheader">Grim's Scythe</a>
+        <div><strong><em>Marcus Griep</em></strong></div>
+        <p>Writings on software engineering.</p>
+        <ul>
+          <li><a href="https://twitter.com/neoeinstein"><strong>Follow Me</strong> on <span class="fa fa-twitter"></span> twitter</a></li>
+          <li><a href="https://github.com/neoeinstein"><strong>See My Code</strong> on <span class="fa fa-github"></span> github</a></li>
+          <li><a href="https://neoeinstein.github.io/cv.html">Check out <strong>My CV</strong></a></li>
+        </ul>
+        <div class="noprint">
+        <h2>Recent posts</h2>
+    		    <h3 class="h2link"><a href="https://neoeinstein.github.io/blog/2015/12-13-working-with-chiron/index.html">Chiron: JSON + Ducks + Monads</a></h3>
+    		    <p class="view"><small>    <time datetime="2015-12-13T20:00:00" pubdate data-updated="true">Dec 13, 2015</time>
+</small><br />Getting started with Chiron.</p>
+    		    <h3 class="h2link"><a href="https://neoeinstein.github.io/blog/2015/11-29-hello-fsblog/index.html">Hello, FsBlog!</a></h3>
+    		    <p class="view"><small>    <time datetime="2015-11-29T23:27:31" pubdate data-updated="true">Nov 29, 2015</time>
+</small><br />Getting started — all over again.</p>
+        </div>
+      </header>
+      <section>
+		    
+<h1>Taming the Live Wire</h1>
+<div class="view"><small>Draft Post</small></div>
+
+<p>Reactive programming is a way to write software that can handle asynchronous events in a reasonable manner. By turning
+these events into asynchronous data streams of observable events, frameworks like Microsoft's Rx Extensions and
+Bacon.js make it easier to write software that handles them. Using a publish/subscribe model, events are pushed down
+the stream to be handled asynchronously.</p>
+
+<p>F# has its own primitive for handling these events. <code>Event</code> implements <code>IObservable</code> and can be used to trigger
+downstream tasks. Here's a quick example demonstrating how to create and trigger an event:</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs1', 1)" onmouseover="showTip(event, 'fs1', 1)" class="i">c</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs2', 2)" onmouseover="showTip(event, 'fs2', 2)" class="t">Event</span><span class="o">&lt;</span><span onmouseout="hideTip(event, 'fs3', 3)" onmouseover="showTip(event, 'fs3', 3)" class="t">int</span><span class="o">&gt;</span>()
+<span onmouseout="hideTip(event, 'fs2', 4)" onmouseover="showTip(event, 'fs2', 4)" class="t">Event</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs4', 5)" onmouseover="showTip(event, 'fs4', 5)" class="f">add</span> (<span onmouseout="hideTip(event, 'fs5', 6)" onmouseover="showTip(event, 'fs5', 6)" class="f">printfn</span> <span class="s">&quot;Received </span><span class="pf">%i</span><span class="s">&quot;</span>) <span onmouseout="hideTip(event, 'fs1', 7)" onmouseover="showTip(event, 'fs1', 7)" class="i">c</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs6', 8)" onmouseover="showTip(event, 'fs6', 8)" class="i">Publish</span>
+<span onmouseout="hideTip(event, 'fs1', 9)" onmouseover="showTip(event, 'fs1', 9)" class="i">c</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs7', 10)" onmouseover="showTip(event, 'fs7', 10)" class="f">Trigger</span> <span class="n">42</span>
+</code></pre></td>
+</tr>
+</table>
+
+<p>This results in the following output:</p>
+
+<table class="pre"><tr><td><pre><code>Received 42</code></pre></td></tr></table>
+
+<p>These events can be chained to handlers that map or filter the data and send it off as another event.</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
+<span class="l"> 2: </span>
+<span class="l"> 3: </span>
+<span class="l"> 4: </span>
+<span class="l"> 5: </span>
+<span class="l"> 6: </span>
+<span class="l"> 7: </span>
+<span class="l"> 8: </span>
+<span class="l"> 9: </span>
+<span class="l">10: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">type</span> <span onmouseout="hideTip(event, 'fs8', 11)" onmouseover="showTip(event, 'fs8', 11)" class="t">Player</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs9', 12)" onmouseover="showTip(event, 'fs9', 12)" class="p">PlayerOne</span> | <span onmouseout="hideTip(event, 'fs10', 13)" onmouseover="showTip(event, 'fs10', 13)" class="p">PlayerTwo</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs11', 14)" onmouseover="showTip(event, 'fs11', 14)" class="f">turnStarted</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs2', 15)" onmouseover="showTip(event, 'fs2', 15)" class="t">Event</span><span class="o">&lt;</span><span onmouseout="hideTip(event, 'fs8', 16)" onmouseover="showTip(event, 'fs8', 16)" class="t">Player</span><span class="o">&gt;</span>
+
+<span class="k">type</span> <span onmouseout="hideTip(event, 'fs12', 17)" onmouseover="showTip(event, 'fs12', 17)" class="t">ColoredBall</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs13', 18)" onmouseover="showTip(event, 'fs13', 18)" class="p">Yellow</span> | <span onmouseout="hideTip(event, 'fs14', 19)" onmouseover="showTip(event, 'fs14', 19)" class="p">Blue</span> | <span onmouseout="hideTip(event, 'fs15', 20)" onmouseover="showTip(event, 'fs15', 20)" class="p">Red</span> | <span onmouseout="hideTip(event, 'fs16', 21)" onmouseover="showTip(event, 'fs16', 21)" class="p">Purple</span> | <span onmouseout="hideTip(event, 'fs17', 22)" onmouseover="showTip(event, 'fs17', 22)" class="p">Orange</span> | <span onmouseout="hideTip(event, 'fs18', 23)" onmouseover="showTip(event, 'fs18', 23)" class="p">Green</span> | <span onmouseout="hideTip(event, 'fs19', 24)" onmouseover="showTip(event, 'fs19', 24)" class="p">Maroon</span>
+
+<span class="k">type</span> <span onmouseout="hideTip(event, 'fs20', 25)" onmouseover="showTip(event, 'fs20', 25)" class="t">Ball</span> <span class="o">=</span>
+  | <span onmouseout="hideTip(event, 'fs21', 26)" onmouseover="showTip(event, 'fs21', 26)" class="p">Solid</span> <span class="k">of</span> <span onmouseout="hideTip(event, 'fs12', 27)" onmouseover="showTip(event, 'fs12', 27)" class="t">ColoredBall</span>
+  | <span onmouseout="hideTip(event, 'fs22', 28)" onmouseover="showTip(event, 'fs22', 28)" class="p">Stripe</span> <span class="k">of</span> <span onmouseout="hideTip(event, 'fs12', 29)" onmouseover="showTip(event, 'fs12', 29)" class="t">ColoredBall</span>
+  | <span onmouseout="hideTip(event, 'fs23', 30)" onmouseover="showTip(event, 'fs23', 30)" class="p">EightBall</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs24', 31)" onmouseover="showTip(event, 'fs24', 31)" class="f">ballPocketed</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs2', 32)" onmouseover="showTip(event, 'fs2', 32)" class="t">Event</span><span class="o">&lt;</span><span onmouseout="hideTip(event, 'fs20', 33)" onmouseover="showTip(event, 'fs20', 33)" class="t">Ball</span><span class="o">&gt;</span>
+</code></pre></td>
+</tr>
+</table>
+
+<p><em>This post is a part of the F# Advent in English. Many thanks to Sergey Thion for promoting this event. For more posts
+on F# and functional programming throughout December, check out the list of posts on his site.</em></p>
+
+<div class="tip" id="fs1">val c : Event&lt;int&gt;<br /><br />Full name: Taming-the-live-wire_.c</div>
+<div class="tip" id="fs2">Multiple items<br />module Event<br /><br />from Microsoft.FSharp.Control<br /><br />--------------------<br />type Event&lt;&#39;T&gt; =<br />&#160;&#160;new : unit -&gt; Event&lt;&#39;T&gt;<br />&#160;&#160;member Trigger : arg:&#39;T -&gt; unit<br />&#160;&#160;member Publish : IEvent&lt;&#39;T&gt;<br /><br />Full name: Microsoft.FSharp.Control.Event&lt;_&gt;<br /><br />--------------------<br />type Event&lt;&#39;Delegate,&#39;Args (requires delegate and &#39;Delegate :&gt; Delegate)&gt; =<br />&#160;&#160;new : unit -&gt; Event&lt;&#39;Delegate,&#39;Args&gt;<br />&#160;&#160;member Trigger : sender:obj * args:&#39;Args -&gt; unit<br />&#160;&#160;member Publish : IEvent&lt;&#39;Delegate,&#39;Args&gt;<br /><br />Full name: Microsoft.FSharp.Control.Event&lt;_,_&gt;<br /><br />--------------------<br />new : unit -&gt; Event&lt;&#39;T&gt;<br /><br />--------------------<br />new : unit -&gt; Event&lt;&#39;Delegate,&#39;Args&gt;</div>
+<div class="tip" id="fs3">Multiple items<br />val int : value:&#39;T -&gt; int (requires member op_Explicit)<br /><br />Full name: Microsoft.FSharp.Core.Operators.int<br /><br />--------------------<br />type int = int32<br /><br />Full name: Microsoft.FSharp.Core.int<br /><br />--------------------<br />type int&lt;&#39;Measure&gt; = int<br /><br />Full name: Microsoft.FSharp.Core.int&lt;_&gt;</div>
+<div class="tip" id="fs4">val add : callback:(&#39;T -&gt; unit) -&gt; sourceEvent:IEvent&lt;&#39;Del,&#39;T&gt; -&gt; unit (requires delegate and &#39;Del :&gt; System.Delegate)<br /><br />Full name: Microsoft.FSharp.Control.Event.add</div>
+<div class="tip" id="fs5">val printfn : format:Printf.TextWriterFormat&lt;&#39;T&gt; -&gt; &#39;T<br /><br />Full name: Microsoft.FSharp.Core.ExtraTopLevelOperators.printfn</div>
+<div class="tip" id="fs6">property Event.Publish: IEvent&lt;int&gt;</div>
+<div class="tip" id="fs7">member Event.Trigger : arg:&#39;T -&gt; unit</div>
+<div class="tip" id="fs8">type Player =<br />&#160;&#160;| PlayerOne<br />&#160;&#160;| PlayerTwo<br /><br />Full name: Taming-the-live-wire_.Player</div>
+<div class="tip" id="fs9">union case Player.PlayerOne: Player</div>
+<div class="tip" id="fs10">union case Player.PlayerTwo: Player</div>
+<div class="tip" id="fs11">val turnStarted : unit -&gt; Event&lt;Player&gt;<br /><br />Full name: Taming-the-live-wire_.turnStarted</div>
+<div class="tip" id="fs12">type ColoredBall =<br />&#160;&#160;| Yellow<br />&#160;&#160;| Blue<br />&#160;&#160;| Red<br />&#160;&#160;| Purple<br />&#160;&#160;| Orange<br />&#160;&#160;| Green<br />&#160;&#160;| Maroon<br /><br />Full name: Taming-the-live-wire_.ColoredBall</div>
+<div class="tip" id="fs13">union case ColoredBall.Yellow: ColoredBall</div>
+<div class="tip" id="fs14">union case ColoredBall.Blue: ColoredBall</div>
+<div class="tip" id="fs15">union case ColoredBall.Red: ColoredBall</div>
+<div class="tip" id="fs16">union case ColoredBall.Purple: ColoredBall</div>
+<div class="tip" id="fs17">union case ColoredBall.Orange: ColoredBall</div>
+<div class="tip" id="fs18">union case ColoredBall.Green: ColoredBall</div>
+<div class="tip" id="fs19">union case ColoredBall.Maroon: ColoredBall</div>
+<div class="tip" id="fs20">type Ball =<br />&#160;&#160;| Solid of ColoredBall<br />&#160;&#160;| Stripe of ColoredBall<br />&#160;&#160;| EightBall<br /><br />Full name: Taming-the-live-wire_.Ball</div>
+<div class="tip" id="fs21">union case Ball.Solid: ColoredBall -&gt; Ball</div>
+<div class="tip" id="fs22">union case Ball.Stripe: ColoredBall -&gt; Ball</div>
+<div class="tip" id="fs23">union case Ball.EightBall: Ball</div>
+<div class="tip" id="fs24">val ballPocketed : unit -&gt; Event&lt;Ball&gt;<br /><br />Full name: Taming-the-live-wire_.ballPocketed</div>
+
+
+      </section>
+      <footer>
+        <ul>
+          <li><span class="fa fa-github-alt fa-fw"></span> <a href="https://github.com/neoeinstein/FsBlog/tree/master/source/drafts/taming-the-live-wire.fsx"><strong>Source</strong> on GitHub</a></li>
+          <li><span class="fa fa-exclamation-triangle fa-fw"></span> <a href="https://github.com/neoeinstein/FsBlog/issues/new?title=Error on 'Taming the Live Wire'" target="_blank"><strong>Report</strong> an error</a></li>
+          <li><span class="fa fa-terminal fa-fw"></span> <a href="javascript:function f(n){for(var i=0;i<n.length;++i)n[i].classList.toggle('enable-ligatures')}f(document.querySelectorAll('code'));"><strong>Toggle</strong> code ligatures</a></li>
+        </ul>
+        <p>Based on the <span class="fa fa-code-fork"></span> <a href="https://github.com/fsprojects/FsBlog">FsBlog</a> project.</p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+  	</div>
+    <script src="https://neoeinstein.github.io/javascripts/scale.fix.js"></script>
+    <script src="https://neoeinstein.github.io/javascripts/fontsmoothie.min.js"></script>
+  </body>
+</html>

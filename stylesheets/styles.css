@@ -9,8 +9,8 @@ body {
   text-rendering: optimizeLegibility;
 }
 
-.disable-ligatures {
-  text-rendering: initial;
+.enable-ligatures {
+  text-rendering: optimizeLegibility;
 }
 
 h1, h2, h3, h4, h5, h6, .falseheader {
@@ -74,6 +74,7 @@ code, pre {
   background-color:#f7f7f9;
   border:1px solid #e1e1e8;
   -webkit-border-radius:3px;-moz-border-radius:3px;border-radius:3px;
+  text-rendering: initial;
 }
 
 pre {
@@ -306,10 +307,15 @@ footer ul {
     color:#444;
   }
 
+  blockquote {
+    page-break-inside:avoid;
+  }
+
   table.pre {
     width:auto;
     border:#ddd 2px dotted;
     -webkit-border-radius:5px;-moz-border-radius:5px;border-radius:5px;
+    page-break-inside:avoid;
   }
 
   table.pre pre, table.pre code, table.pre span {

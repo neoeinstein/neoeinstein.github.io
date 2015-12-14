@@ -1,0 +1,352 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+       <title>Grim's Scythe — Chiron: JSON + Ducks + Monads</title>
+     <link rel="shortcut icon" href="https://neoeinstein.github.io/favicon.png">
+     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!-- FSharp.Formatting Styles -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+  	<link rel="stylesheet" type="text/css" media="screen" href="https://neoeinstein.github.io/fsharp.formatting/tooltips.css" />
+  	<script type="text/javascript" src="https://neoeinstein.github.io/fsharp.formatting/tooltips.js"></script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="stylesheet" href="https://neoeinstein.github.io/stylesheets/styles.css">
+    <link rel="stylesheet" href="https://neoeinstein.github.io/stylesheets/pygment_trac.css">
+    <script language="javascript" type="text/javascript">
+        function init()
+        {
+            websocket = new WebSocket("ws://localhost:8080/websocket");
+            websocket.onmessage = function(evt) { location.reload(); };
+        }
+        window.addEventListener("load", init, false);
+    </script>
+  </head>
+  <body class="">
+  	<div class="wrapper">
+	  <header>
+	  	  <a href="https://neoeinstein.github.io/index.html" class="falseheader">Grim's Scythe</a>
+        <div><strong><em>Marcus Griep</em></strong></div>
+        <p>Writings on software engineering.</p>
+        <ul>
+          <li><a href="https://twitter.com/neoeinstein"><strong>Follow Me</strong> on <span class="fa fa-twitter"></span> twitter</a></li>
+          <li><a href="https://github.com/neoeinstein"><strong>See My Code</strong> on <span class="fa fa-github"></span> github</a></li>
+          <li><a href="https://neoeinstein.github.io/cv.html">Check out <strong>My CV</strong></a></li>
+        </ul>
+        <div class="noprint">
+        <h2>Recent posts</h2>
+    		    <h3 class="h2link"><a href="https://neoeinstein.github.io/blog/2015/12-13-working-with-chiron/index.html">Chiron: JSON + Ducks + Monads</a></h3>
+    		    <p class="view"><small>    <time datetime="2015-12-13T20:00:00" pubdate data-updated="true">Dec 13, 2015</time>
+</small><br />Getting started with Chiron.</p>
+    		    <h3 class="h2link"><a href="https://neoeinstein.github.io/blog/2015/11-29-hello-fsblog/index.html">Hello, FsBlog!</a></h3>
+    		    <p class="view"><small>    <time datetime="2015-11-29T23:27:31" pubdate data-updated="true">Nov 29, 2015</time>
+</small><br />Getting started — all over again.</p>
+        </div>
+      </header>
+      <section>
+		    
+<h1>Chiron: JSON + Ducks + Monads</h1>
+<div class="view"><small>    <time datetime="2015-12-13T20:00:00" pubdate data-updated="true">Dec 13, 2015</time>
+</small></div>
+
+<p>There are a multitude of ways to handle JSON data on the .NET framework. You can pull in <a href="http://www.newtonsoft.com/json">Json.NET</a>, use the
+<code>JsonSerializer</code> from the now proprietary <a href="https://servicestack.net/text">ServiceStack.Text</a>, or use the <code>JsonDataContractSerializer</code>
+provided by the Base Class Libraries. Developers in F# have access to the strongly-typed erasing type provider through
+FSharp.Data's <a href="https://fsharp.github.io/FSharp.Data/library/JsonProvider.html"><code>JsonProvider</code></a>. In terms of simplicity, though, <em><a href="https://xyncro.tech/chiron/">Chiron</a></em> delivers a fully-functional
+JSON serializer in a compact, <a href="https://github.com/xyncro/chiron/blob/master/src/Chiron/Chiron.fs">single-file implementation</a>.</p>
+
+<p>At the core of Chiron is a simple discriminated union:</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+<span class="l">5: </span>
+<span class="l">6: </span>
+<span class="l">7: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">type</span> <span class="t">Json</span> <span class="o">=</span>
+  | <span onmouseout="hideTip(event, 'fs1', 1)" onmouseover="showTip(event, 'fs1', 1)" class="p">Null</span> <span class="k">of</span> <span onmouseout="hideTip(event, 'fs2', 2)" onmouseover="showTip(event, 'fs2', 2)" class="t">unit</span>
+  | <span onmouseout="hideTip(event, 'fs3', 3)" onmouseover="showTip(event, 'fs3', 3)" class="p">Bool</span> <span class="k">of</span> <span onmouseout="hideTip(event, 'fs4', 4)" onmouseover="showTip(event, 'fs4', 4)" class="t">bool</span>
+  | <span onmouseout="hideTip(event, 'fs5', 5)" onmouseover="showTip(event, 'fs5', 5)" class="p">String</span> <span class="k">of</span> <span onmouseout="hideTip(event, 'fs6', 6)" onmouseover="showTip(event, 'fs6', 6)" class="t">string</span>
+  | <span onmouseout="hideTip(event, 'fs7', 7)" onmouseover="showTip(event, 'fs7', 7)" class="p">Number</span> <span class="k">of</span> <span onmouseout="hideTip(event, 'fs8', 8)" onmouseover="showTip(event, 'fs8', 8)" class="t">decimal</span>
+  | <span onmouseout="hideTip(event, 'fs9', 9)" onmouseover="showTip(event, 'fs9', 9)" class="p">Array</span> <span class="k">of</span> <span onmouseout="hideTip(event, 'fs10', 10)" onmouseover="showTip(event, 'fs10', 10)" class="t">Json</span> <span onmouseout="hideTip(event, 'fs11', 11)" onmouseover="showTip(event, 'fs11', 11)" class="t">list</span>
+  | <span onmouseout="hideTip(event, 'fs12', 12)" onmouseover="showTip(event, 'fs12', 12)" class="p">Object</span> <span class="k">of</span> <span onmouseout="hideTip(event, 'fs13', 13)" onmouseover="showTip(event, 'fs13', 13)" class="t">Map</span><span class="o">&lt;</span><span onmouseout="hideTip(event, 'fs6', 14)" onmouseover="showTip(event, 'fs6', 14)" class="t">string</span>,<span onmouseout="hideTip(event, 'fs10', 15)" onmouseover="showTip(event, 'fs10', 15)" class="t">Json</span><span class="o">&gt;</span>
+</code></pre></td>
+</tr>
+</table>
+
+<p>Serialization of a <code>Json</code> instance to a JSON string is handled by the <code>format</code> and <code>formatWith</code> functions:</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+<span class="l">5: </span>
+<span class="l">6: </span>
+<span class="l">7: </span>
+<span class="l">8: </span>
+<span class="l">9: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs20', 40)" onmouseover="showTip(event, 'fs20', 40)" class="i">formatExample</span> <span class="o">=</span>
+  <span onmouseout="hideTip(event, 'fs12', 41)" onmouseover="showTip(event, 'fs12', 41)" class="p">Object</span> <span class="o">&lt;|</span> <span onmouseout="hideTip(event, 'fs13', 42)" onmouseover="showTip(event, 'fs13', 42)" class="t">Map</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs17', 43)" onmouseover="showTip(event, 'fs17', 43)" class="f">ofList</span>
+    [ <span class="s">&quot;name&quot;</span>, <span onmouseout="hideTip(event, 'fs5', 44)" onmouseover="showTip(event, 'fs5', 44)" class="p">String</span> <span class="s">&quot;Marcus Griep&quot;</span>
+      <span class="s">&quot;isAdmin&quot;</span>, <span onmouseout="hideTip(event, 'fs3', 45)" onmouseover="showTip(event, 'fs3', 45)" class="p">Bool</span> <span class="k">true</span>
+      <span class="s">&quot;numbers&quot;</span>, <span onmouseout="hideTip(event, 'fs9', 46)" onmouseover="showTip(event, 'fs9', 46)" class="p">Array</span> [ <span onmouseout="hideTip(event, 'fs7', 47)" onmouseover="showTip(event, 'fs7', 47)" class="p">Number</span> <span class="n">1m</span>; <span onmouseout="hideTip(event, 'fs7', 48)" onmouseover="showTip(event, 'fs7', 48)" class="p">Number</span> <span class="n">2m</span>; <span onmouseout="hideTip(event, 'fs5', 49)" onmouseover="showTip(event, 'fs5', 49)" class="p">String</span> <span class="s">&quot;Fizz&quot;</span> ] ]
+
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs21', 50)" onmouseover="showTip(event, 'fs21', 50)" class="i">formatCompact</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs18', 51)" onmouseover="showTip(event, 'fs18', 51)" class="t">Json</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs22', 52)" onmouseover="showTip(event, 'fs22', 52)" class="f">format</span> <span onmouseout="hideTip(event, 'fs20', 53)" onmouseover="showTip(event, 'fs20', 53)" class="i">formatExample</span>
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs23', 54)" onmouseover="showTip(event, 'fs23', 54)" class="i">formatPretty</span> <span class="o">=</span>
+  <span onmouseout="hideTip(event, 'fs18', 55)" onmouseover="showTip(event, 'fs18', 55)" class="t">Json</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs24', 56)" onmouseover="showTip(event, 'fs24', 56)" class="f">formatWith</span> <span onmouseout="hideTip(event, 'fs25', 57)" onmouseover="showTip(event, 'fs25', 57)" class="t">JsonFormattingOptions</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs26', 58)" onmouseover="showTip(event, 'fs26', 58)" class="i">Pretty</span> <span onmouseout="hideTip(event, 'fs20', 59)" onmouseover="showTip(event, 'fs20', 59)" class="i">formatExample</span>
+</code></pre></td>
+</tr>
+</table>
+
+<p>By default, Chrion formats JSON in a compact form:</p>
+
+<table class="pre"><tr><td><pre><code>"{"isAdmin":true,"name":"Marcus Griep","numbers":[1,2,"Fizz"]}"</code></pre></td></tr></table>
+
+<p>By specifying custom formatting options, you can get a more readable print out.</p>
+
+<table class="pre"><tr><td><pre><code>"{
+  "isAdmin": true,
+  "name": "Marcus Griep",
+  "numbers": [
+    1,
+    2,
+    "Fizz"
+  ]
+}"</code></pre></td></tr></table>
+
+<p>Text is turned into <code>Json</code> with the <code>parse</code> and <code>tryParse</code> functions. Chiron implements a custom <a href="http://www.quanttec.com/fparsec/about/fparsec-vs-alternatives.html">FParsec</a> parser to
+convert strings into corresponding <code>Json</code> instances. For example:</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+<span class="l">5: </span>
+<span class="l">6: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span onmouseout="hideTip(event, 'fs18', 60)" onmouseover="showTip(event, 'fs18', 60)" class="t">Json</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs27', 61)" onmouseover="showTip(event, 'fs27', 61)" class="f">parse</span> <span class="s">&quot;&quot;&quot;</span>
+<span class="s">  {</span>
+<span class="s">    &quot;foo&quot;: [ { &quot;bar&quot;: 1 }, { &quot;bar&quot;: 2 }, { &quot;bar&quot;: &quot;fizz&quot; } ],</span>
+<span class="s">    &quot;test&quot;: { &quot;one&quot;:3.5, &quot;two&quot;:null, &quot;three&quot;:false }</span>
+<span class="s">  }</span>
+<span class="s">&quot;&quot;&quot;</span>
+</code></pre></td>
+</tr>
+</table>
+
+<p>Parses into the following <code>Json</code>:</p>
+
+<table class="pre"><tr><td><pre><code>Object
+  (map
+     [("foo",
+       Array
+         [Object (map [("bar", Number 1M)]); Object (map [("bar", Number 2M)]);
+          Object (map [("bar", String "fizz")])]);
+      ("test",
+       Object
+         (map [("one", Number 3.5M); ("three", Bool false); ("two", Null null)]))])</code></pre></td></tr></table>
+
+<p>There are several reasons that parsing a JSON structure might fail. Using the <code>tryParse</code> function will return a
+<code>Choice2Of2</code> in the event parsing fails.</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span onmouseout="hideTip(event, 'fs18', 62)" onmouseover="showTip(event, 'fs18', 62)" class="t">Json</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs28', 63)" onmouseover="showTip(event, 'fs28', 63)" class="f">tryParse</span>
+  <span class="s">&quot;&quot;&quot;{ &quot;foo&quot;: [ { &quot;bar&quot;: 1 }, { &quot;bar&quot;: 2 } { &quot;bar&quot;: &quot;fizz&quot; } ] }&quot;&quot;&quot;</span>
+</code></pre></td>
+</tr>
+</table>
+
+<p>This results in an error message clearly indicating where the parsing error occurred.</p>
+
+<table class="pre"><tr><td><pre><code>Choice2Of2
+  "Error in Ln: 1 Col: 39
+{ "foo": [ { "bar": 1 }, { "bar": 2 } { "bar": "fizz" } ] }
+                                      ^
+Expecting: ',' or ']'
+"</code></pre></td></tr></table>
+
+<p>Converting data from <code>Json</code> to <code>string</code> and back again is all well and good, but every JSON library needs to provide a
+means to convert JSON strings into a Plain Old <em>[insert language]</em> Object. Most .NET converters rely on reflection to
+inspect data objects and perform conversion by convention. Chiron doesn't rely on convention or decorate members with
+attributes. Instead, any type that has the static methods <code>FromJson</code> and <code>ToJson</code> can be serialized or deserialized.
+Chiron's <code>serialize</code> and <code>deserialize</code> functions use <a href="https://msdn.microsoft.com/en-us/library/dd548046.aspx">statically-resolved type parameters</a>, similar to duck-typing,
+to hook in to the appropriate methods at compile time.</p>
+
+<p>As an example, let's create a data type for a user:</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">type</span> <span onmouseout="hideTip(event, 'fs29', 90)" onmouseover="showTip(event, 'fs29', 90)" class="i">User</span> <span class="o">=</span>
+  { <span class="i">Name</span><span class="o">:</span> <span onmouseout="hideTip(event, 'fs6', 91)" onmouseover="showTip(event, 'fs6', 91)" class="i">string</span>
+    <span class="i">IsAdmin</span><span class="o">:</span> <span onmouseout="hideTip(event, 'fs4', 92)" onmouseover="showTip(event, 'fs4', 92)" class="i">bool</span> }
+</code></pre></td>
+</tr>
+</table>
+
+<p>Chiron uses a monadic type, <code>Json&lt;'a&gt;</code>, to build up the serialized <code>Json</code> type:</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp">  <span class="k">static</span> <span class="k">member</span> <span class="i">ToJson</span> (<span class="i">x</span><span class="o">:</span><span onmouseout="hideTip(event, 'fs29', 93)" onmouseover="showTip(event, 'fs29', 93)" class="i">User</span>) <span class="o">=</span>
+       <span onmouseout="hideTip(event, 'fs18', 94)" onmouseover="showTip(event, 'fs18', 94)" class="i">Json</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs34', 95)" onmouseover="showTip(event, 'fs34', 95)" class="i">write</span> <span class="s">&quot;name&quot;</span> <span class="i">x</span><span class="o">.</span><span class="i">Name</span>
+    <span class="o">*&gt;</span> <span onmouseout="hideTip(event, 'fs18', 96)" onmouseover="showTip(event, 'fs18', 96)" class="i">Json</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs34', 97)" onmouseover="showTip(event, 'fs34', 97)" class="i">write</span> <span class="s">&quot;isAdmin&quot;</span> <span class="i">x</span><span class="o">.</span><span class="i">IsAdmin</span>
+</code></pre></td>
+</tr>
+</table>
+
+<p>The <code>ToJson</code> function consciously separates the name of the field in code from its representation in a JSON object.
+This allows them to vary independently. This way we can later change how we refer to the field in code, without
+accidentally breaking our JSON contract. <code>ToJson</code> takes two parameters, a <code>User</code> and a <code>Json</code>. That second parameter
+is hidden in the <code>Json&lt;'a&gt;</code> return type. <code>Json&lt;'a&gt;</code> is a state monad which we use to build up a <code>Json</code> instance
+in one direction, and extract values out of a <code>Json</code> instance in the other. <code>Json&lt;'a&gt;</code> is represented by the following
+signature.</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">type</span> <span onmouseout="hideTip(event, 'fs18', 36)" onmouseover="showTip(event, 'fs18', 36)" class="t">Json</span><span class="o">&lt;</span><span class="o">&#39;</span><span class="i">a</span><span class="o">&gt;</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs18', 37)" onmouseover="showTip(event, 'fs18', 37)" class="t">Json</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs19', 38)" onmouseover="showTip(event, 'fs19', 38)" class="t">JsonResult</span><span class="o">&lt;</span><span class="o">&#39;</span><span class="i">a</span><span class="o">&gt;</span> <span class="o">*</span> <span onmouseout="hideTip(event, 'fs18', 39)" onmouseover="showTip(event, 'fs18', 39)" class="t">Json</span>
+</code></pre></td>
+</tr>
+</table>
+
+<p>The <code>*&gt;</code> operator that we used in <code>ToJson</code> discards the <code>JsonResult&lt;'a&gt;</code> (which is only used when writing),
+but continues to build upon the <code>Json</code> object from the previous operation. By chaining these operations together, we
+build up the members of a <code>Json.Object</code>.</p>
+
+<p>Serialization is done using <code>FromJson</code>:</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+<span class="l">5: </span>
+<span class="l">6: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp">  <span class="k">static</span> <span class="k">member</span> <span class="i">FromJson</span> (_<span class="o">:</span><span onmouseout="hideTip(event, 'fs29', 98)" onmouseover="showTip(event, 'fs29', 98)" class="i">User</span>) <span class="o">=</span>
+        <span class="k">fun</span> <span class="i">n</span> <span class="i">a</span> <span class="k">-&gt;</span>
+          { <span class="i">Name</span> <span class="o">=</span> <span class="i">n</span>
+            <span class="i">IsAdmin</span> <span class="o">=</span> <span class="i">a</span> }
+    <span class="o">&lt;!&gt;</span> <span onmouseout="hideTip(event, 'fs18', 99)" onmouseover="showTip(event, 'fs18', 99)" class="i">Json</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs38', 100)" onmouseover="showTip(event, 'fs38', 100)" class="i">read</span> <span class="s">&quot;name&quot;</span>
+    <span class="o">&lt;*&gt;</span> <span onmouseout="hideTip(event, 'fs18', 101)" onmouseover="showTip(event, 'fs18', 101)" class="i">Json</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs38', 102)" onmouseover="showTip(event, 'fs38', 102)" class="i">read</span> <span class="s">&quot;isAdmin&quot;</span>
+</code></pre></td>
+</tr>
+</table>
+
+<p>The <code>FromJson</code> function reads its value out of the implicit <code>Json</code> instance provided by <code>Json&lt;'a&gt;</code>. The dummy <code>User</code>
+parameter is used by the F# compiler to resolve the statically-resolved type parameter on the <code>Json.deserialize</code>
+function. The <code>FromJson</code> function makes use of <code>lift</code> and <code>apply</code> functions from our <code>Json&lt;'a&gt;</code> monad, which are identified
+by the custom operators <code>&lt;!&gt;</code> and <code>&lt;*&gt;</code>, respectively.</p>
+
+<p>With these two functions defined, we can serialize an instance of our custom type:</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp">{ <span class="i">Name</span> <span class="o">=</span> <span class="s">&quot;Marcus Griep&quot;</span>; <span class="i">IsAdmin</span> <span class="o">=</span> <span class="k">true</span> }
+<span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs18', 103)" onmouseover="showTip(event, 'fs18', 103)" class="t">Json</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs39', 104)" onmouseover="showTip(event, 'fs39', 104)" class="f">serialize</span>
+<span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs18', 105)" onmouseover="showTip(event, 'fs18', 105)" class="t">Json</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs24', 106)" onmouseover="showTip(event, 'fs24', 106)" class="f">formatWith</span> <span onmouseout="hideTip(event, 'fs25', 107)" onmouseover="showTip(event, 'fs25', 107)" class="t">JsonFormattingOptions</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs26', 108)" onmouseover="showTip(event, 'fs26', 108)" class="i">Pretty</span>
+</code></pre></td>
+</tr>
+</table>
+
+<table class="pre"><tr><td><pre><code>"{
+  "isAdmin": true,
+  "name": "Marcus Griep"
+}"</code></pre></td></tr></table>
+
+<p>And deserialize it:</p>
+
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs40', 109)" onmouseover="showTip(event, 'fs40', 109)" class="i">deserializedUser</span> <span class="o">:</span> <span onmouseout="hideTip(event, 'fs29', 110)" onmouseover="showTip(event, 'fs29', 110)" class="t">User</span> <span class="o">=</span>
+  <span class="s">&quot;&quot;&quot;{&quot;name&quot;:&quot;Marcus Griep&quot;,&quot;isAdmin&quot;:true}&quot;&quot;&quot;</span>
+  <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs18', 111)" onmouseover="showTip(event, 'fs18', 111)" class="t">Json</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs27', 112)" onmouseover="showTip(event, 'fs27', 112)" class="f">parse</span>
+  <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs18', 113)" onmouseover="showTip(event, 'fs18', 113)" class="t">Json</span><span class="o">.</span><span onmouseout="hideTip(event, 'fs41', 114)" onmouseover="showTip(event, 'fs41', 114)" class="f">deserialize</span>
+</code></pre></td>
+</tr>
+</table>
+
+<table class="pre"><tr><td><pre><code>{Name = "Marcus Griep";
+ IsAdmin = true;}</code></pre></td></tr></table>
+
+<p>Chiron provides built-in serializers for common primitives, such as <code>int</code>, <code>string</code>, <code>DateTimeOffset</code>, as well as
+arrays, lists, sets, and simple tuples.</p>
+
+<p>This should give you a start toward serializing and deserializing your own custom types, but what about types that
+you don't control? We'll take a look at how to provide custom serializers for those types, in my
+<a href="#" title="Coming soon!">next post</a>.</p>
+
+<p><em>This post is a part of the <a href="https://sergeytihon.wordpress.com/2015/10/25/f-advent-calendar-in-english-2015/">F# Advent Calendar in English</a>. Many thanks to Sergey Thion for promoting this event.
+For more posts on F# and functional programming throughout December, check out the list of posts on his site.</em></p>
+
+<div class="tip" id="fs1">union case Json.Null: unit -&gt; Json</div>
+<div class="tip" id="fs2">type unit = Unit<br /><br />Full name: Microsoft.FSharp.Core.unit</div>
+<div class="tip" id="fs3">union case Json.Bool: bool -&gt; Json</div>
+<div class="tip" id="fs4">type bool = System.Boolean<br /><br />Full name: Microsoft.FSharp.Core.bool</div>
+<div class="tip" id="fs5">Multiple items<br />union case Json.String: string -&gt; Json<br /><br />--------------------<br />module String<br /><br />from Microsoft.FSharp.Core</div>
+<div class="tip" id="fs6">Multiple items<br />val string : value:&#39;T -&gt; string<br /><br />Full name: Microsoft.FSharp.Core.Operators.string<br /><br />--------------------<br />type string = System.String<br /><br />Full name: Microsoft.FSharp.Core.string</div>
+<div class="tip" id="fs7">union case Json.Number: decimal -&gt; Json</div>
+<div class="tip" id="fs8">Multiple items<br />val decimal : value:&#39;T -&gt; decimal (requires member op_Explicit)<br /><br />Full name: Microsoft.FSharp.Core.Operators.decimal<br /><br />--------------------<br />type decimal = System.Decimal<br /><br />Full name: Microsoft.FSharp.Core.decimal<br /><br />--------------------<br />type decimal&lt;&#39;Measure&gt; = decimal<br /><br />Full name: Microsoft.FSharp.Core.decimal&lt;_&gt;</div>
+<div class="tip" id="fs9">Multiple items<br />union case Json.Array: Json list -&gt; Json<br /><br />--------------------<br />module Array<br /><br />from Microsoft.FSharp.Collections</div>
+<div class="tip" id="fs10">type Json =<br />&#160;&#160;| Null of unit<br />&#160;&#160;| Bool of bool<br />&#160;&#160;| String of string<br />&#160;&#160;| Number of decimal<br />&#160;&#160;| Array of Json list<br />&#160;&#160;| Object of Map&lt;string,Json&gt;<br /><br />Full name: 12-13-working-with-chiron_.Json</div>
+<div class="tip" id="fs11">type &#39;T list = List&lt;&#39;T&gt;<br /><br />Full name: Microsoft.FSharp.Collections.list&lt;_&gt;</div>
+<div class="tip" id="fs12">union case Json.Object: Map&lt;string,Json&gt; -&gt; Json</div>
+<div class="tip" id="fs13">Multiple items<br />module Map<br /><br />from Microsoft.FSharp.Collections<br /><br />--------------------<br />type Map&lt;&#39;Key,&#39;Value (requires comparison)&gt; =<br />&#160;&#160;interface IEnumerable<br />&#160;&#160;interface IComparable<br />&#160;&#160;interface IEnumerable&lt;KeyValuePair&lt;&#39;Key,&#39;Value&gt;&gt;<br />&#160;&#160;interface ICollection&lt;KeyValuePair&lt;&#39;Key,&#39;Value&gt;&gt;<br />&#160;&#160;interface IDictionary&lt;&#39;Key,&#39;Value&gt;<br />&#160;&#160;new : elements:seq&lt;&#39;Key * &#39;Value&gt; -&gt; Map&lt;&#39;Key,&#39;Value&gt;<br />&#160;&#160;member Add : key:&#39;Key * value:&#39;Value -&gt; Map&lt;&#39;Key,&#39;Value&gt;<br />&#160;&#160;member ContainsKey : key:&#39;Key -&gt; bool<br />&#160;&#160;override Equals : obj -&gt; bool<br />&#160;&#160;member Remove : key:&#39;Key -&gt; Map&lt;&#39;Key,&#39;Value&gt;<br />&#160;&#160;...<br /><br />Full name: Microsoft.FSharp.Collections.Map&lt;_,_&gt;<br /><br />--------------------<br />new : elements:seq&lt;&#39;Key * &#39;Value&gt; -&gt; Map&lt;&#39;Key,&#39;Value&gt;</div>
+<div class="tip" id="fs14">module Chiron</div>
+<div class="tip" id="fs15">module Operators<br /><br />from Chiron</div>
+<div class="tip" id="fs16">val marcusJson : Json<br /><br />Full name: 12-13-working-with-chiron_.marcusJson</div>
+<div class="tip" id="fs17">val ofList : elements:(&#39;Key * &#39;T) list -&gt; Map&lt;&#39;Key,&#39;T&gt; (requires comparison)<br /><br />Full name: Microsoft.FSharp.Collections.Map.ofList</div>
+<div class="tip" id="fs18">Multiple items<br />module Json<br /><br />from Chiron.Mapping<br /><br />--------------------<br />module Json<br /><br />from Chiron.Formatting<br /><br />--------------------<br />module Json<br /><br />from Chiron.Parsing<br /><br />--------------------<br />module Json<br /><br />from Chiron.Optics<br /><br />--------------------<br />module Json<br /><br />from Chiron.Functional<br /><br />--------------------<br />type Json =<br />&#160;&#160;| Array of Json list<br />&#160;&#160;| Bool of bool<br />&#160;&#160;| Null of unit<br />&#160;&#160;| Number of decimal<br />&#160;&#160;| Object of Map&lt;string,Json&gt;<br />&#160;&#160;| String of string<br />&#160;&#160;static member Array_ : Prism&lt;Json,Json list&gt;<br />&#160;&#160;static member private Array__ : (Json -&gt; Json list option) * (Json list -&gt; Json)<br />&#160;&#160;static member Bool_ : Prism&lt;Json,bool&gt;<br />&#160;&#160;static member private Bool__ : (Json -&gt; bool option) * (bool -&gt; Json)<br />&#160;&#160;static member Null_ : Prism&lt;Json,unit&gt;<br />&#160;&#160;static member private Null__ : (Json -&gt; unit option) * (unit -&gt; Json)<br />&#160;&#160;static member Number_ : Prism&lt;Json,decimal&gt;<br />&#160;&#160;static member private Number__ : (Json -&gt; decimal option) * (decimal -&gt; Json)<br />&#160;&#160;static member Object_ : Prism&lt;Json,Map&lt;string,Json&gt;&gt;<br />&#160;&#160;static member private Object__ : (Json -&gt; Map&lt;string,Json&gt; option) * (Map&lt;string,Json&gt; -&gt; Json)<br />&#160;&#160;static member String_ : Prism&lt;Json,string&gt;<br />&#160;&#160;static member private String__ : (Json -&gt; string option) * (string -&gt; Json)<br /><br />Full name: Chiron.Json<br /><br />--------------------<br />type Json&lt;&#39;a&gt; = Json -&gt; JsonResult&lt;&#39;a&gt; * Json<br /><br />Full name: 12-13-working-with-chiron_.Json&lt;_&gt;</div>
+<div class="tip" id="fs19">type JsonResult&lt;&#39;a&gt; =<br />&#160;&#160;| Value of &#39;a<br />&#160;&#160;| Error of string<br /><br />Full name: Chiron.Functional.JsonResult&lt;_&gt;</div>
+<div class="tip" id="fs20">val formatExample : Json<br /><br />Full name: 12-13-working-with-chiron_.formatExample</div>
+<div class="tip" id="fs21">val formatCompact : string<br /><br />Full name: 12-13-working-with-chiron_.formatCompact</div>
+<div class="tip" id="fs22">val format : json:Json -&gt; string<br /><br />Full name: Chiron.Formatting.Json.format</div>
+<div class="tip" id="fs23">val formatPretty : string<br /><br />Full name: 12-13-working-with-chiron_.formatPretty</div>
+<div class="tip" id="fs24">val formatWith : options:JsonFormattingOptions -&gt; json:Json -&gt; string<br /><br />Full name: Chiron.Formatting.Json.formatWith</div>
+<div class="tip" id="fs25">type JsonFormattingOptions =<br />&#160;&#160;{Spacing: StringBuilder -&gt; StringBuilder;<br />&#160;&#160;&#160;NewLine: int -&gt; StringBuilder -&gt; StringBuilder;}<br />&#160;&#160;static member Compact : JsonFormattingOptions<br />&#160;&#160;static member Pretty : JsonFormattingOptions<br />&#160;&#160;static member SingleLine : JsonFormattingOptions<br /><br />Full name: Chiron.Formatting.JsonFormattingOptions</div>
+<div class="tip" id="fs26">property JsonFormattingOptions.Pretty: JsonFormattingOptions</div>
+<div class="tip" id="fs27">val parse : (string -&gt; Json)<br /><br />Full name: Chiron.Parsing.Json.parse</div>
+<div class="tip" id="fs28">val tryParse : (string -&gt; Choice&lt;Json,string&gt;)<br /><br />Full name: Chiron.Parsing.Json.tryParse</div>
+<div class="tip" id="fs29">type User =<br />&#160;&#160;{Name: string;<br />&#160;&#160;&#160;IsAdmin: bool;}<br />&#160;&#160;static member FromJson : User -&gt; Json&lt;User&gt;<br />&#160;&#160;static member ToJson : x:User -&gt; Json&lt;unit&gt;<br /><br />Full name: 12-13-working-with-chiron_.User</div>
+<div class="tip" id="fs30">User.Name: string</div>
+<div class="tip" id="fs31">User.IsAdmin: bool</div>
+<div class="tip" id="fs32">static member User.ToJson : x:User -&gt; Json&lt;unit&gt;<br /><br />Full name: 12-13-working-with-chiron_.User.ToJson</div>
+<div class="tip" id="fs33">val x : User</div>
+<div class="tip" id="fs34">val write : key:string -&gt; value:&#39;a -&gt; Json&lt;unit&gt; (requires member ToJson)<br /><br />Full name: Chiron.Mapping.Json.write</div>
+<div class="tip" id="fs35">static member User.FromJson : User -&gt; Json&lt;User&gt;<br /><br />Full name: 12-13-working-with-chiron_.User.FromJson</div>
+<div class="tip" id="fs36">val n : string</div>
+<div class="tip" id="fs37">val a : bool</div>
+<div class="tip" id="fs38">val read : key:string -&gt; Json&lt;&#39;a&gt; (requires member FromJson)<br /><br />Full name: Chiron.Mapping.Json.read</div>
+<div class="tip" id="fs39">val serialize : a:&#39;a -&gt; Json (requires member ToJson)<br /><br />Full name: Chiron.Mapping.Json.serialize</div>
+<div class="tip" id="fs40">val deserializedUser : User<br /><br />Full name: 12-13-working-with-chiron_.deserializedUser</div>
+<div class="tip" id="fs41">val deserialize : json:Json -&gt; &#39;a (requires member FromJson)<br /><br />Full name: Chiron.Mapping.Json.deserialize</div>
+
+      </section>
+      <footer>
+        <ul>
+          <li><span class="fa fa-github-alt fa-fw"></span> <a href="https://github.com/neoeinstein/FsBlog/tree/master/source/blog/2015/12-13-working-with-chiron.fsx"><strong>Source</strong> on GitHub</a></li>
+          <li><span class="fa fa-exclamation-triangle fa-fw"></span> <a href="https://github.com/neoeinstein/FsBlog/issues/new?title=Error on 'Chiron: JSON + Ducks + Monads'" target="_blank"><strong>Report</strong> an error</a></li>
+          <li><span class="fa fa-terminal fa-fw"></span> <a href="javascript:function f(n){for(var i=0;i<n.length;++i)n[i].classList.toggle('enable-ligatures')}f(document.querySelectorAll('code'));"><strong>Toggle</strong> code ligatures</a></li>
+        </ul>
+        <p>Based on the <span class="fa fa-code-fork"></span> <a href="https://github.com/fsprojects/FsBlog">FsBlog</a> project.</p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+  	</div>
+    <script src="https://neoeinstein.github.io/javascripts/scale.fix.js"></script>
+    <script src="https://neoeinstein.github.io/javascripts/fontsmoothie.min.js"></script>
+  </body>
+</html>

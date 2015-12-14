@@ -6,8 +6,8 @@
 </description>
     <item>
       <title>Chiron: JSON + Ducks + Monads</title>
-      <guid>https://neoeinstein.github.io//blog/2015/12-13-working-with-chiron</guid>
-      <link>https://neoeinstein.github.io//blog/2015/12-13-working-with-chiron/index.html</link>
+      <guid>https://neoeinstein.github.io//blog/2015/12-13-chiron-json-ducks-monads</guid>
+      <link>https://neoeinstein.github.io//blog/2015/12-13-chiron-json-ducks-monads/index.html</link>
       <pubDate>Mon, 14 Dec 2015 01:00:00 GMT</pubDate>
       <description>&lt;p&gt;There are a multitude of ways to handle JSON data on the .NET framework. You can pull in &lt;a href="http://www.newtonsoft.com/json"&gt;Json.NET&lt;/a&gt;, use the
 &lt;code&gt;JsonSerializer&lt;/code&gt; from the now proprietary &lt;a href="https://servicestack.net/text"&gt;ServiceStack.Text&lt;/a&gt;, or use the &lt;code&gt;JsonDataContractSerializer&lt;/code&gt;

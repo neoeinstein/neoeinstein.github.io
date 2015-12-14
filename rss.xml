@@ -19,6 +19,20 @@ JSON serializer in a compact, &lt;a href="https://github.com/xyncro/chiron/blob/
 </description>
     </item>
     <item>
+      <title>Chiron: JSON + Ducks + Monads</title>
+      <guid>https://neoeinstein.github.io//blog/2015/12-13-working-with-chiron</guid>
+      <link>https://neoeinstein.github.io//blog/2015/12-13-working-with-chiron/index.html</link>
+      <pubDate>Sun, 13 Dec 2015 19:15:16 GMT</pubDate>
+      <description>&lt;p&gt;There are a multitude of ways to handle JSON data on the .NET framework. You can pull in &lt;a href="http://www.newtonsoft.com/json"&gt;Json.NET&lt;/a&gt;, use the
+&lt;code&gt;JsonSerializer&lt;/code&gt; from the now proprietary &lt;a href="https://servicestack.net/text"&gt;ServiceStack.Text&lt;/a&gt;, or use the &lt;code&gt;JsonDataContractSerializer&lt;/code&gt;
+provided by the Base Class Libraries. Developers in F# have access to the strongly-typed erasing type provider through
+FSharp.Data's &lt;a href="https://fsharp.github.io/FSharp.Data/library/JsonProvider.html"&gt;&lt;code&gt;JsonProvider&lt;/code&gt;&lt;/a&gt;. In terms of simplicity, though, &lt;em&gt;&lt;a href="https://xyncro.tech/chiron/"&gt;Chiron&lt;/a&gt;&lt;/em&gt; delivers a fully-functional
+JSON serializer in a compact, &lt;a href="https://github.com/xyncro/chiron/blob/master/src/Chiron/Chiron.fs"&gt;single-file implementation&lt;/a&gt;.&lt;/p&gt;
+
+
+</description>
+    </item>
+    <item>
       <title>Hello, FsBlog!</title>
       <guid>https://neoeinstein.github.io//blog/2015/11-29-hello-fsblog</guid>
       <link>https://neoeinstein.github.io//blog/2015/11-29-hello-fsblog/index.html</link>

@@ -24,7 +24,7 @@
         window.addEventListener("load", init, false);
     </script>
   </head>
-  <body class="">
+  <body class="draft">
   	<div class="wrapper">
 	  <header>
 	  	  <a href="https://neoeinstein.github.io/index.html" class="falseheader">Grim's Scythe</a>
@@ -38,9 +38,6 @@
         <div class="noprint">
         <h2>Recent posts</h2>
     		    <h3 class="h2link"><a href="https://neoeinstein.github.io/blog/2015/12-13-chiron-json-ducks-monads/index.html">Chiron: JSON + Ducks + Monads</a></h3>
-    		    <p class="view"><small>    <time datetime="2015-12-13T20:00:00" pubdate data-updated="true">Dec 13, 2015</time>
-</small><br />Getting started with Chiron.</p>
-    		    <h3 class="h2link"><a href="https://neoeinstein.github.io/blog/2015/12-13-working-with-chiron/index.html">Chiron: JSON + Ducks + Monads</a></h3>
     		    <p class="view"><small>    <time datetime="2015-12-13T14:15:16" pubdate data-updated="true">Dec 13, 2015</time>
 </small><br />Getting started with Chiron.</p>
     		    <h3 class="h2link"><a href="https://neoeinstein.github.io/blog/2015/11-29-hello-fsblog/index.html">Hello, FsBlog!</a></h3>
@@ -51,8 +48,7 @@
       <section>
 		    
 <h1>Chiron: JSON + Ducks + Monads</h1>
-<div class="view"><small>    <time datetime="2015-12-13T20:00:00" pubdate data-updated="true">Dec 13, 2015</time>
-</small></div>
+<div class="view"><small>Draft Post</small></div>
 
 <p>There are a multitude of ways to handle JSON data on the .NET framework. You can pull in <a href="http://www.newtonsoft.com/json">Json.NET</a>, use the
 <code>JsonSerializer</code> from the now proprietary <a href="https://servicestack.net/text">ServiceStack.Text</a>, or use the <code>JsonDataContractSerializer</code>
@@ -293,8 +289,9 @@ arrays, lists, sets, and simple tuples.</p>
 you don't control? We'll take a look at how to provide custom serializers for those types, in my
 <a href="#" title="Coming soon!">next post</a>.</p>
 
-<p><em>This post is a part of the <a href="https://sergeytihon.wordpress.com/2015/10/25/f-advent-calendar-in-english-2015/">F# Advent Calendar in English</a>. Many thanks to Sergey Thion for promoting this event.
-For more posts on F# and functional programming throughout December, check out the list of posts on his site.</em></p>
+<p><em>This post is a part of the <a href="https://sergeytihon.wordpress.com/2015/10/25/f-advent-calendar-in-english-2015/">F# Advent Calendar in English</a>. Many thanks to
+<a href="https://www.twitter.com/sergey_tihon">Sergey Tihon</a> for promoting this event. For more posts on F# and functional programming
+throughout December, check out the list of posts on his site.</em></p>
 
 <div class="tip" id="fs1">union case Json.Null: unit -&gt; Json</div>
 <div class="tip" id="fs2">type unit = Unit<br /><br />Full name: Microsoft.FSharp.Core.unit</div>
@@ -337,6 +334,7 @@ For more posts on F# and functional programming throughout December, check out t
 <div class="tip" id="fs39">val serialize : a:&#39;a -&gt; Json (requires member ToJson)<br /><br />Full name: Chiron.Mapping.Json.serialize</div>
 <div class="tip" id="fs40">val deserializedUser : User<br /><br />Full name: 12-13-chiron-json-ducks-monads_.deserializedUser</div>
 <div class="tip" id="fs41">val deserialize : json:Json -&gt; &#39;a (requires member FromJson)<br /><br />Full name: Chiron.Mapping.Json.deserialize</div>
+
 
       </section>
       <footer>

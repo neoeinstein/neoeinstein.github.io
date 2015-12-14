@@ -173,7 +173,7 @@ Expecting: ',' or ']'
 "</code></pre></td></tr></table>
 
 <p>Converting data from <code>Json</code> to <code>string</code> and back again is all well and good, but every JSON library needs to provide a
-means to convert JSON strings into a Plain Old <em>[insert language]</em> Object. Most .NET converters rely on reflection to
+means to convert JSON strings into Plain Old <em>[insert language]</em> Objects. Most .NET converters rely on reflection to
 inspect data objects and perform conversion by convention. Chiron doesn't rely on convention or decorate members with
 attributes. Instead, any type that has the static methods <code>FromJson</code> and <code>ToJson</code> can be serialized or deserialized.
 Chiron's <code>serialize</code> and <code>deserialize</code> functions use <a href="https://msdn.microsoft.com/en-us/library/dd548046.aspx">statically-resolved type parameters</a>, similar to duck-typing,

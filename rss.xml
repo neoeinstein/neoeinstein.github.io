@@ -5,6 +5,19 @@
     <description>Writings on software engineering focusing on my journey into functional programming practices. I am often found writing in F#, PowerShell, and C#. Former contributor to the Boo programming language. Views expressed here are mine and do not represent the views of my employer or any other party.
 </description>
     <item>
+      <title>Chiron: Taming Types in the Wild</title>
+      <guid>https://neoeinstein.github.io//blog/2015/12-15-chiron-taming-types-in-the-wild</guid>
+      <link>https://neoeinstein.github.io//blog/2015/12-15-chiron-taming-types-in-the-wild/index.html</link>
+      <pubDate>Tue, 15 Dec 2015 05:00:00 GMT</pubDate>
+      <description>&lt;p&gt;In my &lt;a href="/blog/2015/12-13-chiron-json-ducks-monads/index.html"&gt;last post&lt;/a&gt;, I gave an overview of &lt;a href="https://xyncro.tech/chiron/"&gt;Chiron&lt;/a&gt;, described how to parse JSON, and demonstrated how to
+write &lt;code&gt;ToJson&lt;/code&gt; and &lt;code&gt;FromJson&lt;/code&gt; static methods to support serialization of custom types. At the end of the article, I
+left a question hanging: What if you don't control the data type that you want to serialize? What if you can't add the
+static &lt;code&gt;ToJson&lt;/code&gt;/&lt;code&gt;FromJson&lt;/code&gt; methods required by Chiron? That's where serialization extensions come in.&lt;/p&gt;
+
+
+</description>
+    </item>
+    <item>
       <title>Chiron: JSON + Ducks + Monads</title>
       <guid>https://neoeinstein.github.io//blog/2015/12-13-chiron-json-ducks-monads</guid>
       <link>https://neoeinstein.github.io//blog/2015/12-13-chiron-json-ducks-monads/index.html</link>

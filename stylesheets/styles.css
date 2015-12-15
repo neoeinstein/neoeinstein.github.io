@@ -199,6 +199,10 @@ section p {
   text-align: justify;
 }
 
+section abbr {
+  border-bottom: 2px dotted #6C7B8B;
+}
+
 small {
   font-size:75%;
 }

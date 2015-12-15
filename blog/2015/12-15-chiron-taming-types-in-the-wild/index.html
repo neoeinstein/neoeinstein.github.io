@@ -99,7 +99,7 @@ can be used as a drop-in replacement.</p>
 </tr>
 </table>
 
-<table class="pre"><tr><td><pre><code>""2015-12-15T15:20:51Z""</code></pre></td></tr></table>
+<table class="pre"><tr><td><pre><code>""2015-12-15T15:21:25Z""</code></pre></td></tr></table>
 
 <p>Next we define the deserialization function. In doing so, I will also define an active pattern to encapsulate
 NodaTime's pattern parsing logic. This will help to keep the intent of the deserialization function clear.</p>
@@ -154,7 +154,7 @@ value while <code>Json</code> stores the state of the JSON data that we are seri
 </tr>
 </table>
 
-<table class="pre"><tr><td><pre><code>Value 2015-12-15T15:20:51Z</code></pre></td></tr></table>
+<table class="pre"><tr><td><pre><code>Value 2015-12-15T15:21:25Z</code></pre></td></tr></table>
 
 <p>We can also check that an invalid value produces a relevant error message during deserialization:</p>
 
@@ -215,7 +215,7 @@ static methods.</p>
 </tr>
 </table>
 
-<table class="pre"><tr><td><pre><code>"{"time":"2015-12-15T15:20:51Z"}"</code></pre></td></tr></table>
+<table class="pre"><tr><td><pre><code>"{"time":"2015-12-15T15:21:25Z"}"</code></pre></td></tr></table>
 
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 <span class="l">2: </span>
@@ -230,7 +230,7 @@ static methods.</p>
 </tr>
 </table>
 
-<table class="pre"><tr><td><pre><code>{Time = 2015-12-15T15:20:51Z;}</code></pre></td></tr></table>
+<table class="pre"><tr><td><pre><code>{Time = 2015-12-15T15:21:25Z;}</code></pre></td></tr></table>
 
 <p>We now have serializers that can round-trip an external type either alone or as part of a type we control. What if the
 external type is contained in yet another external type? To demonstrate this case, we will consider serializing an
@@ -271,7 +271,7 @@ hook we need and can serialize a generic <code>'a list</code>.</p>
 </tr>
 </table>
 
-<p>The <code>serialize</code> parameter provides an injection point where we can provide our custom serializer.</p>
+<p>The <code>serialize</code> parameter provides the hook we need in order to provide our custom serializer.</p>
 
 <p>The deserializer is a little more complicated because we can't just map it over the list.
 We need a function that maps <code>Json -&gt; JsonResult&lt;Instant list&gt;</code>. Chiron already has a function that fits this need:
@@ -326,7 +326,7 @@ functions suffice as demonstrated by another round-trip:</p>
 </tr>
 </table>
 
-<table class="pre"><tr><td><pre><code>"["1970-01-01T00:00:00Z","2015-12-15T15:20:52Z"]"</code></pre></td></tr></table>
+<table class="pre"><tr><td><pre><code>"["1970-01-01T00:00:00Z","2015-12-15T15:21:25Z"]"</code></pre></td></tr></table>
 
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 <span class="l">2: </span>
@@ -341,7 +341,7 @@ functions suffice as demonstrated by another round-trip:</p>
 </tr>
 </table>
 
-<table class="pre"><tr><td><pre><code>Value [1970-01-01T00:00:00Z; 2015-12-15T15:20:52Z]</code></pre></td></tr></table>
+<table class="pre"><tr><td><pre><code>Value [1970-01-01T00:00:00Z; 2015-12-15T15:21:25Z]</code></pre></td></tr></table>
 
 <p>Thus far, I've only been creating custom serializers for records and tuples, a.k.a. <a href="http://fsharpforfunandprofit.com/posts/overview-of-types-in-fsharp/">product types</a>,
 and none of these serializers would deal well if they were given an object with missing data or <code>null</code> values:</p>

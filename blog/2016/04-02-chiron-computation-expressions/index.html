@@ -62,16 +62,16 @@
 that scare off new functional programmers. Things like <code>&gt;&gt;=</code> and monads. We're going to take a step
 back from that precipice and talk about the <code>json{}</code> computation expression.</p>
 <p>In general, computation expressions are a bit of syntactic sugar that F# provides. Internally, the
-monadic functions of <code>Bind</code> and <code>Return</code> are utilized, but that is generally transparent to the
+monadic functions of <code>Bind</code> and <code>Return</code> are used, but that is generally transparent to the
 user of a computation expression.</p>
 <p>Let's dive straight into an example from the first article:</p>
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 <span class="l">2: </span>
 <span class="l">3: </span>
 </pre></td>
-<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">type</span> <span onmouseout="hideTip(event, 'fs1', 15)" onmouseover="showTip(event, 'fs1', 15)" class="i">User</span> <span class="o">=</span>
-  { <span class="i">Name</span><span class="o">:</span> <span onmouseout="hideTip(event, 'fs3', 16)" onmouseover="showTip(event, 'fs3', 16)" class="i">string</span>
-    <span class="i">IsAdmin</span><span class="o">:</span> <span onmouseout="hideTip(event, 'fs5', 17)" onmouseover="showTip(event, 'fs5', 17)" class="i">bool</span> }
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">type</span> <span class="i">User</span> <span class="o">=</span>
+  { <span class="i">Name</span><span class="o">:</span> <span onmouseout="hideTip(event, 'fs1', 3)" onmouseover="showTip(event, 'fs1', 3)" class="i">string</span>
+    <span class="i">IsAdmin</span><span class="o">:</span> <span onmouseout="hideTip(event, 'fs2', 4)" onmouseover="showTip(event, 'fs2', 4)" class="i">bool</span> }
 </code></pre></td>
 </tr>
 </table>
@@ -86,11 +86,11 @@ user of a computation expression.</p>
 <span class="l">8: </span>
 <span class="l">9: </span>
 </pre></td>
-<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp">  <span class="k">static</span> <span class="k">member</span> <span class="i">ToJson</span> (<span class="i">x</span><span class="o">:</span><span onmouseout="hideTip(event, 'fs1', 18)" onmouseover="showTip(event, 'fs1', 18)" class="i">User</span>) <span class="o">=</span> <span class="i">json</span> {
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp">  <span class="k">static</span> <span class="k">member</span> <span class="i">ToJson</span> (<span class="i">x</span><span class="o">:</span><span class="i">User</span>) <span class="o">=</span> <span class="i">json</span> {
     <span class="k">do!</span> <span class="i">Json</span><span class="o">.</span><span class="i">write</span> <span class="s">&quot;name&quot;</span> <span class="i">x</span><span class="o">.</span><span class="i">Name</span>
     <span class="k">do!</span> <span class="i">Json</span><span class="o">.</span><span class="i">write</span> <span class="s">&quot;isAdmin&quot;</span> <span class="i">x</span><span class="o">.</span><span class="i">IsAdmin</span>
   }
-  <span class="k">static</span> <span class="k">member</span> <span class="i">FromJson</span> (_<span class="o">:</span><span onmouseout="hideTip(event, 'fs1', 19)" onmouseover="showTip(event, 'fs1', 19)" class="i">User</span>) <span class="o">=</span> <span class="i">json</span> {
+  <span class="k">static</span> <span class="k">member</span> <span class="i">FromJson</span> (_<span class="o">:</span><span class="i">User</span>) <span class="o">=</span> <span class="i">json</span> {
     <span class="k">let!</span> <span class="i">n</span> <span class="o">=</span> <span class="i">Json</span><span class="o">.</span><span class="i">read</span> <span class="s">&quot;name&quot;</span>
     <span class="k">let!</span> <span class="i">a</span> <span class="o">=</span> <span class="i">Json</span><span class="o">.</span><span class="i">read</span> <span class="s">&quot;isAdmin&quot;</span>
     <span class="k">return</span> { <span class="i">Name</span> <span class="o">=</span> <span class="i">n</span>; <span class="i">IsAdmin</span> <span class="o">=</span> <span class="i">a</span> }
@@ -100,16 +100,42 @@ user of a computation expression.</p>
 </table>
 <p>Compared to <a href="/blog/2015/12-13-chiron-json-ducks-monads/index.html#user-type">the previous example</a>, I think this is way more understandable on its face.
 There are no custom operators to figure out, and you don't need to open <code>Chiron.Operators</code> to use it.</p>
+<p>So, what do the various parts mean? What's that <code>let!</code> and <code>do!</code>? For a fuller explanation of computation
+expressions in general, I'll point you to the excellent introduction by Scott Wlaschin on <a href="https://fsharpforfunandprofit.com/posts/computation-expressions-intro/">fsharpforfunandprofit.com</a>.
+Nonetheless, let's briefly break this down.</p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp">    <span class="k">let!</span> <span class="i">n</span> <span class="o">=</span> <span class="i">Json</span><span class="o">.</span><span class="i">read</span> <span class="s">&quot;name&quot;</span>
+</code></pre></td>
+</tr>
+</table>
+<p>The first line that we will look at is from the <code>FromJson</code> function. In this case, we are reading the <code>name</code> member
+from the hidden <code>Json</code> object. This deserialization may or may not be successful. Presuming that it is successful, we
+want the value to be bound to <code>n</code>, but if it fails, we want to short-circuit and report the error.</p>
+<p>The key to making this work is the <code>!</code> in <code>let!</code>. The <code>!</code> provides a signal to the F# compiler that what we really want
+is the <code>string</code> from the <code>Json&lt;string&gt;</code> returned by <code>Json.read</code>. Chiron's <code>json{}</code> implementation of provides such a
+<code>bind</code> function which takes care of unwrapping the deserialized value, or in case deserialization fails, triggers the
+short-circuit to return the deserialization error.</p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp">    <span class="k">do!</span> <span class="i">Json</span><span class="o">.</span><span class="i">write</span> <span class="s">&quot;name&quot;</span> <span class="i">x</span><span class="o">.</span><span class="i">Name</span>
+</code></pre></td>
+</tr>
+</table>
+<p>Things are subtly different in the <code>ToJson</code> function. In this case, we are updating the hidden <code>Json</code> object being
+held by the computation expression. The write doesn't return anything meaningful but it does have a return type of
+<code>Json&lt;unit&gt;</code>. The above is syntactically equivalent to:</p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp">    <span class="k">let!</span> _ <span class="o">=</span> <span class="i">Json</span><span class="o">.</span><span class="i">write</span> <span class="s">&quot;name&quot;</span> <span class="i">x</span><span class="o">.</span><span class="i">Name</span>
+</code></pre></td>
+</tr>
+</table>
+<p>The <code>do!</code> just plain looks better than binding to an ignored value.</p>
 <p>In the long-promised <a href="#" title="Coming Soon!">next article</a>, we'll finally delve into dealing with missing data and union types.</p>
 
-<div class="tip" id="fs1">type User =<br />&#160;&#160;{Name: string;<br />&#160;&#160;&#160;IsAdmin: bool;}<br />&#160;&#160;static member FromJson : User -&gt; &#39;a<br />&#160;&#160;static member ToJson : x:User -&gt; &#39;a<br /><br />Full name: 04-02-chiron-computation-expressions_.User</div>
-<div class="tip" id="fs2">User.Name: string</div>
-<div class="tip" id="fs3">Multiple items<br />val string : value:&#39;T -&gt; string<br /><br />Full name: Microsoft.FSharp.Core.Operators.string<br /><br />--------------------<br />type string = System.String<br /><br />Full name: Microsoft.FSharp.Core.string</div>
-<div class="tip" id="fs4">User.IsAdmin: bool</div>
-<div class="tip" id="fs5">type bool = System.Boolean<br /><br />Full name: Microsoft.FSharp.Core.bool</div>
-<div class="tip" id="fs6">static member User.ToJson : x:User -&gt; &#39;a<br /><br />Full name: 04-02-chiron-computation-expressions_.User.ToJson</div>
-<div class="tip" id="fs7">val x : User</div>
-<div class="tip" id="fs8">static member User.FromJson : User -&gt; &#39;a<br /><br />Full name: 04-02-chiron-computation-expressions_.User.FromJson</div>
+<div class="tip" id="fs1">Multiple items<br />val string : value:&#39;T -&gt; string<br /><br />Full name: Microsoft.FSharp.Core.Operators.string<br /><br />--------------------<br />type string = System.String<br /><br />Full name: Microsoft.FSharp.Core.string</div>
+<div class="tip" id="fs2">type bool = System.Boolean<br /><br />Full name: Microsoft.FSharp.Core.bool</div>
 
       </section>
       <footer>

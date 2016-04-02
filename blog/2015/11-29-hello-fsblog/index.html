@@ -3,18 +3,19 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
        <title>Grim's Scythe — Hello, FsBlog!</title>
-     <link rel="shortcut icon" href="https://neoeinstein.github.io/favicon.png">
+     <link rel="shortcut icon" href="http://localhost:8080/favicon.png">
      <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <link rel="alternate" href="http://localhost:8080/rss.xml" title="Grim's Scythe" type="application/rss+xml">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
     <!-- FSharp.Formatting Styles -->
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-  	<link rel="stylesheet" type="text/css" media="screen" href="https://neoeinstein.github.io/fsharp.formatting/tooltips.css" />
-  	<script type="text/javascript" src="https://neoeinstein.github.io/fsharp.formatting/tooltips.js"></script>
+  	<link rel="stylesheet" type="text/css" media="screen" href="http://localhost:8080/fsharp.formatting/tooltips.css" />
+  	<script type="text/javascript" src="http://localhost:8080/fsharp.formatting/tooltips.js"></script>
     <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="stylesheet" href="https://neoeinstein.github.io/stylesheets/styles.css">
-    <link rel="stylesheet" href="https://neoeinstein.github.io/stylesheets/pygment_trac.css">
+    <link rel="stylesheet" href="http://localhost:8080/stylesheets/styles.css">
+    <link rel="stylesheet" href="http://localhost:8080/stylesheets/pygment_trac.css">
     <script language="javascript" type="text/javascript">
         function init()
         {
@@ -27,23 +28,23 @@
   <body class="">
   	<div class="wrapper">
 	  <header>
-	  	  <a href="https://neoeinstein.github.io/index.html" class="falseheader">Grim's Scythe</a>
+	  	  <a href="http://localhost:8080/index.html" class="falseheader">Grim's Scythe</a>
         <div><strong><em>Marcus Griep</em></strong></div>
         <p>Writings on software engineering.</p>
         <ul>
           <li><a href="https://twitter.com/neoeinstein"><strong>Follow Me</strong> on <span class="fa fa-twitter"></span> twitter</a></li>
           <li><a href="https://github.com/neoeinstein"><strong>See My Code</strong> on <span class="fa fa-github"></span> github</a></li>
-          <li><a href="https://neoeinstein.github.io/cv.html">Check out <strong>My CV</strong></a></li>
+          <li><a href="http://localhost:8080/cv.html">Check out <strong>My CV</strong></a></li>
         </ul>
         <div class="noprint">
         <h2>Recent posts</h2>
-    		    <h3 class="h2link"><a href="https://neoeinstein.github.io/blog/2015/12-15-chiron-taming-types-in-the-wild/index.html">Chiron: Taming Types in the Wild</a></h3>
+    		    <h3 class="h2link"><a href="http://localhost:8080/blog/2015/12-15-chiron-taming-types-in-the-wild/index.html">Chiron: Taming Types in the Wild</a></h3>
     		    <p class="view"><small>    <time datetime="2015-12-15T00:00:00" pubdate data-updated="true">Dec 15, 2015</time>
 </small><br />Using Chiron to serialize types that you can't control</p>
-    		    <h3 class="h2link"><a href="https://neoeinstein.github.io/blog/2015/12-13-chiron-json-ducks-monads/index.html">Chiron: JSON + Ducks + Monads</a></h3>
+    		    <h3 class="h2link"><a href="http://localhost:8080/blog/2015/12-13-chiron-json-ducks-monads/index.html">Chiron: JSON + Ducks + Monads</a></h3>
     		    <p class="view"><small>    <time datetime="2015-12-13T14:15:16" pubdate data-updated="true">Dec 13, 2015</time>
 </small><br />Getting started with Chiron</p>
-    		    <h3 class="h2link"><a href="https://neoeinstein.github.io/blog/2015/11-29-hello-fsblog/index.html">Hello, FsBlog!</a></h3>
+    		    <h3 class="h2link"><a href="http://localhost:8080/blog/2015/11-29-hello-fsblog/index.html">Hello, FsBlog!</a></h3>
     		    <p class="view"><small>    <time datetime="2015-11-29T23:27:31" pubdate data-updated="true">Nov 29, 2015</time>
 </small><br />Getting started — all over again</p>
         </div>
@@ -55,17 +56,11 @@
 </small></div>
 
 <p>It has been a long time since I have done any sort of blogging. Now that I've committed to an F# Advent post, it's time that I pulled a fork off <a href="https://github.com/fsprojects/FsBlog">FsBlog</a> and set up shop on <code>gh‑pages</code>.</p>
-
 <!--more-->
-
 <p>I don't often find the time to sit down and write a proper post, and the hosting solutions that I've used in the past have been just as much a hassle as anything. In the past, I've journeyed the depths of Blogger, Livejournal, Wordpress, and a few self-hosted Wordpress instances. I've never been quite happy with the way that I can do things on sites like Blogger, and Livejournal is a relic of the early 2000's. Wordpress has been the general standard for blogging for the past few years, but it's written on PHP, and even the Wordpress folks <a href="https://developer.wordpress.com/2015/11/23/the-story-behind-the-new-wordpress-com/">are getting tired of PHP</a> as a language for web development. I don't blame them. Anytime I've done anything with PHP, I've been worried about security and never was sure if the ball of yarn I had just stood up for a blog was actually going to still be there when I looked back at it.</p>
-
 <p>The new rage in the blogging world seems to be to use static site generators, and it's easy to see why. Static sites provide a wealth of benefits with very little downside. Web servers know how to serve up static files and attach all the caching headers they can. There's no need to invoke any sort of web engine on some under-performant piece of leased virtual hardware. Since there's no real logic to invoke, the attack surface is greatly minimized to any bugs inherent in the web server itself. And, since they don't have to run any of our unsanitary code, Github offers static site hosting for free through its <a href="https://pages.github.com/">Github Pages</a> offering.</p>
-
 <p>This is pretty great all around. It means that I no longer have to be limited to 140 characters on Twitter (or multiple tweets), and I can avoid the headache of setting up some virtual machine that needs a port left open for the public to try to attack. Instead, generators like <a href="https://jekyllrb.com/">Jekyll</a> and <a href="https://github.com/fsprojects/FsBlog">FsBlog</a> have become the better way to start a new blog these days. Since the entire site is literally generated out of a Git repository, there is no more fiddling with databases or backups. You get clean static files that are generally host agnostic, which means that if Github decides to take it's ball and go home, it's no big deal to migrate those static files to another host.</p>
-
 <p>For me, I also jumped at the chance to be writing blog posts in Markdown and F# script files. Thanks to the wonderful work of <a href="https://twitter.com/MattDrivenDev">Matt Ball</a> and <a href="https://twitter.com/tomaspetricek">Tomas Petricek</a>, FsBlog allows me to incorporate snippets of F# code inline. For example:</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 <span class="l">2: </span>
 <span class="l">3: </span>
@@ -82,7 +77,6 @@
 </code></pre></td>
 </tr>
 </table>
-
 <p><a href="https://tpetricek.github.io/FSharp.Formatting">FSharp.Formatting</a> provides rich tooltips to better understand what's going on in the code, like giving the signature for the <code>Seq.iteri</code> function. There are even more crazy awesome things that can be done, including <a href="https://tpetricek.github.io/FSharp.Formatting/evaluation.html">live evaluation and embedding of results</a>. I plan on using these to their fullest as I continue to write about what I've been doing with F#.</p>
 
 <div class="tip" id="fs1">val ℕ0 : seq&lt;int&gt;<br /><br />Full name: hellofsblog.ℕ0<br /><em><br /><br />&#160;Represents the Natural numbers starting from zero</em></div>
@@ -105,7 +99,7 @@
         <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
       </footer>
   	</div>
-    <script src="https://neoeinstein.github.io/javascripts/scale.fix.js"></script>
-    <script src="https://neoeinstein.github.io/javascripts/fontsmoothie.min.js"></script>
+    <script src="http://localhost:8080/javascripts/scale.fix.js"></script>
+    <script src="http://localhost:8080/javascripts/fontsmoothie.min.js"></script>
   </body>
 </html>

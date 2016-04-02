@@ -5,6 +5,18 @@
     <description>Writings on software engineering focusing on my journey into functional programming practices. I am often found writing in F#, PowerShell, and C#. Former contributor to the Boo programming language. Views expressed here are mine and do not represent the views of my employer or any other party.
 </description>
     <item>
+      <title>Chiron: Easier with Computation Expressions</title>
+      <guid>https://neoeinstein.github.io//blog/2016/04-02-chiron-computation-expressions</guid>
+      <link>https://neoeinstein.github.io//blog/2016/04-02-chiron-computation-expressions/index.html</link>
+      <pubDate>Sat, 02 Apr 2016 18:30:00 GMT</pubDate>
+      <description>&lt;p&gt;Back in my first &lt;a href="/blog/2015/12-13-chiron-json-ducks-monads/index.html"&gt;Chiron article&lt;/a&gt;, I made a bit of a mistake. I started with all the things
+that scare off new functional programmers. Things like &lt;code&gt;&amp;gt;&amp;gt;=&lt;/code&gt; and monads. We're going to take a step
+back from that precipice and talk about the &lt;code&gt;json{}&lt;/code&gt; computation expression.&lt;/p&gt;
+
+
+</description>
+    </item>
+    <item>
       <title>Chiron: Taming Types in the Wild</title>
       <guid>https://neoeinstein.github.io//blog/2015/12-15-chiron-taming-types-in-the-wild</guid>
       <link>https://neoeinstein.github.io//blog/2015/12-15-chiron-taming-types-in-the-wild/index.html</link>

@@ -3,18 +3,19 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
        <title>Grim's Scythe — Chiron: JSON + Ducks + Monads</title>
-     <link rel="shortcut icon" href="https://neoeinstein.github.io/favicon.png">
+     <link rel="shortcut icon" href="http://localhost:8080/favicon.png">
      <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <link rel="alternate" href="http://localhost:8080/rss.xml" title="Grim's Scythe" type="application/rss+xml">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
     <!-- FSharp.Formatting Styles -->
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-  	<link rel="stylesheet" type="text/css" media="screen" href="https://neoeinstein.github.io/fsharp.formatting/tooltips.css" />
-  	<script type="text/javascript" src="https://neoeinstein.github.io/fsharp.formatting/tooltips.js"></script>
+  	<link rel="stylesheet" type="text/css" media="screen" href="http://localhost:8080/fsharp.formatting/tooltips.css" />
+  	<script type="text/javascript" src="http://localhost:8080/fsharp.formatting/tooltips.js"></script>
     <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="stylesheet" href="https://neoeinstein.github.io/stylesheets/styles.css">
-    <link rel="stylesheet" href="https://neoeinstein.github.io/stylesheets/pygment_trac.css">
+    <link rel="stylesheet" href="http://localhost:8080/stylesheets/styles.css">
+    <link rel="stylesheet" href="http://localhost:8080/stylesheets/pygment_trac.css">
     <script language="javascript" type="text/javascript">
         function init()
         {
@@ -27,23 +28,26 @@
   <body class="">
   	<div class="wrapper">
 	  <header>
-	  	  <a href="https://neoeinstein.github.io/index.html" class="falseheader">Grim's Scythe</a>
+	  	  <a href="http://localhost:8080/index.html" class="falseheader">Grim's Scythe</a>
         <div><strong><em>Marcus Griep</em></strong></div>
         <p>Writings on software engineering.</p>
         <ul>
           <li><a href="https://twitter.com/neoeinstein"><strong>Follow Me</strong> on <span class="fa fa-twitter"></span> twitter</a></li>
           <li><a href="https://github.com/neoeinstein"><strong>See My Code</strong> on <span class="fa fa-github"></span> github</a></li>
-          <li><a href="https://neoeinstein.github.io/cv.html">Check out <strong>My CV</strong></a></li>
+          <li><a href="http://localhost:8080/cv.html">Check out <strong>My CV</strong></a></li>
         </ul>
         <div class="noprint">
         <h2>Recent posts</h2>
-    		    <h3 class="h2link"><a href="https://neoeinstein.github.io/blog/2015/12-15-chiron-taming-types-in-the-wild/index.html">Chiron: Taming Types in the Wild</a></h3>
+    		    <h3 class="h2link"><a href="http://localhost:8080/blog/2016/04-02-chiron-computation-expressions/index.html">Chiron: Easier with Computation Expressions</a></h3>
+    		    <p class="view"><small>    <time datetime="2016-04-02T18:00:00" pubdate data-updated="true">Apr 2, 2016</time>
+</small><br />Powerful JSON processing with computation expressions</p>
+    		    <h3 class="h2link"><a href="http://localhost:8080/blog/2015/12-15-chiron-taming-types-in-the-wild/index.html">Chiron: Taming Types in the Wild</a></h3>
     		    <p class="view"><small>    <time datetime="2015-12-15T00:00:00" pubdate data-updated="true">Dec 15, 2015</time>
 </small><br />Using Chiron to serialize types that you can't control</p>
-    		    <h3 class="h2link"><a href="https://neoeinstein.github.io/blog/2015/12-13-chiron-json-ducks-monads/index.html">Chiron: JSON + Ducks + Monads</a></h3>
+    		    <h3 class="h2link"><a href="http://localhost:8080/blog/2015/12-13-chiron-json-ducks-monads/index.html">Chiron: JSON + Ducks + Monads</a></h3>
     		    <p class="view"><small>    <time datetime="2015-12-13T14:15:16" pubdate data-updated="true">Dec 13, 2015</time>
 </small><br />Getting started with Chiron</p>
-    		    <h3 class="h2link"><a href="https://neoeinstein.github.io/blog/2015/11-29-hello-fsblog/index.html">Hello, FsBlog!</a></h3>
+    		    <h3 class="h2link"><a href="http://localhost:8080/blog/2015/11-29-hello-fsblog/index.html">Hello, FsBlog!</a></h3>
     		    <p class="view"><small>    <time datetime="2015-11-29T23:27:31" pubdate data-updated="true">Nov 29, 2015</time>
 </small><br />Getting started — all over again</p>
         </div>
@@ -59,9 +63,7 @@
 provided by the Base Class Libraries. Developers in F# have access to the strongly-typed erasing type provider through
 FSharp.Data's <a href="https://fsharp.github.io/FSharp.Data/library/JsonProvider.html"><code>JsonProvider</code></a>. In terms of simplicity, though, <em><a href="https://xyncro.tech/chiron/">Chiron</a></em> delivers a fully-functional
 JSON serializer in a compact, <a href="https://github.com/xyncro/chiron/blob/master/src/Chiron/Chiron.fs">single-file implementation</a>.</p>
-
 <p>At the core of Chiron is a simple discriminated union:</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 <span class="l">2: </span>
 <span class="l">3: </span>
@@ -80,9 +82,7 @@ JSON serializer in a compact, <a href="https://github.com/xyncro/chiron/blob/mas
 </code></pre></td>
 </tr>
 </table>
-
 <p>Serialization of a <code>Json</code> instance to a JSON string is handled by the <code>format</code> and <code>formatWith</code> functions:</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 <span class="l">2: </span>
 <span class="l">3: </span>
@@ -105,13 +105,9 @@ JSON serializer in a compact, <a href="https://github.com/xyncro/chiron/blob/mas
 </code></pre></td>
 </tr>
 </table>
-
 <p>By default, Chrion formats JSON in a compact form:</p>
-
 <table class="pre"><tr><td><pre><code>"{"isAdmin":true,"name":"Marcus Griep","numbers":[1,2,"Fizz"]}"</code></pre></td></tr></table>
-
 <p>By specifying custom formatting options, you can get a more readable print out.</p>
-
 <table class="pre"><tr><td><pre><code>"{
   "isAdmin": true,
   "name": "Marcus Griep",
@@ -121,10 +117,8 @@ JSON serializer in a compact, <a href="https://github.com/xyncro/chiron/blob/mas
     "Fizz"
   ]
 }"</code></pre></td></tr></table>
-
 <p>Text is turned into <code>Json</code> with the <code>parse</code> and <code>tryParse</code> functions. Chiron implements a custom <a href="http://www.quanttec.com/fparsec/about/fparsec-vs-alternatives.html">FParsec</a> parser to
 convert strings into corresponding <code>Json</code> instances. For example:</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 <span class="l">2: </span>
 <span class="l">3: </span>
@@ -141,9 +135,7 @@ convert strings into corresponding <code>Json</code> instances. For example:</p>
 </code></pre></td>
 </tr>
 </table>
-
 <p>Parses into the following <code>Json</code>:</p>
-
 <table class="pre"><tr><td><pre><code>Object
   (map
      [("foo",
@@ -153,10 +145,8 @@ convert strings into corresponding <code>Json</code> instances. For example:</p>
       ("test",
        Object
          (map [("one", Number 3.5M); ("three", Bool false); ("two", Null null)]))])</code></pre></td></tr></table>
-
 <p>There are several reasons that parsing a JSON structure might fail. Using the <code>tryParse</code> function will return a
 <code>Choice2Of2</code> in the event parsing fails.</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 <span class="l">2: </span>
 </pre></td>
@@ -165,25 +155,21 @@ convert strings into corresponding <code>Json</code> instances. For example:</p>
 </code></pre></td>
 </tr>
 </table>
-
 <p>This results in an error message clearly indicating where the parsing error occurred.</p>
-
 <table class="pre"><tr><td><pre><code>Choice2Of2
   "Error in Ln: 1 Col: 39
 { "foo": [ { "bar": 1 }, { "bar": 2 } { "bar": "fizz" } ] }
                                       ^
 Expecting: ',' or ']'
 "</code></pre></td></tr></table>
-
 <p>Converting data from <code>Json</code> to <code>string</code> and back again is all well and good, but every JSON library needs to provide a
 means to convert JSON strings into Plain Old <em>[insert language]</em> Objects. Most .NET converters rely on reflection to
 inspect data objects and perform conversion by convention. Chiron doesn't rely on convention or decorate members with
 attributes. Instead, any type that has the static methods <code>FromJson</code> and <code>ToJson</code> can be serialized or deserialized.
 Chiron's <code>serialize</code> and <code>deserialize</code> functions use <a href="https://msdn.microsoft.com/en-us/library/dd548046.aspx">statically-resolved type parameters</a>, similar to duck-typing,
 to hook in to the appropriate methods at compile time.</p>
-
-<p>As an example, let's create a data type for a user:</p>
-
+<a name="user-type"></a>
+As an example, let's create a data type for a user:
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 <span class="l">2: </span>
 <span class="l">3: </span>
@@ -194,9 +180,11 @@ to hook in to the appropriate methods at compile time.</p>
 </code></pre></td>
 </tr>
 </table>
-
+<blockquote>
+<p>For an explanation that uses fewer custom operators and may be easier to follow, check out <a href="/blog/2016/04-02-chiron-computation-expressions/index.html">this article</a> on the
+<code>json{}</code> computation expression.</p>
+</blockquote>
 <p>Chiron uses a monadic type, <code>Json&lt;'a&gt;</code>, to build up the serialized <code>Json</code> type:</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 <span class="l">2: </span>
 <span class="l">3: </span>
@@ -207,27 +195,22 @@ to hook in to the appropriate methods at compile time.</p>
 </code></pre></td>
 </tr>
 </table>
-
 <p>The <code>ToJson</code> function consciously separates the name of the field in code from its representation in a JSON object.
 This allows them to vary independently. This way we can later change how we refer to the field in code, without
 accidentally breaking our JSON contract. <code>ToJson</code> takes two parameters, a <code>User</code> and a <code>Json</code>. That second parameter
 is hidden in the <code>Json&lt;'a&gt;</code> return type. <code>Json&lt;'a&gt;</code> is a state monad which we use to build up a <code>Json</code> instance
 in one direction, and extract values out of a <code>Json</code> instance in the other. <code>Json&lt;'a&gt;</code> is represented by the following
 signature.</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 </pre></td>
 <td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">type</span> <span onmouseout="hideTip(event, 'fs18', 36)" onmouseover="showTip(event, 'fs18', 36)" class="t">Json</span><span class="o">&lt;</span><span class="o">&#39;</span><span class="i">a</span><span class="o">&gt;</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs18', 37)" onmouseover="showTip(event, 'fs18', 37)" class="t">Json</span> <span class="k">-&gt;</span> <span onmouseout="hideTip(event, 'fs19', 38)" onmouseover="showTip(event, 'fs19', 38)" class="t">JsonResult</span><span class="o">&lt;</span><span class="o">&#39;</span><span class="i">a</span><span class="o">&gt;</span> <span class="o">*</span> <span onmouseout="hideTip(event, 'fs18', 39)" onmouseover="showTip(event, 'fs18', 39)" class="t">Json</span>
 </code></pre></td>
 </tr>
 </table>
-
 <p>The <code>*&gt;</code> operator that we used in <code>ToJson</code> discards the <code>JsonResult&lt;'a&gt;</code> (which is only used when writing),
 but continues to build upon the <code>Json</code> object from the previous operation. By chaining these operations together, we
 build up the members of a <code>Json.Object</code>.</p>
-
 <p>Deserialization is done using <code>FromJson</code>:</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 <span class="l">2: </span>
 <span class="l">3: </span>
@@ -244,14 +227,11 @@ build up the members of a <code>Json.Object</code>.</p>
 </code></pre></td>
 </tr>
 </table>
-
 <p>The <code>FromJson</code> function reads its value out of the implicit <code>Json</code> instance provided by <code>Json&lt;'a&gt;</code>. The dummy <code>User</code>
 parameter is used by the F# compiler to resolve the statically-resolved type parameter on the <code>Json.deserialize</code>
 function. The <code>FromJson</code> function makes use of <code>lift</code> and <code>apply</code> functions from our <code>Json&lt;'a&gt;</code> monad, which are identified
 by the custom operators <code>&lt;!&gt;</code> and <code>&lt;*&gt;</code>, respectively.</p>
-
 <p>With these two functions defined, we can serialize an instance of our custom type:</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 <span class="l">2: </span>
 <span class="l">3: </span>
@@ -262,14 +242,11 @@ by the custom operators <code>&lt;!&gt;</code> and <code>&lt;*&gt;</code>, respe
 </code></pre></td>
 </tr>
 </table>
-
 <table class="pre"><tr><td><pre><code>"{
   "isAdmin": true,
   "name": "Marcus Griep"
 }"</code></pre></td></tr></table>
-
 <p>And deserialize it:</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 <span class="l">2: </span>
 <span class="l">3: </span>
@@ -282,17 +259,13 @@ by the custom operators <code>&lt;!&gt;</code> and <code>&lt;*&gt;</code>, respe
 </code></pre></td>
 </tr>
 </table>
-
 <table class="pre"><tr><td><pre><code>{Name = "Marcus Griep";
  IsAdmin = true;}</code></pre></td></tr></table>
-
 <p>Chiron provides built-in serializers for common primitives, such as <code>int</code>, <code>string</code>, <code>DateTimeOffset</code>, as well as
 arrays, lists, sets, and simple tuples.</p>
-
 <p>This should give you a start toward serializing and deserializing your own custom types, but what about types that
 you don't control? We'll take a look at how to provide custom serializers for those types, in my
 <a href="/blog/2015/12-15-chiron-taming-types-in-the-wild/index.html">next post</a>.</p>
-
 <p><em>This post is a part of the <a href="https://sergeytihon.wordpress.com/2015/10/25/f-advent-calendar-in-english-2015/">F# Advent Calendar in English</a>. Many thanks to
 <a href="https://www.twitter.com/sergey_tihon">Sergey Tihon</a> for promoting this event. For more posts on F# and functional programming
 throughout December, check out the list of posts on his site.</em></p>
@@ -350,7 +323,7 @@ throughout December, check out the list of posts on his site.</em></p>
         <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
       </footer>
   	</div>
-    <script src="https://neoeinstein.github.io/javascripts/scale.fix.js"></script>
-    <script src="https://neoeinstein.github.io/javascripts/fontsmoothie.min.js"></script>
+    <script src="http://localhost:8080/javascripts/scale.fix.js"></script>
+    <script src="http://localhost:8080/javascripts/fontsmoothie.min.js"></script>
   </body>
 </html>

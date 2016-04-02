@@ -3,18 +3,19 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
        <title>Grim's Scythe — The Reactive Manifesto and Synchronous Messaging</title>
-     <link rel="shortcut icon" href="https://neoeinstein.github.io/favicon.png">
+     <link rel="shortcut icon" href="http://localhost:8080/favicon.png">
      <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <link rel="alternate" href="http://localhost:8080/rss.xml" title="Grim's Scythe" type="application/rss+xml">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
     <!-- FSharp.Formatting Styles -->
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-  	<link rel="stylesheet" type="text/css" media="screen" href="https://neoeinstein.github.io/fsharp.formatting/tooltips.css" />
-  	<script type="text/javascript" src="https://neoeinstein.github.io/fsharp.formatting/tooltips.js"></script>
+  	<link rel="stylesheet" type="text/css" media="screen" href="http://localhost:8080/fsharp.formatting/tooltips.css" />
+  	<script type="text/javascript" src="http://localhost:8080/fsharp.formatting/tooltips.js"></script>
     <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="stylesheet" href="https://neoeinstein.github.io/stylesheets/styles.css">
-    <link rel="stylesheet" href="https://neoeinstein.github.io/stylesheets/pygment_trac.css">
+    <link rel="stylesheet" href="http://localhost:8080/stylesheets/styles.css">
+    <link rel="stylesheet" href="http://localhost:8080/stylesheets/pygment_trac.css">
     <script language="javascript" type="text/javascript">
         function init()
         {
@@ -27,23 +28,23 @@
   <body class="draft">
   	<div class="wrapper">
 	  <header>
-	  	  <a href="https://neoeinstein.github.io/index.html" class="falseheader">Grim's Scythe</a>
+	  	  <a href="http://localhost:8080/index.html" class="falseheader">Grim's Scythe</a>
         <div><strong><em>Marcus Griep</em></strong></div>
         <p>Writings on software engineering.</p>
         <ul>
           <li><a href="https://twitter.com/neoeinstein"><strong>Follow Me</strong> on <span class="fa fa-twitter"></span> twitter</a></li>
           <li><a href="https://github.com/neoeinstein"><strong>See My Code</strong> on <span class="fa fa-github"></span> github</a></li>
-          <li><a href="https://neoeinstein.github.io/cv.html">Check out <strong>My CV</strong></a></li>
+          <li><a href="http://localhost:8080/cv.html">Check out <strong>My CV</strong></a></li>
         </ul>
         <div class="noprint">
         <h2>Recent posts</h2>
-    		    <h3 class="h2link"><a href="https://neoeinstein.github.io/blog/2015/12-15-chiron-taming-types-in-the-wild/index.html">Chiron: Taming Types in the Wild</a></h3>
+    		    <h3 class="h2link"><a href="http://localhost:8080/blog/2015/12-15-chiron-taming-types-in-the-wild/index.html">Chiron: Taming Types in the Wild</a></h3>
     		    <p class="view"><small>    <time datetime="2015-12-15T00:00:00" pubdate data-updated="true">Dec 15, 2015</time>
 </small><br />Using Chiron to serialize types that you can't control</p>
-    		    <h3 class="h2link"><a href="https://neoeinstein.github.io/blog/2015/12-13-chiron-json-ducks-monads/index.html">Chiron: JSON + Ducks + Monads</a></h3>
+    		    <h3 class="h2link"><a href="http://localhost:8080/blog/2015/12-13-chiron-json-ducks-monads/index.html">Chiron: JSON + Ducks + Monads</a></h3>
     		    <p class="view"><small>    <time datetime="2015-12-13T14:15:16" pubdate data-updated="true">Dec 13, 2015</time>
 </small><br />Getting started with Chiron</p>
-    		    <h3 class="h2link"><a href="https://neoeinstein.github.io/blog/2015/11-29-hello-fsblog/index.html">Hello, FsBlog!</a></h3>
+    		    <h3 class="h2link"><a href="http://localhost:8080/blog/2015/11-29-hello-fsblog/index.html">Hello, FsBlog!</a></h3>
     		    <p class="view"><small>    <time datetime="2015-11-29T23:27:31" pubdate data-updated="true">Nov 29, 2015</time>
 </small><br />Getting started — all over again</p>
         </div>
@@ -60,53 +61,43 @@ adding more cores to their processors. Most mainstream computers today have at l
 This shift in the underlying architecture requires a corresponding shift in the programs that it executes.
 In order to write software which is highly-performant and responsive, we must understand how
 to leverage concurrency. By doing so, we can unlock the benefits of the parallelism afforded by modern processors.</p>
-
 <p>Enter the <em><a href="http://www.reactivemanifesto.org/">Reactive Manifesto</a></em>. This document establishes four key attributes—responsive, resilient, elastic,
 and message-driven—that systems need to exhibit in order to meet demands that they be highly‐available, fault‐tolerant,
 and scalable. This article focuses on the fourth attribute: message-driven. As the manifesto explains:</p>
-
 <blockquote>
-  <p>Reactive Systems rely on asynchronous message-passing to establish a boundary between components that ensures loose
+<p>Reactive Systems rely on asynchronous message-passing to establish a boundary between components that ensures loose
 coupling, isolation, location transparency, and provides the means to delegate errors as messages. …
 —[<a href="http://www.reactivemanifesto.org/">Reactive Manifesto</a>]</p>
 </blockquote>
-
 <p>The <em>Reactive Manifesto</em>'s Glossary goes on to define "asynchronous":</p>
-
 <blockquote>
-  <p>In the context of this manifesto we mean that the processing of a request occurs at an arbitrary point in time,
+<p>In the context of this manifesto we mean that the processing of a request occurs at an arbitrary point in time,
 sometime after it has been transmitted from client to service. The client cannot directly observe, or synchronize with,
 the execution that occurs within the service. This is the antonym of synchronous processing which implies that the
 client only resumes its own execution once the service has processed the request.
 —[<a href="http://www.reactivemanifesto.org/glossary#Asynchronous">Reactive Manifesto Glossary</a>]</p>
 </blockquote>
-
 <p>By this definition, the manifesto asserts that synchronous message-passing, also known as synchronous rendezvous is
 antithetical to a reactive system. A client is not allowed to wait to ensure that the server has received its message.
 To understand the basis for this assertion, let's take a look at the differences between asynchronous message-passing
 and synchronous rendezvous.</p>
-
 <p>Asynchronous message-passing is similar to dropping a letter in the mail and relying on the postal system to deliver the
 message. Keywords here are <code>send</code> or <code>post</code> for the client and <code>receive</code> for the server with a <code>mailbox</code> being the means
 of addressing messages.</p>
-
 <p>In synchronous rendezvous, the client and the server meet at a common rendezvous point. When both are at the
 rendezvous, the client hands the message to the server directly. If only one party is at the rendezvous, they generally
 wait for their counterpart to arrive in order to perform the handoff. Keywords here are <code>give</code> for the client and <code>take</code> for
 the server with a <code>channel</code> as the rendezvous point.</p>
-
 <p>Asynchronous message-passing fits well into the postal system analogy. The client posts a message to the server's
 mailbox. Once the message is sent, responsibility for delivering the message is transferred to the postal system. The
 postal service provides at-most-once delivery by default. They also offer at-least-once (bulk mail) and exactly-once
 (registered mail) services, but at an additional cost. Sending a message is inexpensive for the client, but in order to
 receive a reply, the client must include a self-addressed reference to its own mailbox.</p>
-
 <p>Synchronous rendezvous is similar to two agents meeting at a pre-arranged location in order to exchange a message.
 The client deliveres the message directly to server. There is no need to rely on a third party to provide a delivery
 guarantee. If the client doesn't need to ensure delivery, a courier can be hired to wait at the rendezvous point for
 a minimal cost. To receive a reply a message may also contain a future rendezvous point where the client and server can
 meet again in the future.</p>
-
 <p>The manifesto's preference for asynchronous message-passing is based on the client being immediately freed to do other
 meaningful work. The client doesn't have to wait for the server to become available. Other concerns, such as routing,
 back-pressure, load-balancing, and guarantees are outsourced to the messaging system. The manifesto asserts that
@@ -114,25 +105,20 @@ synchronous processing necessarily prevents concurrency, but this assertion is f
 rendezvous can be turned into an asynchronous send by spawning a new process to pass the message. Guaranteeing
 exactly-once delivery on top of an asynchronous send carries significant additional costs and explicit tracking by the
 messaging system.</p>
-
 <p>Often, messages between processes are queries and are not sent solely to induce side-effects. Additionally, within a
 thread of execution, there is generally no other beneficial work to be done until the server replies to the query. In
 the asynchronous context, a client must either be written as a finite-state machine or be structured as a series of
 continuations with state tracked and passed along. Because these messages only receive a best-effort
 guarantee, the system must be able to handle dropped messages at any of the interaction points.</p>
-
 <p>I propose that the use of asynchronous in the <em>Reactive Manifesto</em> is better served by the term "non-blocking". Indeed,
 the term is used later in the manifesto's statement of the "message-driven" property.</p>
-
 <blockquote>
-  <p>… Non-blocking communication allows recipients to only consume resources while active, leading to less system
+<p>… Non-blocking communication allows recipients to only consume resources while active, leading to less system
 overhead. —[<a href="http://www.reactivemanifesto.org/">Reactive Manifesto</a>]</p>
 </blockquote>
-
 <p>The manifesto goes on to define "non-blocking":</p>
-
 <blockquote>
-  <p>In concurrent programming an algorithm is considered non-blocking if threads competing for a resource do not have
+<p>In concurrent programming an algorithm is considered non-blocking if threads competing for a resource do not have
 their execution indefinitely postponed by mutual exclusion protecting that resource. In practice this usually manifests
 as an API that allows access to the resource if it is available otherwise it immediately returns informing the caller
 that the resource is not currently available or that the operation has been initiated and not yet completed. A
@@ -140,7 +126,6 @@ non-blocking API to a resource allows the caller the option to do other work rat
 resource to become available. This may be complemented by allowing the client of the resource to register for getting
 notified when the resource is available or the operation has completed. —[<a href="http://www.reactivemanifesto.org/glossary#Non-Blocking">Reactive Manifesto Glossary</a>]</p>
 </blockquote>
-
 <p>"Non-blocking" and "synchronous rendezvous," as defined above, are not mutually exclusive, though the manifesto asserts
 that they are. Nonetheless, the server's portion of asynchronous message-passing is still bound to wait for messages if
 its mailbox is empty. The server's wait for new messages is inherently synchronized, yet in doing so, it frees up its
@@ -148,20 +133,17 @@ resources so that other processes may execute. This is the fundamental principle
 written such that if a needed resource is not available, a process can suspend and get out of the way to allow other
 ready processes to execute. The server's syncronous receive proves that a wait by one process need not imply all others
 are blocked.</p>
-
 <p>In fact, as demonstrated in the analogies above, the mechanisms of asynchronous message-passing can be succinctly built
 from the primitives of synchronous rendezvous. A synchronous <code>give</code> can be converted into an asynchronous <code>send</code> by
 spawning a short-lived process to wait for the server to <code>take</code>. Multiple offers to <code>give</code> can be prioritized by the
 server. By freeing ourselves from the constraints of explicitly asynchronous communication, applications can gain access
 to a more powerful set of constructs.</p>
-
 <p>Languages and libraries that provide synchronous message-passing primatives also provide mechanisms to allow for
 non-deterministic handling of rendezvous, selecting from among several possible alternatives. In <a href="https://hopac.github.io/Hopac/Hopac.html">Hopac</a>, an F#
 library modeled after <a href="http://cml.cs.uchicago.edu/">Concurrent ML</a>, a process can offer to <code>give</code> a message and await a timeout at the same
 time. The process will commit to the set of actions associated with which event occurs first. For example, the following
 code demonstrates a server which takes a message if one is available and says "Hello". If no message becomes available
 within one second, the server will instead commit to saying "Timed out...".</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 <span class="l">2: </span>
 <span class="l">3: </span>
@@ -182,13 +164,9 @@ within one second, the server will instead commit to saying "Timed out...".</p>
 </code></pre></td>
 </tr>
 </table>
-
 <p>produces</p>
-
 <table class="pre"><tr><td><pre><code>"Hello, World!"</code></pre></td></tr></table>
-
 <p>By introducing a two-second delay before the give:</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 <span class="l">2: </span>
 </pre></td>
@@ -197,25 +175,19 @@ within one second, the server will instead commit to saying "Timed out...".</p>
 </code></pre></td>
 </tr>
 </table>
-
 <p><code>tryHello</code> times out and instead produces</p>
-
 <table class="pre"><tr><td><pre><code>"Timed out..."</code></pre></td></tr></table>
-
 <p>This exposes the real power of synchronous rendezvous. The type of <code>tryHello</code> is <code>Alt&lt;string&gt;</code>. That means it can
 be composed with other <code>Alt</code>-types to build larger components. <code>tryHello</code> could be one of several alternatives that a
 higher-level abstraction could use in in its own processing.</p>
-
 <blockquote>
-  <p>By starting with base-event values to represent the communication operations, and providing combinators to
+<p>By starting with base-event values to represent the communication operations, and providing combinators to
 associate actions with events and to build nondeterministic choices of events, we provide a flexible mechanism for
 building new synchronization and communication abstractions. —[John Reppy, <a href="http://www.cambridge.org/tv/academic/subjects/computer-science/distributed-networked-and-mobile-computing/concurrent-programming-ml">Concurrent Programming in ML</a>, p. 124]</p>
 </blockquote>
-
 <p>John Reppy also contends that synchronous rendezvous has the advantage that its typical failure mode is deadlock,
 which can be detected quickly, whereas asynchronous message-passing typically delays the detection of errors until a
 mailbox is full (which in the case of an unbounded mailbox, may mean the entire process is out of memory).</p>
-
 <p><em>Concurrent Programming in ML</em>, quoted above, presents Concurrent ML as a set of extensions built upon Standard ML.
 These extensions provide first-class synchronous primitives and the constructs which allow for their composition.
 When CML was created in the early 1990s, the dominant architecture was the single-core uniprocessor so CML was
@@ -223,7 +195,6 @@ designed to enable concurrency on these machines. Hopac provides similar primiti
 provides "<a href="https://golang.org/doc/effective_go.html#concurrency">goroutines</a>" and other synchronous programming constructs as part of the language.
 <a href="https://vimeo.com/49718712">Concurrency does not equal parallelism</a>, but software which is written to make good use of concurrency is
 better enabled to take advantage of the parallelism provided by modern hardware.</p>
-
 <p>The importance of designing systems that leverage concurrency will only increase in the future. The
 <em>Reactive Manifesto</em> lays out some good principles, but its claims should be taken with a grain of salt. The goals of
 the manifesto can be achieved without solely relying on asynchronous message-passing. Indeed, synchronous
@@ -257,7 +228,7 @@ rendezvous can provide a more powerful set of abstractions while still being eas
         <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
       </footer>
   	</div>
-    <script src="https://neoeinstein.github.io/javascripts/scale.fix.js"></script>
-    <script src="https://neoeinstein.github.io/javascripts/fontsmoothie.min.js"></script>
+    <script src="http://localhost:8080/javascripts/scale.fix.js"></script>
+    <script src="http://localhost:8080/javascripts/fontsmoothie.min.js"></script>
   </body>
 </html>

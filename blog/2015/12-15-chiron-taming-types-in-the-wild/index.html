@@ -3,18 +3,19 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
        <title>Grim's Scythe — Chiron: Taming Types in the Wild</title>
-     <link rel="shortcut icon" href="https://neoeinstein.github.io/favicon.png">
+     <link rel="shortcut icon" href="http://localhost:8080/favicon.png">
      <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <link rel="alternate" href="http://localhost:8080/rss.xml" title="Grim's Scythe" type="application/rss+xml">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
     <!-- FSharp.Formatting Styles -->
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-  	<link rel="stylesheet" type="text/css" media="screen" href="https://neoeinstein.github.io/fsharp.formatting/tooltips.css" />
-  	<script type="text/javascript" src="https://neoeinstein.github.io/fsharp.formatting/tooltips.js"></script>
+  	<link rel="stylesheet" type="text/css" media="screen" href="http://localhost:8080/fsharp.formatting/tooltips.css" />
+  	<script type="text/javascript" src="http://localhost:8080/fsharp.formatting/tooltips.js"></script>
     <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="stylesheet" href="https://neoeinstein.github.io/stylesheets/styles.css">
-    <link rel="stylesheet" href="https://neoeinstein.github.io/stylesheets/pygment_trac.css">
+    <link rel="stylesheet" href="http://localhost:8080/stylesheets/styles.css">
+    <link rel="stylesheet" href="http://localhost:8080/stylesheets/pygment_trac.css">
     <script language="javascript" type="text/javascript">
         function init()
         {
@@ -27,23 +28,23 @@
   <body class="">
   	<div class="wrapper">
 	  <header>
-	  	  <a href="https://neoeinstein.github.io/index.html" class="falseheader">Grim's Scythe</a>
+	  	  <a href="http://localhost:8080/index.html" class="falseheader">Grim's Scythe</a>
         <div><strong><em>Marcus Griep</em></strong></div>
         <p>Writings on software engineering.</p>
         <ul>
           <li><a href="https://twitter.com/neoeinstein"><strong>Follow Me</strong> on <span class="fa fa-twitter"></span> twitter</a></li>
           <li><a href="https://github.com/neoeinstein"><strong>See My Code</strong> on <span class="fa fa-github"></span> github</a></li>
-          <li><a href="https://neoeinstein.github.io/cv.html">Check out <strong>My CV</strong></a></li>
+          <li><a href="http://localhost:8080/cv.html">Check out <strong>My CV</strong></a></li>
         </ul>
         <div class="noprint">
         <h2>Recent posts</h2>
-    		    <h3 class="h2link"><a href="https://neoeinstein.github.io/blog/2015/12-15-chiron-taming-types-in-the-wild/index.html">Chiron: Taming Types in the Wild</a></h3>
+    		    <h3 class="h2link"><a href="http://localhost:8080/blog/2015/12-15-chiron-taming-types-in-the-wild/index.html">Chiron: Taming Types in the Wild</a></h3>
     		    <p class="view"><small>    <time datetime="2015-12-15T00:00:00" pubdate data-updated="true">Dec 15, 2015</time>
 </small><br />Using Chiron to serialize types that you can't control</p>
-    		    <h3 class="h2link"><a href="https://neoeinstein.github.io/blog/2015/12-13-chiron-json-ducks-monads/index.html">Chiron: JSON + Ducks + Monads</a></h3>
+    		    <h3 class="h2link"><a href="http://localhost:8080/blog/2015/12-13-chiron-json-ducks-monads/index.html">Chiron: JSON + Ducks + Monads</a></h3>
     		    <p class="view"><small>    <time datetime="2015-12-13T14:15:16" pubdate data-updated="true">Dec 13, 2015</time>
 </small><br />Getting started with Chiron</p>
-    		    <h3 class="h2link"><a href="https://neoeinstein.github.io/blog/2015/11-29-hello-fsblog/index.html">Hello, FsBlog!</a></h3>
+    		    <h3 class="h2link"><a href="http://localhost:8080/blog/2015/11-29-hello-fsblog/index.html">Hello, FsBlog!</a></h3>
     		    <p class="view"><small>    <time datetime="2015-11-29T23:27:31" pubdate data-updated="true">Nov 29, 2015</time>
 </small><br />Getting started — all over again</p>
         </div>
@@ -58,7 +59,6 @@
 write <code>ToJson</code> and <code>FromJson</code> static methods to support serialization of custom types. At the end of the article, I
 left a question hanging: What if you don't control the data type that you want to serialize? What if you can't add the
 static <code>ToJson</code>/<code>FromJson</code> methods required by Chiron? That's where serialization extensions come in.</p>
-
 <p>As an example, let's consider the <a href="http://nodatime.org/">NodaTime</a> library. NodaTime provides a preferable set of types for interacting
 with date/time values when compared to the <abbr title="Base Class Libraries">BCL</abbr>, and I regularly reference
 NodaTime anywhere that I need to work with or manipulate time. While it is possible to convert an <code>Instant</code> to a
@@ -66,10 +66,8 @@ NodaTime anywhere that I need to work with or manipulate time. While it is possi
 We will use the representation defined in <a href="http://www.w3.org/TR/NOTE-datetime">ISO-8601</a> for serializing <code>Instant</code> values to JSON strings. We could
 choose any other form, like WCF's <code>\/Date(1234567890)\/</code>, but representing a date/time in any format other than the
 ISO standard generally <a href="https://xkcd.com/1179/">leads to confusion</a>.</p>
-
 <p>Using NodaTime's facilities for formatting and parsing date/time strings we can define a serialization
 extension for an <code>Instant</code>:</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 <span class="l">2: </span>
 </pre></td>
@@ -78,14 +76,11 @@ extension for an <code>Instant</code>:</p>
 </code></pre></td>
 </tr>
 </table>
-
 <p><code>GeneralPattern</code> provides serialization of <code>Instant</code>s in the ISO-8601 format. If you prefer a compatible
 representation with sub-second resolution, you can use the <code>ExtendedIsoPattern</code> instead.</p>
-
 <p>The <code>instantToJson</code> function has the type signature <code>Instant -&gt; Json</code>. This is different from the monadic <code>Json&lt;'a&gt;</code>
 signature that was used in the serializers in the previous post. Instead of calling <code>Json.serialize</code>, <code>instantToJson</code>
 can be used as a drop-in replacement.</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 <span class="l">2: </span>
 <span class="l">3: </span>
@@ -98,12 +93,9 @@ can be used as a drop-in replacement.</p>
 </code></pre></td>
 </tr>
 </table>
-
-<table class="pre"><tr><td><pre><code>""2015-12-15T15:32:58Z""</code></pre></td></tr></table>
-
+<table class="pre"><tr><td><pre><code>""2016-04-02T17:50:48Z""</code></pre></td></tr></table>
 <p>Next we define the deserialization function. In doing so, I will also define an active pattern to encapsulate
 NodaTime's pattern parsing logic. This will help to keep the intent of the deserialization function clear.</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
 <span class="l"> 3: </span>
@@ -134,13 +126,10 @@ NodaTime's pattern parsing logic. This will help to keep the intent of the deser
 </code></pre></td>
 </tr>
 </table>
-
 <p><code>instantFromJson</code> has the type signature <code>Json -&gt; JsonResult&lt;Instant&gt;</code>. Together with the signature of <code>instantToJson</code>,
 these functions provide the complimentary facets of the <code>Json&lt;'a&gt;</code> state monad. <code>JsonResult&lt;'a&gt;</code> holds the working
 value while <code>Json</code> stores the state of the JSON data that we are serializing or deserializing.</p>
-
 <p>Now we can try to convert <code>instantJson</code> back to an <code>Instant</code> to validate that our serialization can round-trip.</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 <span class="l">2: </span>
 <span class="l">3: </span>
@@ -153,11 +142,8 @@ value while <code>Json</code> stores the state of the JSON data that we are seri
 </code></pre></td>
 </tr>
 </table>
-
-<table class="pre"><tr><td><pre><code>Value 2015-12-15T15:32:58Z</code></pre></td></tr></table>
-
+<table class="pre"><tr><td><pre><code>Value 2016-04-02T17:50:48Z</code></pre></td></tr></table>
 <p>We can also check that an invalid value produces a relevant error message during deserialization:</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 <span class="l">2: </span>
 <span class="l">3: </span>
@@ -170,16 +156,13 @@ value while <code>Json</code> stores the state of the JSON data that we are seri
 </code></pre></td>
 </tr>
 </table>
-
 <table class="pre"><tr><td><pre><code>Error
   "Expected a string containing a valid ISO-8601 date/time: "Tomorrow at 13:30""</code></pre></td></tr></table>
-
 <p>This looks good so far. Of course, it is rare to want to serialize something like an <code>Instant</code> all on its own. More
 commonly, the data is incorporated into a larger JSON object or array. In this case, there are a few additional
 read and write functions that provide points to inject custom (de)serialization functions: <code>readWith</code> and <code>writeWith</code>.
 To demonstrate their use, we will consider a trivial type containing an <code>Instant</code> and add <code>FromJson</code> and <code>ToJson</code>
 static methods.</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 <span class="l">2: </span>
 <span class="l">3: </span>
@@ -198,10 +181,8 @@ static methods.</p>
 </code></pre></td>
 </tr>
 </table>
-
 <p>Note how <code>instantToJson</code> and <code>instantFromJson</code> are injected as the first argument to <code>Json.writeWith</code> and
 <code>Json.readWith</code>, respectively. Now we can demonstrate round-trip serialization:</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 <span class="l">2: </span>
 <span class="l">3: </span>
@@ -214,9 +195,7 @@ static methods.</p>
 </code></pre></td>
 </tr>
 </table>
-
-<table class="pre"><tr><td><pre><code>"{"time":"2015-12-15T15:32:59Z"}"</code></pre></td></tr></table>
-
+<table class="pre"><tr><td><pre><code>"{"time":"2016-04-02T17:50:48Z"}"</code></pre></td></tr></table>
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 <span class="l">2: </span>
 <span class="l">3: </span>
@@ -229,13 +208,10 @@ static methods.</p>
 </code></pre></td>
 </tr>
 </table>
-
-<table class="pre"><tr><td><pre><code>{Time = 2015-12-15T15:32:59Z;}</code></pre></td></tr></table>
-
+<table class="pre"><tr><td><pre><code>{Time = 2016-04-02T17:50:48Z;}</code></pre></td></tr></table>
 <p>We now have serializers that can round-trip an external type either alone or as part of a type we control. What if the
 external type is contained in yet another external type? To demonstrate this case, we will consider serializing an
 <code>Instant list</code>:</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 <span class="l">2: </span>
 <span class="l">3: </span>
@@ -248,20 +224,16 @@ external type is contained in yet another external type? To demonstrate this cas
 </code></pre></td>
 </tr>
 </table>
-
 <p>Before we even get to running this code, the compiler has already started disagreeing with us:</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 </pre></td>
 <td class="snippet"><pre class="fssnip"><code lang="text">Error: No overloads match for method 'ToJson'. …
 </code></pre></td></tr></table>
-
 <p>Where did we go wrong? The issue is that an <code>a' list</code> is serializable through Chiron's default functions if and only
 if <code>'a</code> contains the necessary <code>ToJson</code>/<code>FromJson</code> functions. <code>Instant</code> doesn't have the needed hooks needed for
 Chiron's default serialization functions. Since we wrote our own serialization for <code>Instant</code>, we need need to write a
 function to serialize our list too. Instead of defining a specialized <code>Instant list</code> serializer, we can instead write a
 generic <code>'a list</code> serializer and include a parameter so that we can plug in an arbitrary serializer.</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 <span class="l">2: </span>
 </pre></td>
@@ -270,7 +242,6 @@ generic <code>'a list</code> serializer and include a parameter so that we can 
 </code></pre></td>
 </tr>
 </table>
-
 <p>The deserializer is a little more complicated because we can't just map it over the list.
 We need a function that maps <code>Json -&gt; JsonResult&lt;Instant list&gt;</code>. Chiron already has a function that fits this need:
 <a href="https://github.com/xyncro/chiron/blob/5b02320/src/Chiron/Chiron.fs#L821"><code>fromJsonFold</code></a>, which it uses to support default serialization of arrays and lists.
@@ -278,7 +249,6 @@ We need a function that maps <code>Json -&gt; JsonResult&lt;Instant list&gt;</
 function is marked <code>internal</code>, though, so we don't have direct access to it. Instead, we can extract the function's
 logic and refactor it to fit our needs. Replacing <code>fromJson</code> with a new <code>deserialize</code> parameter gives us a generic
 function for applying a custom deserializer over a <code>Json list</code>.</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
 <span class="l"> 3: </span>
@@ -307,10 +277,8 @@ function for applying a custom deserializer over a <code>Json list</code>.</p>
 </code></pre></td>
 </tr>
 </table>
-
 <p><code>fromJsonFoldWith</code> is likely to be added in to Chiron in a future version, but for now, our custom serialization
 functions suffice as demonstrated by another round-trip:</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 <span class="l">2: </span>
 <span class="l">3: </span>
@@ -323,9 +291,7 @@ functions suffice as demonstrated by another round-trip:</p>
 </code></pre></td>
 </tr>
 </table>
-
-<table class="pre"><tr><td><pre><code>"["1970-01-01T00:00:00Z","2015-12-15T15:32:59Z"]"</code></pre></td></tr></table>
-
+<table class="pre"><tr><td><pre><code>"["1970-01-01T00:00:00Z","2016-04-02T17:50:48Z"]"</code></pre></td></tr></table>
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 <span class="l">2: </span>
 <span class="l">3: </span>
@@ -338,12 +304,9 @@ functions suffice as demonstrated by another round-trip:</p>
 </code></pre></td>
 </tr>
 </table>
-
-<table class="pre"><tr><td><pre><code>Value [1970-01-01T00:00:00Z; 2015-12-15T15:32:59Z]</code></pre></td></tr></table>
-
+<table class="pre"><tr><td><pre><code>Value [1970-01-01T00:00:00Z; 2016-04-02T17:50:48Z]</code></pre></td></tr></table>
 <p>Thus far, I've only been creating custom serializers for records and tuples, a.k.a. <a href="http://fsharpforfunandprofit.com/posts/overview-of-types-in-fsharp/">product types</a>,
 and none of these serializers would deal well if they were given an object with missing data or <code>null</code> values:</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 <span class="l">2: </span>
 <span class="l">3: </span>
@@ -354,15 +317,12 @@ and none of these serializers would deal well if they were given an object with 
 </code></pre></td>
 </tr>
 </table>
-
 <table class="pre"><tr><td><pre><code>Choice2Of2
   "Error deserializing JSON object; Missing required member 'time': {  }"</code></pre></td></tr></table>
-
 <p>In order to handle missing data or <code>null</code> values and other discriminated unions, a.k.a. <a href="http://fsharpforfunandprofit.com/posts/overview-of-types-in-fsharp/">sum types</a>,
 we will need to learn about a few more tricks that Chiron has up its sleeve. In my <a href="#" title="Coming Soon!">next post</a>, I will focus
 on the Chiron features that allow you to provide defaults for missing values and serialize the disjoint cases of
 a discriminated union.</p>
-
 <p><em>This post is a continuation of my post for the <a href="https://sergeytihon.wordpress.com/2015/10/25/f-advent-calendar-in-english-2015/">F# Advent Calendar in English</a>. Many thanks to
 <a href="https://www.twitter.com/sergey_tihon">Sergey Tihon</a> for promoting this event. For more posts on F# and functional programming
 throughout December, check out the list of posts on his site.</em></p>
@@ -452,7 +412,7 @@ throughout December, check out the list of posts on his site.</em></p>
         <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
       </footer>
   	</div>
-    <script src="https://neoeinstein.github.io/javascripts/scale.fix.js"></script>
-    <script src="https://neoeinstein.github.io/javascripts/fontsmoothie.min.js"></script>
+    <script src="http://localhost:8080/javascripts/scale.fix.js"></script>
+    <script src="http://localhost:8080/javascripts/fontsmoothie.min.js"></script>
   </body>
 </html>

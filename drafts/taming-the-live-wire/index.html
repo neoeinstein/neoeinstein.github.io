@@ -3,18 +3,19 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
        <title>Grim's Scythe — Taming the Live Wire</title>
-     <link rel="shortcut icon" href="https://neoeinstein.github.io/favicon.png">
+     <link rel="shortcut icon" href="http://localhost:8080/favicon.png">
      <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <link rel="alternate" href="http://localhost:8080/rss.xml" title="Grim's Scythe" type="application/rss+xml">
     <!--[if lt IE 9]>
     <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
     <![endif]-->
     <!-- FSharp.Formatting Styles -->
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
-  	<link rel="stylesheet" type="text/css" media="screen" href="https://neoeinstein.github.io/fsharp.formatting/tooltips.css" />
-  	<script type="text/javascript" src="https://neoeinstein.github.io/fsharp.formatting/tooltips.js"></script>
+  	<link rel="stylesheet" type="text/css" media="screen" href="http://localhost:8080/fsharp.formatting/tooltips.css" />
+  	<script type="text/javascript" src="http://localhost:8080/fsharp.formatting/tooltips.js"></script>
     <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="stylesheet" href="https://neoeinstein.github.io/stylesheets/styles.css">
-    <link rel="stylesheet" href="https://neoeinstein.github.io/stylesheets/pygment_trac.css">
+    <link rel="stylesheet" href="http://localhost:8080/stylesheets/styles.css">
+    <link rel="stylesheet" href="http://localhost:8080/stylesheets/pygment_trac.css">
     <script language="javascript" type="text/javascript">
         function init()
         {
@@ -27,23 +28,23 @@
   <body class="draft">
   	<div class="wrapper">
 	  <header>
-	  	  <a href="https://neoeinstein.github.io/index.html" class="falseheader">Grim's Scythe</a>
+	  	  <a href="http://localhost:8080/index.html" class="falseheader">Grim's Scythe</a>
         <div><strong><em>Marcus Griep</em></strong></div>
         <p>Writings on software engineering.</p>
         <ul>
           <li><a href="https://twitter.com/neoeinstein"><strong>Follow Me</strong> on <span class="fa fa-twitter"></span> twitter</a></li>
           <li><a href="https://github.com/neoeinstein"><strong>See My Code</strong> on <span class="fa fa-github"></span> github</a></li>
-          <li><a href="https://neoeinstein.github.io/cv.html">Check out <strong>My CV</strong></a></li>
+          <li><a href="http://localhost:8080/cv.html">Check out <strong>My CV</strong></a></li>
         </ul>
         <div class="noprint">
         <h2>Recent posts</h2>
-    		    <h3 class="h2link"><a href="https://neoeinstein.github.io/blog/2015/12-15-chiron-taming-types-in-the-wild/index.html">Chiron: Taming Types in the Wild</a></h3>
+    		    <h3 class="h2link"><a href="http://localhost:8080/blog/2015/12-15-chiron-taming-types-in-the-wild/index.html">Chiron: Taming Types in the Wild</a></h3>
     		    <p class="view"><small>    <time datetime="2015-12-15T00:00:00" pubdate data-updated="true">Dec 15, 2015</time>
 </small><br />Using Chiron to serialize types that you can't control</p>
-    		    <h3 class="h2link"><a href="https://neoeinstein.github.io/blog/2015/12-13-chiron-json-ducks-monads/index.html">Chiron: JSON + Ducks + Monads</a></h3>
+    		    <h3 class="h2link"><a href="http://localhost:8080/blog/2015/12-13-chiron-json-ducks-monads/index.html">Chiron: JSON + Ducks + Monads</a></h3>
     		    <p class="view"><small>    <time datetime="2015-12-13T14:15:16" pubdate data-updated="true">Dec 13, 2015</time>
 </small><br />Getting started with Chiron</p>
-    		    <h3 class="h2link"><a href="https://neoeinstein.github.io/blog/2015/11-29-hello-fsblog/index.html">Hello, FsBlog!</a></h3>
+    		    <h3 class="h2link"><a href="http://localhost:8080/blog/2015/11-29-hello-fsblog/index.html">Hello, FsBlog!</a></h3>
     		    <p class="view"><small>    <time datetime="2015-11-29T23:27:31" pubdate data-updated="true">Nov 29, 2015</time>
 </small><br />Getting started — all over again</p>
         </div>
@@ -57,10 +58,8 @@
 these events into asynchronous data streams of observable events, frameworks like Microsoft's Rx Extensions and
 Bacon.js make it easier to write software that handles them. Using a publish/subscribe model, events are pushed down
 the stream to be handled asynchronously.</p>
-
 <p>F# has its own primitive for handling these events. <code>Event</code> implements <code>IObservable</code> and can be used to trigger
 downstream tasks. Here's a quick example demonstrating how to create and trigger an event:</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
 <span class="l">2: </span>
 <span class="l">3: </span>
@@ -71,13 +70,9 @@ downstream tasks. Here's a quick example demonstrating how to create and trigger
 </code></pre></td>
 </tr>
 </table>
-
 <p>This results in the following output:</p>
-
 <table class="pre"><tr><td><pre><code>Received 42</code></pre></td></tr></table>
-
 <p>These events can be chained to handlers that map or filter the data and send it off as another event.</p>
-
 <table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l"> 1: </span>
 <span class="l"> 2: </span>
 <span class="l"> 3: </span>
@@ -102,7 +97,6 @@ downstream tasks. Here's a quick example demonstrating how to create and trigger
 </code></pre></td>
 </tr>
 </table>
-
 <p><em>This post is a part of the F# Advent in English. Many thanks to Sergey Thion for promoting this event. For more posts
 on F# and functional programming throughout December, check out the list of posts on his site.</em></p>
 
@@ -143,7 +137,7 @@ on F# and functional programming throughout December, check out the list of post
         <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
       </footer>
   	</div>
-    <script src="https://neoeinstein.github.io/javascripts/scale.fix.js"></script>
-    <script src="https://neoeinstein.github.io/javascripts/fontsmoothie.min.js"></script>
+    <script src="http://localhost:8080/javascripts/scale.fix.js"></script>
+    <script src="http://localhost:8080/javascripts/fontsmoothie.min.js"></script>
   </body>
 </html>

@@ -76,13 +76,13 @@ code {
   background-color: inherit;
 }
 
-.nuget {
+#nuget {
   margin-top:20px;
   font-size: 11pt;
   padding:20px;
 }
 
-.nuget pre {
+#nuget pre {
   font-size:11pt;
   -moz-border-radius: 0px;
   -webkit-border-radius: 0px;
@@ -91,4 +91,13 @@ code {
   border-style:none;
   color: #e0e0e0;
   margin-top:15px;
+}
+
+/* Hide snippets on the home page snippet & nicely format table */
+#hp-snippet td.lines {
+  display: none;
+}
+#hp-snippet .table {
+  width:80%;
+  margin-left:30px;
 }

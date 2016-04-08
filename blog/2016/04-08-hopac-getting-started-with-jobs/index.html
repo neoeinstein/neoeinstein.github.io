@@ -90,7 +90,11 @@ Tomas Petricek's <em><a href="http://tomasp.net/blog/csharp-fsharp-async-intro.
 a computation in progress, while a <code>Job&lt;'a&gt;</code> or <code>Async&lt;'a&gt;</code> represents a potential computation that can be invoked.
 Hopac also provides a <code>job{}</code> computation builder similar to <code>async{}</code>, but with several nice additions and a few
 idiosyncrasies. The biggest difference is that Hopac runs its jobs on threads dedicated to Hopac. Hopac pre-allocates
-one thread per processor.</p>
+one Hopac thread per processor. These threads are managed directly by Hopac rather than being a part of a general .NET
+thread pool. The Hopac scheduler takes care of managing jobs, keeping track of which jobs are ready for execution and
+handling when a thread switches between jobs. Hopac is heavily optimized to minimize the overhead related to its
+management of jobs, providing better throughput and CPU utilization than <code>Async&lt;'a&gt;</code> and the TPL under workloads with
+many concurrent tasks.</p>
 <h2>Dealing with the garbage</h2>
 <p>When you first start working with Hopac, you are likely to see the following warning when you execute the first job.</p>
 <blockquote>
@@ -119,6 +123,11 @@ communication structure.</p>
 </tr>
 </table>
 <p>For more information on GC settings, see the <a href="https://msdn.microsoft.com/en-us/library/ee787088(v=vs.110).aspx#workstation_and_server_garbage_collection">MSDN documentation</a>.</p>
+<p>Hopac is written to handle a very large number of jobs (e.g., millions) concurrently. Each job is very lightweight,
+taking only a few bytes of memory for itself. In addition, <code>Job&lt;'a&gt;</code> is a simple .NET object requiring no disposal or
+finalization (as opposed to the <code>MailboxProcessor&lt;'Msg&gt;</code>, which is disposable). This means that when a job no longer
+has any references keeping it alive, it can be readily garbage collected and no special kill protocol is required for
+recursive jobs (servers/actors).</p>
 <h2>The <code>job{}</code> computation expression</h2>
 <p>For users experienced with F#'s <code>async{}</code> computation expression, <code>job{}</code> will feel very familiar. The form is nearly
 the same as <code>async{}</code> with the added benefit that the bind operation is overloaded to accept <code>Job&lt;'a&gt;</code>, <code>Async&lt;'a&gt;</code>,

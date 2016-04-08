@@ -41,15 +41,6 @@
     		    <h3 class="h2link"><a href="https://neoeinstein.github.io//blog/2016/04-08-hopac-getting-started-with-jobs/index.html">Hopac: Getting Started with Jobs</a></h3>
     		    <p class="view"><small>    <time datetime="2016-04-07T20:05:00" pubdate data-updated="true">Apr 7, 2016</time>
 </small><br />Synchronous messaging and lightweight threading</p>
-    		    <h3 class="h2link"><a href="https://neoeinstein.github.io//blog/2016/04-02-chiron-computation-expressions/index.html">Chiron: Easier with Computation Expressions</a></h3>
-    		    <p class="view"><small>    <time datetime="2016-04-02T14:30:00" pubdate data-updated="true">Apr 2, 2016</time>
-</small><br />Powerful JSON processing with computation expressions</p>
-    		    <h3 class="h2link"><a href="https://neoeinstein.github.io//blog/2015/12-15-chiron-taming-types-in-the-wild/index.html">Chiron: Taming Types in the Wild</a></h3>
-    		    <p class="view"><small>    <time datetime="2015-12-15T00:00:00" pubdate data-updated="true">Dec 15, 2015</time>
-</small><br />Using Chiron to serialize types that you can't control</p>
-    		    <h3 class="h2link"><a href="https://neoeinstein.github.io//blog/2015/12-13-chiron-json-ducks-monads/index.html">Chiron: JSON + Ducks + Monads</a></h3>
-    		    <p class="view"><small>    <time datetime="2015-12-13T14:15:16" pubdate data-updated="true">Dec 13, 2015</time>
-</small><br />Getting started with Chiron</p>
         </div>
       </header>
       <section>
@@ -69,33 +60,6 @@ with a host of other valuable concurrency constructs, all of which make it easie
 <div class="tip" id="fs2">val run : Job&lt;&#39;x&gt; -&gt; &#39;x<br /><br />Full name: Hopac.TopLevel.run</div>
 <div class="tip" id="fs3">type Job&lt;&#39;T&gt; =<br /><br />Full name: Hopac.Job&lt;_&gt;</div>
 <div class="tip" id="fs4">val unit : unit -&gt; Job&lt;unit&gt;<br /><br />Full name: Hopac.Job.unit</div>
-</div>
-    <h3 class="h2link"><a href="https://neoeinstein.github.io//blog/2016/04-02-chiron-computation-expressions/index.html">Chiron: Easier with Computation Expressions</a></h3>
-    <div class="view"><small>    <time datetime="2016-04-02T14:30:00" pubdate data-updated="true">Apr 2, 2016</time>
-</small><br /><p>Back in my first <a href="/blog/2015/12-13-chiron-json-ducks-monads/index.html">Chiron article</a>, I made a bit of a mistake. I started with all the things
-that scare off new functional programmers. Things like <code>&gt;&gt;=</code> and monads. We're going to take a step
-back from that precipice and talk about the <code>json{}</code> computation expression.</p>
-
-
-</div>
-    <h3 class="h2link"><a href="https://neoeinstein.github.io//blog/2015/12-15-chiron-taming-types-in-the-wild/index.html">Chiron: Taming Types in the Wild</a></h3>
-    <div class="view"><small>    <time datetime="2015-12-15T00:00:00" pubdate data-updated="true">Dec 15, 2015</time>
-</small><br /><p>In my <a href="/blog/2015/12-13-chiron-json-ducks-monads/index.html">last post</a>, I gave an overview of <a href="https://xyncro.tech/chiron/">Chiron</a>, described how to parse JSON, and demonstrated how to
-write <code>ToJson</code> and <code>FromJson</code> static methods to support serialization of custom types. At the end of the article, I
-left a question hanging: What if you don't control the data type that you want to serialize? What if you can't add the
-static <code>ToJson</code>/<code>FromJson</code> methods required by Chiron? That's where serialization extensions come in.</p>
-
-
-</div>
-    <h3 class="h2link"><a href="https://neoeinstein.github.io//blog/2015/12-13-chiron-json-ducks-monads/index.html">Chiron: JSON + Ducks + Monads</a></h3>
-    <div class="view"><small>    <time datetime="2015-12-13T14:15:16" pubdate data-updated="true">Dec 13, 2015</time>
-</small><br /><p>There are a multitude of ways to handle JSON data on the .NET framework. You can pull in <a href="http://www.newtonsoft.com/json">Json.NET</a>, use the
-<code>JsonSerializer</code> from the now proprietary <a href="https://servicestack.net/text">ServiceStack.Text</a>, or use the <code>JsonDataContractSerializer</code>
-provided by the Base Class Libraries. Developers in F# have access to the strongly-typed erasing type provider through
-FSharp.Data's <a href="https://fsharp.github.io/FSharp.Data/library/JsonProvider.html"><code>JsonProvider</code></a>. In terms of simplicity, though, <em><a href="https://xyncro.tech/chiron/">Chiron</a></em> delivers a fully-functional
-JSON serializer in a compact, <a href="https://github.com/xyncro/chiron/blob/master/src/Chiron/Chiron.fs">single-file implementation</a>.</p>
-
-
 </div>
 
       </section>

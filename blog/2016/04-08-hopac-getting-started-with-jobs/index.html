@@ -1,0 +1,281 @@
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+       <title>Grim's Scythe — Hopac: Getting Started with Jobs</title>
+     <link rel="shortcut icon" href="http://localhost:8080/favicon.png">
+     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <link rel="alternate" href="http://localhost:8080/rss.xml" title="Grim's Scythe" type="application/rss+xml">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <!-- FSharp.Formatting Styles -->
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+  	<link rel="stylesheet" type="text/css" media="screen" href="http://localhost:8080/fsharp.formatting/tooltips.css" />
+  	<script type="text/javascript" src="http://localhost:8080/fsharp.formatting/tooltips.js"></script>
+    <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="stylesheet" href="http://localhost:8080/stylesheets/styles.css">
+    <link rel="stylesheet" href="http://localhost:8080/stylesheets/pygment_trac.css">
+    <script language="javascript" type="text/javascript">
+        function init()
+        {
+            websocket = new WebSocket("ws://localhost:8080/websocket");
+            websocket.onmessage = function(evt) { location.reload(); };
+        }
+        window.addEventListener("load", init, false);
+    </script>
+  </head>
+  <body class="">
+  	<div class="wrapper">
+	  <header>
+	  	  <a href="http://localhost:8080/index.html" class="falseheader">Grim's Scythe</a>
+        <div><strong><em>Marcus Griep</em></strong></div>
+        <p>Writings on software engineering.</p>
+        <ul>
+          <li><a href="https://twitter.com/neoeinstein"><strong>Follow Me</strong> on <span class="fa fa-twitter"></span> twitter</a></li>
+          <li><a href="https://github.com/neoeinstein"><strong>See My Code</strong> on <span class="fa fa-github"></span> github</a></li>
+          <li><a href="http://localhost:8080/cv.html">Check out <strong>My CV</strong></a></li>
+        </ul>
+        <div class="noprint">
+        <h2>Recent posts</h2>
+    		    <h3 class="h2link"><a href="http://localhost:8080/blog/2016/04-08-hopac-getting-started-with-jobs/index.html">Hopac: Getting Started with Jobs</a></h3>
+    		    <p class="view"><small>    <time datetime="2016-04-07T20:05:00" pubdate data-updated="true">Apr 7, 2016</time>
+</small><br />Synchronous messaging and lightweight threading</p>
+    		    <h3 class="h2link"><a href="http://localhost:8080/blog/2016/04-02-chiron-computation-expressions/index.html">Chiron: Easier with Computation Expressions</a></h3>
+    		    <p class="view"><small>    <time datetime="2016-04-02T14:30:00" pubdate data-updated="true">Apr 2, 2016</time>
+</small><br />Powerful JSON processing with computation expressions</p>
+    		    <h3 class="h2link"><a href="http://localhost:8080/blog/2015/12-15-chiron-taming-types-in-the-wild/index.html">Chiron: Taming Types in the Wild</a></h3>
+    		    <p class="view"><small>    <time datetime="2015-12-15T00:00:00" pubdate data-updated="true">Dec 15, 2015</time>
+</small><br />Using Chiron to serialize types that you can't control</p>
+    		    <h3 class="h2link"><a href="http://localhost:8080/blog/2015/12-13-chiron-json-ducks-monads/index.html">Chiron: JSON + Ducks + Monads</a></h3>
+    		    <p class="view"><small>    <time datetime="2015-12-13T14:15:16" pubdate data-updated="true">Dec 13, 2015</time>
+</small><br />Getting started with Chiron</p>
+    		    <h3 class="h2link"><a href="http://localhost:8080/blog/2015/11-29-hello-fsblog/index.html">Hello, FsBlog!</a></h3>
+    		    <p class="view"><small>    <time datetime="2015-11-29T23:27:31" pubdate data-updated="true">Nov 29, 2015</time>
+</small><br />Getting started — all over again</p>
+        </div>
+      </header>
+      <section>
+		    
+<h1>Hopac: Getting Started with Jobs</h1>
+<div class="view"><small>    <time datetime="2016-04-08T00:05:00" pubdate data-updated="true">Apr 8, 2016</time>
+</small></div>
+
+<p>Concurrency is a pretty hot topic these days. Processor speeds have generally plateaued over the last decade, and
+multiple cores are now the default. Writing software to take advantage of these cores requires a different approach
+than the single-threaded default. <a href="https://github.com/Hopac/Hopac/tree/master">Hopac</a> is a unique library that offers lightweight threading along
+with a host of other valuable concurrency constructs, all of which make it easier to write highly-concurrent software.</p>
+<h2>Comparing <code>Job&lt;'a&gt;</code>, <code>Async&lt;'a&gt;</code>, and <code>Task&lt;T&gt;</code></h2>
+<p>Similar to <code>Async&lt;'a&gt;</code> in F# and <code>Task&lt;T&gt;</code> from the .NET Base Class Libraries, Hopac uses a <code>Job&lt;'a&gt;</code>
+to define a concurrent thread of execution. Each of these three constructs uses a subtly different method of running
+jobs<span class="ref"><a href="#ref-1">1</a></span>.</p>
+<p>The <abbr title="Base Class Libraries">BCL</abbr>'s Task Parallel Library schedules its jobs using threads from the
+.NET thread pool by default. Longer running tasks can be scheduled on their own threads by using
+<code>TaskCreationOptions.LongRunning</code>. The default generally makes <code>Task&lt;T&gt;</code>s better suited for CPU-bound operations as
+blocking IO-operations performed within a job can block that thread from being reused by the thread pool for other
+ready work.</p>
+<p>A significant advance has been made in the C# space with the introduction of <code>async</code>/<code>await</code>. Under the covers, the
+C# compiler creates a state machine which handles decomposing an <code>async</code> method into a state machine which is better
+able to release threads back to the thread pool when blocking operations occur. This results in a better utilization
+of the thread pool threads and does a better job of enabling concurrency than the raw <abbr title="Task Parallel Library">
+TPL</abbr>.</p>
+<p>F#'s <code>Async&lt;'a&gt;</code> served as the inspiration for C#'s <code>async</code>/<code>await</code> functionality, but uses an <code>async{}</code> computation
+expression and takes advantage of continuations to power the construction of its concurrency construct. The F#
+compiler doesn't need any special knowledge of the <code>Async&lt;'a&gt;</code> construct. Instead the computation expression is
+decomposed into a series of continuations. This is a bit less efficient than the state machines that C# generates
+and as such that means that <code>Async&lt;'a&gt;</code> is less suited for CPU-bound operations.</p>
+<p>For a more comprehensive look at the differences between the TPL, <code>async</code>/<code>await</code>, and <code>Async&lt;'a&gt;</code>, I recommend
+Tomas Petricek's <em><a href="http://tomasp.net/blog/csharp-fsharp-async-intro.aspx/">Asynchronous C# and F#</a></em> series.</p>
+<p>Hopac's <code>Job&lt;'a&gt;</code> has more in common with F#'s <code>Async&lt;'a&gt;</code> than the <code>Task&lt;T&gt;</code> based model of C#. A <code>Task&lt;T&gt;</code> represents
+a computation in progress, while a <code>Job&lt;'a&gt;</code> or <code>Async&lt;'a&gt;</code> represents a potential computation that can be invoked.
+Hopac also provides a <code>job{}</code> computation builder similar to <code>async{}</code>, but with several nice additions and a few
+idiosyncrasies. The biggest difference is that Hopac runs its jobs on threads dedicated to Hopac. Hopac pre-allocates
+one thread per processor.</p>
+<h2>Dealing with the garbage</h2>
+<p>When you first start working with Hopac, you are likely to see the following warning when you execute the first job.</p>
+<blockquote>
+<p>WARNING: You are using single-threaded workstation garbage collection, which means that parallel programs cannot
+scale. Please configure your program to use server garbage collection.</p>
+</blockquote>
+<p>This warning relates to the fact that workstation garbage collection performs garbage collection on the thread that
+triggered the collection. This means that any work scheduled on a thread that triggers a garbage collection is blocked
+from execution until the collection completes. With server garbage collection, each CPU receives its own heap and has
+a dedicated thread for garbage collection. There are some instances where you may want to ignore this warning, but
+blocking a Hopac worker thread can have unintended consequences across other Hopac threads due to the synchronous
+communication structure.</p>
+<p>An application can request server garbage collection by adding the <code>gcServer</code> element to its <code>app.config</code>:</p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+<span class="l">5: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="o">&lt;</span><span class="i">configuration</span><span class="o">&gt;</span>
+  <span class="o">&lt;</span><span class="i">runtime</span><span class="o">&gt;</span>
+    <span class="o">&lt;</span><span class="i">gcServer</span> <span class="i">enabled</span><span class="o">=</span><span class="s">&quot;true&quot;</span><span class="o">/&gt;</span>
+  <span class="o">&lt;/</span><span class="i">runtime</span><span class="o">&gt;</span>
+<span class="o">&lt;/</span><span class="i">configuration</span><span class="o">&gt;</span>
+</code></pre></td>
+</tr>
+</table>
+<p>For more information on GC settings, see the <a href="https://msdn.microsoft.com/en-us/library/ee787088(v=vs.110).aspx#workstation_and_server_garbage_collection">MSDN documentation</a>.</p>
+<h2>The <code>job{}</code> computation expression</h2>
+<p>For users experienced with F#'s <code>async{}</code> computation expression, <code>job{}</code> will feel very familiar. The form is nearly
+the same as <code>async{}</code> with the added benefit that the bind operation is overloaded to accept <code>Job&lt;'a&gt;</code>, <code>Async&lt;'a&gt;</code>,
+and <code>Task&lt;T&gt;</code>. There are also added overloads that deal with more situations than the default <code>async{}</code>.</p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+<span class="l">5: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs5', 5)" onmouseover="showTip(event, 'fs5', 5)" class="f">doAThing</span> (<span onmouseout="hideTip(event, 'fs6', 6)" onmouseover="showTip(event, 'fs6', 6)" class="i">getThingAsync</span> <span class="o">:</span> <span onmouseout="hideTip(event, 'fs7', 7)" onmouseover="showTip(event, 'fs7', 7)" class="t">Async</span><span class="o">&lt;</span>_<span class="o">&gt;</span>) <span onmouseout="hideTip(event, 'fs8', 8)" onmouseover="showTip(event, 'fs8', 8)" class="i">delay</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs9', 9)" onmouseover="showTip(event, 'fs9', 9)" class="i">job</span> {
+  <span class="k">let!</span> <span onmouseout="hideTip(event, 'fs10', 10)" onmouseover="showTip(event, 'fs10', 10)" class="i">result</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs6', 11)" onmouseover="showTip(event, 'fs6', 11)" class="i">getThingAsync</span>
+  <span class="k">do!</span> <span onmouseout="hideTip(event, 'fs8', 12)" onmouseover="showTip(event, 'fs8', 12)" class="i">delay</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs11', 13)" onmouseover="showTip(event, 'fs11', 13)" class="f">asJob</span>
+  <span class="k">return</span> <span onmouseout="hideTip(event, 'fs10', 14)" onmouseover="showTip(event, 'fs10', 14)" class="i">result</span>
+}
+</code></pre></td>
+</tr>
+</table>
+<p>In this little piece of code, we can see a couple of things. First we see that, <code>getThingAsync</code> works just fine being
+the direct target of the bind operation. Second, we note that we used <code>asJob</code> when binding on <code>delay</code>. This is in part
+to help the compiler to infer the type of <code>delay</code> as without it, it doesn't know which of the several available bind
+operations should be used to infer its type. The <code>asJob</code> function is a noop which tells the compiler that <code>delay</code>
+needs to be a <code>Job&lt;'a&gt;</code> and avoids unnecessary upcasts. We could have done this instead with equivallent results:</p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+<span class="l">5: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs12', 15)" onmouseover="showTip(event, 'fs12', 15)" class="f">doAThing2</span> (<span onmouseout="hideTip(event, 'fs6', 16)" onmouseover="showTip(event, 'fs6', 16)" class="i">getThingAsync</span> <span class="o">:</span> <span onmouseout="hideTip(event, 'fs7', 17)" onmouseover="showTip(event, 'fs7', 17)" class="t">Async</span><span class="o">&lt;</span>_<span class="o">&gt;</span>) (<span onmouseout="hideTip(event, 'fs8', 18)" onmouseover="showTip(event, 'fs8', 18)" class="i">delay</span> <span class="o">:</span> <span onmouseout="hideTip(event, 'fs3', 19)" onmouseover="showTip(event, 'fs3', 19)" class="t">Job</span><span class="o">&lt;</span><span onmouseout="hideTip(event, 'fs13', 20)" onmouseover="showTip(event, 'fs13', 20)" class="t">unit</span><span class="o">&gt;</span>) <span class="o">=</span> <span onmouseout="hideTip(event, 'fs9', 21)" onmouseover="showTip(event, 'fs9', 21)" class="i">job</span> {
+  <span class="k">let!</span> <span onmouseout="hideTip(event, 'fs10', 22)" onmouseover="showTip(event, 'fs10', 22)" class="i">result</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs6', 23)" onmouseover="showTip(event, 'fs6', 23)" class="i">getThingAsync</span>
+  <span class="k">do!</span> <span onmouseout="hideTip(event, 'fs8', 24)" onmouseover="showTip(event, 'fs8', 24)" class="i">delay</span>
+  <span class="k">return</span> <span onmouseout="hideTip(event, 'fs10', 25)" onmouseover="showTip(event, 'fs10', 25)" class="i">result</span>
+}
+</code></pre></td>
+</tr>
+</table>
+<p>Jobs can be started by using <code>run</code>, <code>start</code>, or <code>queue</code> and are similar to the <code>Async</code> counterparts:
+<code>RunSynchronously</code>, <code>StartImmediate</code>, and <code>Start</code>. As is the advice for <code>Async</code>, you should only use <code>run</code> in a root
+context. Hopac will warn you if you use <code>run</code> inside a Hopac job as this can cause Hopac to deadlock.</p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs14', 26)" onmouseover="showTip(event, 'fs14', 26)" class="i">myResult</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs15', 27)" onmouseover="showTip(event, 'fs15', 27)" class="i">async</span> { <span class="k">return</span> <span class="n">4</span>; }
+<span class="k">let</span> <span onmouseout="hideTip(event, 'fs16', 28)" onmouseover="showTip(event, 'fs16', 28)" class="i">delay</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs17', 29)" onmouseover="showTip(event, 'fs17', 29)" class="f">timeOutMillis</span> <span class="n">10</span>
+<span onmouseout="hideTip(event, 'fs5', 30)" onmouseover="showTip(event, 'fs5', 30)" class="f">doAThing</span> <span onmouseout="hideTip(event, 'fs14', 31)" onmouseover="showTip(event, 'fs14', 31)" class="i">myResult</span> <span onmouseout="hideTip(event, 'fs16', 32)" onmouseover="showTip(event, 'fs16', 32)" class="i">delay</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs2', 33)" onmouseover="showTip(event, 'fs2', 33)" class="f">run</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs18', 34)" onmouseover="showTip(event, 'fs18', 34)" class="f">printfn</span> <span class="s">&quot;The result was: </span><span class="pf">%i</span><span class="s">&quot;</span>
+</code></pre></td>
+</tr>
+</table>
+<table class="pre"><tr><td><pre><code>The result was: 4</code></pre></td></tr></table>
+<p>Looking at this snippet, you may have noticed<span class="ref"><a href="#ref-2">2</a></span> that <code>timeOutMillis</code> returns an
+<code>Alt&lt;'a&gt;</code>. We will go into what that means in more depth in later posts, but in essence, an <code>Alt&lt;'a&gt;</code> is a <code>Job&lt;'a&gt;</code>
+whose completion can be waited on in combination with other <code>Alt&lt;'a&gt;</code>s, with the result being whichever <code>Alt&lt;'a&gt;</code>
+becomes ready first.</p>
+<h2>Memoization</h2>
+<p>Like <code>Async&lt;'a&gt;</code>, the same <code>Job&lt;'a&gt;</code> can be passed into a function and executed multiple times to get the intended
+effects. Hopac also offers a <code>Promise&lt;'a&gt;</code> type that can be used to memoize a job when you only want the
+computation—and its side-effects—to be executed once. Think of it as the concurrent alternative to <code>Lazy&lt;T&gt;</code>.
+<code>Promise&lt;'a&gt;</code> derives from <code>Alt&lt;'a&gt;</code>, so like <code>Alt&lt;'a&gt;</code>, it can be used in the same contexts as any other <code>Job&lt;'a&gt;</code>.</p>
+<p>As an example, compare the output of these two snippets which both use the job defined by <code>sideEffect</code>.</p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+<span class="l">5: </span>
+<span class="l">6: </span>
+<span class="l">7: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs19', 35)" onmouseover="showTip(event, 'fs19', 35)" class="i">sideEffect</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs9', 36)" onmouseover="showTip(event, 'fs9', 36)" class="i">job</span> {
+  <span onmouseout="hideTip(event, 'fs18', 37)" onmouseover="showTip(event, 'fs18', 37)" class="f">printfn</span> <span class="s">&quot;&gt; Side-effect!&quot;</span>
+  <span class="k">return</span> <span class="n">4</span>;
+}
+<span onmouseout="hideTip(event, 'fs18', 38)" onmouseover="showTip(event, 'fs18', 38)" class="f">printfn</span> <span class="s">&quot;Without memoization&quot;</span>
+<span onmouseout="hideTip(event, 'fs2', 39)" onmouseover="showTip(event, 'fs2', 39)" class="f">run</span> <span onmouseout="hideTip(event, 'fs19', 40)" onmouseover="showTip(event, 'fs19', 40)" class="i">sideEffect</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs18', 41)" onmouseover="showTip(event, 'fs18', 41)" class="f">printfn</span> <span class="s">&quot;The result was: </span><span class="pf">%i</span><span class="s">&quot;</span>
+<span onmouseout="hideTip(event, 'fs2', 42)" onmouseover="showTip(event, 'fs2', 42)" class="f">run</span> <span onmouseout="hideTip(event, 'fs19', 43)" onmouseover="showTip(event, 'fs19', 43)" class="i">sideEffect</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs18', 44)" onmouseover="showTip(event, 'fs18', 44)" class="f">printfn</span> <span class="s">&quot;The result was: </span><span class="pf">%i</span><span class="s">&quot;</span>
+</code></pre></td>
+</tr>
+</table>
+<table class="pre"><tr><td><pre><code>Without memoization
+&gt; Side-effect!
+The result was: 4
+&gt; Side-effect!
+The result was: 4</code></pre></td></tr></table>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+<span class="l">2: </span>
+<span class="l">3: </span>
+<span class="l">4: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span class="k">let</span> <span onmouseout="hideTip(event, 'fs20', 45)" onmouseover="showTip(event, 'fs20', 45)" class="i">memoized</span> <span class="o">=</span> <span onmouseout="hideTip(event, 'fs21', 46)" onmouseover="showTip(event, 'fs21', 46)" class="f">memo</span> <span onmouseout="hideTip(event, 'fs19', 47)" onmouseover="showTip(event, 'fs19', 47)" class="i">sideEffect</span>
+<span onmouseout="hideTip(event, 'fs18', 48)" onmouseover="showTip(event, 'fs18', 48)" class="f">printfn</span> <span class="s">&quot;With memoization&quot;</span>
+<span onmouseout="hideTip(event, 'fs2', 49)" onmouseover="showTip(event, 'fs2', 49)" class="f">run</span> <span onmouseout="hideTip(event, 'fs20', 50)" onmouseover="showTip(event, 'fs20', 50)" class="i">memoized</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs18', 51)" onmouseover="showTip(event, 'fs18', 51)" class="f">printfn</span> <span class="s">&quot;The result was: </span><span class="pf">%i</span><span class="s">&quot;</span>
+<span onmouseout="hideTip(event, 'fs2', 52)" onmouseover="showTip(event, 'fs2', 52)" class="f">run</span> <span onmouseout="hideTip(event, 'fs20', 53)" onmouseover="showTip(event, 'fs20', 53)" class="i">memoized</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs18', 54)" onmouseover="showTip(event, 'fs18', 54)" class="f">printfn</span> <span class="s">&quot;The result was: </span><span class="pf">%i</span><span class="s">&quot;</span>
+</code></pre></td>
+</tr>
+</table>
+<table class="pre"><tr><td><pre><code>With memoization
+&gt; Side-effect!
+The result was: 4
+The result was: 4</code></pre></td></tr></table>
+<p>As you can see, once memoized, the side-effect occurred only once. After that, the promise is considered fulfilled and
+all future requests to read from the promise will immediately return the result already computed.</p>
+<p>In future posts, I'll introduce the Hopac's messaging channels and the star of the show: alternatives. We'll also delve
+into synchronous messaging to reproduce an actor using Hopac's concurrency primitives and look at how Hopac can tame
+the live, push-based data streams and turn them into more manageable pull-based streams. In the meantime, I recommend
+the programming docs in the project's <a href="https://github.com/Hopac/Hopac/tree/master/Docs">GitHub docs</a> folder and the <a href="https://hopac.github.io/Hopac/Hopac.html">API documentation</a> itself.</p>
+<table class="pre"><tr><td class="lines"><pre class="fssnip"><span class="l">1: </span>
+</pre></td>
+<td class="snippet"><pre class="fssnip highlighted"><code lang="fsharp"><span onmouseout="hideTip(event, 'fs16', 55)" onmouseover="showTip(event, 'fs16', 55)" class="i">delay</span> <span class="o">|&gt;</span> <span onmouseout="hideTip(event, 'fs22', 56)" onmouseover="showTip(event, 'fs22', 56)" class="f">start</span>
+</code></pre></td>
+</tr>
+</table>
+<div class="footnotes">
+<ol>
+<li><a name="ref-1"></a> For the purposes of this post, I will refer to the concurrent threads of execution as <em>jobs</em>.</li>
+<li>
+<a name="ref-2"></a> You can hover over most of the identifiers in the F# snippets to get tooltips with type
+information and XML documentation.
+</li>
+</ol>
+</div>
+
+<div class="tip" id="fs1">namespace Hopac</div>
+<div class="tip" id="fs2">val run : Job&lt;&#39;x&gt; -&gt; &#39;x<br /><br />Full name: Hopac.TopLevel.run</div>
+<div class="tip" id="fs3">type Job&lt;&#39;T&gt; =<br /><br />Full name: Hopac.Job&lt;_&gt;</div>
+<div class="tip" id="fs4">val unit : unit -&gt; Job&lt;unit&gt;<br /><br />Full name: Hopac.Job.unit</div>
+<div class="tip" id="fs5">val doAThing : getThingAsync:Async&lt;&#39;a&gt; -&gt; delay:Job&lt;unit&gt; -&gt; Job&lt;&#39;a&gt;<br /><br />Full name: 04-08-hopac-getting-started-with-jobs_.doAThing</div>
+<div class="tip" id="fs6">val getThingAsync : Async&lt;&#39;a&gt;</div>
+<div class="tip" id="fs7">Multiple items<br />type Async<br />static member AsBeginEnd : computation:(&#39;Arg -&gt; Async&lt;&#39;T&gt;) -&gt; (&#39;Arg * AsyncCallback * obj -&gt; IAsyncResult) * (IAsyncResult -&gt; &#39;T) * (IAsyncResult -&gt; unit)<br />static member AwaitEvent : event:IEvent&lt;&#39;Del,&#39;T&gt; * ?cancelAction:(unit -&gt; unit) -&gt; Async&lt;&#39;T&gt; (requires delegate and &#39;Del :&gt; Delegate)<br />static member AwaitIAsyncResult : iar:IAsyncResult * ?millisecondsTimeout:int -&gt; Async&lt;bool&gt;<br />static member AwaitTask : task:Task -&gt; Async&lt;unit&gt;<br />static member AwaitTask : task:Task&lt;&#39;T&gt; -&gt; Async&lt;&#39;T&gt;<br />static member AwaitWaitHandle : waitHandle:WaitHandle * ?millisecondsTimeout:int -&gt; Async&lt;bool&gt;<br />static member CancelDefaultToken : unit -&gt; unit<br />static member Catch : computation:Async&lt;&#39;T&gt; -&gt; Async&lt;Choice&lt;&#39;T,exn&gt;&gt;<br />static member FromBeginEnd : beginAction:(AsyncCallback * obj -&gt; IAsyncResult) * endAction:(IAsyncResult -&gt; &#39;T) * ?cancelAction:(unit -&gt; unit) -&gt; Async&lt;&#39;T&gt;<br />static member FromBeginEnd : arg:&#39;Arg1 * beginAction:(&#39;Arg1 * AsyncCallback * obj -&gt; IAsyncResult) * endAction:(IAsyncResult -&gt; &#39;T) * ?cancelAction:(unit -&gt; unit) -&gt; Async&lt;&#39;T&gt;<br />static member FromBeginEnd : arg1:&#39;Arg1 * arg2:&#39;Arg2 * beginAction:(&#39;Arg1 * &#39;Arg2 * AsyncCallback * obj -&gt; IAsyncResult) * endAction:(IAsyncResult -&gt; &#39;T) * ?cancelAction:(unit -&gt; unit) -&gt; Async&lt;&#39;T&gt;<br />static member FromBeginEnd : arg1:&#39;Arg1 * arg2:&#39;Arg2 * arg3:&#39;Arg3 * beginAction:(&#39;Arg1 * &#39;Arg2 * &#39;Arg3 * AsyncCallback * obj -&gt; IAsyncResult) * endAction:(IAsyncResult -&gt; &#39;T) * ?cancelAction:(unit -&gt; unit) -&gt; Async&lt;&#39;T&gt;<br />static member FromContinuations : callback:((&#39;T -&gt; unit) * (exn -&gt; unit) * (OperationCanceledException -&gt; unit) -&gt; unit) -&gt; Async&lt;&#39;T&gt;<br />static member Ignore : computation:Async&lt;&#39;T&gt; -&gt; Async&lt;unit&gt;<br />static member OnCancel : interruption:(unit -&gt; unit) -&gt; Async&lt;IDisposable&gt;<br />static member Parallel : computations:seq&lt;Async&lt;&#39;T&gt;&gt; -&gt; Async&lt;&#39;T []&gt;<br />static member RunSynchronously : computation:Async&lt;&#39;T&gt; * ?timeout:int * ?cancellationToken:CancellationToken -&gt; &#39;T<br />static member Sleep : millisecondsDueTime:int -&gt; Async&lt;unit&gt;<br />static member Start : computation:Async&lt;unit&gt; * ?cancellationToken:CancellationToken -&gt; unit<br />static member StartAsTask : computation:Async&lt;&#39;T&gt; * ?taskCreationOptions:TaskCreationOptions * ?cancellationToken:CancellationToken -&gt; Task&lt;&#39;T&gt;<br />static member StartChild : computation:Async&lt;&#39;T&gt; * ?millisecondsTimeout:int -&gt; Async&lt;Async&lt;&#39;T&gt;&gt;<br />static member StartChildAsTask : computation:Async&lt;&#39;T&gt; * ?taskCreationOptions:TaskCreationOptions -&gt; Async&lt;Task&lt;&#39;T&gt;&gt;<br />static member StartImmediate : computation:Async&lt;unit&gt; * ?cancellationToken:CancellationToken -&gt; unit<br />static member StartWithContinuations : computation:Async&lt;&#39;T&gt; * continuation:(&#39;T -&gt; unit) * exceptionContinuation:(exn -&gt; unit) * cancellationContinuation:(OperationCanceledException -&gt; unit) * ?cancellationToken:CancellationToken -&gt; unit<br />static member SwitchToContext : syncContext:SynchronizationContext -&gt; Async&lt;unit&gt;<br />static member SwitchToNewThread : unit -&gt; Async&lt;unit&gt;<br />static member SwitchToThreadPool : unit -&gt; Async&lt;unit&gt;<br />static member TryCancelled : computation:Async&lt;&#39;T&gt; * compensation:(OperationCanceledException -&gt; unit) -&gt; Async&lt;&#39;T&gt;<br />static member CancellationToken : Async&lt;CancellationToken&gt;<br />static member DefaultCancellationToken : CancellationToken<br /><br />Full name: Microsoft.FSharp.Control.Async<br /><br />--------------------<br />type Async&lt;&#39;T&gt;<br /><br />Full name: Microsoft.FSharp.Control.Async&lt;_&gt;</div>
+<div class="tip" id="fs8">val delay : Job&lt;unit&gt;</div>
+<div class="tip" id="fs9">val job : JobBuilder<br /><br />Full name: Hopac.TopLevel.job</div>
+<div class="tip" id="fs10">val result : &#39;a</div>
+<div class="tip" id="fs11">val asJob : Job&lt;&#39;x&gt; -&gt; Job&lt;&#39;x&gt;<br /><br />Full name: Hopac.TopLevel.asJob</div>
+<div class="tip" id="fs12">val doAThing2 : getThingAsync:Async&lt;&#39;a&gt; -&gt; delay:Job&lt;unit&gt; -&gt; Job&lt;&#39;a&gt;<br /><br />Full name: 04-08-hopac-getting-started-with-jobs_.doAThing2</div>
+<div class="tip" id="fs13">type unit = Unit<br /><br />Full name: Microsoft.FSharp.Core.unit</div>
+<div class="tip" id="fs14">val myResult : Async&lt;int&gt;<br /><br />Full name: 04-08-hopac-getting-started-with-jobs_.myResult</div>
+<div class="tip" id="fs15">val async : AsyncBuilder<br /><br />Full name: Microsoft.FSharp.Core.ExtraTopLevelOperators.async</div>
+<div class="tip" id="fs16">val delay : Alt&lt;unit&gt;<br /><br />Full name: 04-08-hopac-getting-started-with-jobs_.delay</div>
+<div class="tip" id="fs17">val timeOutMillis : int -&gt; Alt&lt;unit&gt;<br /><br />Full name: Hopac.TopLevel.timeOutMillis</div>
+<div class="tip" id="fs18">val printfn : format:Printf.TextWriterFormat&lt;&#39;T&gt; -&gt; &#39;T<br /><br />Full name: Microsoft.FSharp.Core.ExtraTopLevelOperators.printfn</div>
+<div class="tip" id="fs19">val sideEffect : Job&lt;int&gt;<br /><br />Full name: 04-08-hopac-getting-started-with-jobs_.sideEffect</div>
+<div class="tip" id="fs20">val memoized : Promise&lt;int&gt;<br /><br />Full name: 04-08-hopac-getting-started-with-jobs_.memoized</div>
+<div class="tip" id="fs21">val memo : Job&lt;&#39;x&gt; -&gt; Promise&lt;&#39;x&gt;<br /><br />Full name: Hopac.TopLevel.memo</div>
+<div class="tip" id="fs22">val start : Job&lt;unit&gt; -&gt; unit<br /><br />Full name: Hopac.TopLevel.start</div>
+
+      </section>
+      <footer>
+        <ul>
+          <li><span class="fa fa-github-alt fa-fw"></span> <a href="https://github.com/neoeinstein/FsBlog/tree/master/source/blog/2016/04-08-hopac-getting-started-with-jobs.fsx"><strong>Source</strong> on GitHub</a></li>
+          <li><span class="fa fa-exclamation-triangle fa-fw"></span> <a href="https://github.com/neoeinstein/FsBlog/issues/new?title=Error on 'Hopac: Getting Started with Jobs'" target="_blank"><strong>Report</strong> an error</a></li>
+          <li><span class="fa fa-terminal fa-fw"></span> <a href="javascript:function f(n){for(var i=0;i<n.length;++i)n[i].classList.toggle('enable-ligatures')}f(document.querySelectorAll('code'));"><strong>Toggle</strong> code ligatures</a></li>
+        </ul>
+        <p>Based on the <span class="fa fa-code-fork"></span> <a href="https://github.com/fsprojects/FsBlog">FsBlog</a> project.</p>
+        <p><small>Hosted on GitHub Pages &mdash; Theme by <a href="https://github.com/orderedlist">orderedlist</a></small></p>
+      </footer>
+  	</div>
+    <script src="http://localhost:8080/javascripts/scale.fix.js"></script>
+    <script src="http://localhost:8080/javascripts/fontsmoothie.min.js"></script>
+  </body>
+</html>

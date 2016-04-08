@@ -5,6 +5,23 @@
     <description>Writings on software engineering focusing on my journey into functional programming practices. I am often found writing in F#, PowerShell, and C#. Former contributor to the Boo programming language. Views expressed here are mine and do not represent the views of my employer or any other party.
 </description>
     <item>
+      <title>Hopac: Getting Started with Jobs</title>
+      <guid>https://neoeinstein.github.io//blog/2016/04-08-hopac-getting-started-with-jobs</guid>
+      <link>https://neoeinstein.github.io//blog/2016/04-08-hopac-getting-started-with-jobs/index.html</link>
+      <pubDate>Fri, 08 Apr 2016 00:05:00 GMT</pubDate>
+      <description>&lt;p&gt;Concurrency is a pretty hot topic these days. Processor speeds have generally plateaued over the last decade, and
+multiple cores are now the default. Writing software to take advantage of these cores requires a different approach
+than the single-threaded default. &lt;a href="https://github.com/Hopac/Hopac/tree/master"&gt;Hopac&lt;/a&gt; is a unique library that offers lightweight threading along
+with a host of other valuable concurrency constructs, all of which make it easier to write highly-concurrent software.&lt;/p&gt;
+
+
+&lt;div class="tip" id="fs1"&gt;namespace Hopac&lt;/div&gt;
+&lt;div class="tip" id="fs2"&gt;val run : Job&amp;lt;&amp;#39;x&amp;gt; -&amp;gt; &amp;#39;x&lt;br /&gt;&lt;br /&gt;Full name: Hopac.TopLevel.run&lt;/div&gt;
+&lt;div class="tip" id="fs3"&gt;type Job&amp;lt;&amp;#39;T&amp;gt; =&lt;br /&gt;&lt;br /&gt;Full name: Hopac.Job&amp;lt;_&amp;gt;&lt;/div&gt;
+&lt;div class="tip" id="fs4"&gt;val unit : unit -&amp;gt; Job&amp;lt;unit&amp;gt;&lt;br /&gt;&lt;br /&gt;Full name: Hopac.Job.unit&lt;/div&gt;
+</description>
+    </item>
+    <item>
       <title>Chiron: Easier with Computation Expressions</title>
       <guid>https://neoeinstein.github.io//blog/2016/04-02-chiron-computation-expressions</guid>
       <link>https://neoeinstein.github.io//blog/2016/04-02-chiron-computation-expressions/index.html</link>

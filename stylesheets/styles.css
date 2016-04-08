@@ -335,3 +335,13 @@ footer ul {
 .h2link {
 	margin: 0 0 8px;
 }
+
+.ref {
+  font-size: 75%;
+  vertical-align: super
+}
+
+.footnotes {
+  padding:0 0 0 1em;
+  font-size: 75%;
+}

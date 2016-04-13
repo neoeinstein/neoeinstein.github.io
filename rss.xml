@@ -6,8 +6,8 @@
 </description>
     <item>
       <title>Hopac: Getting Started with Jobs</title>
-      <guid>https://neoeinstein.github.io//blog/2016/04-08-hopac-getting-started-with-jobs</guid>
-      <link>https://neoeinstein.github.io//blog/2016/04-08-hopac-getting-started-with-jobs/index.html</link>
+      <guid>063e6197ce80c49a8d99aa548022e45c8fe2432c0f40da19faa858322b001195</guid>
+      <link>https://neoeinstein.github.io/blog/2016/04-08-hopac-getting-started-with-jobs/index.html</link>
       <pubDate>Fri, 08 Apr 2016 00:05:00 GMT</pubDate>
       <description>&lt;p&gt;Concurrency is a pretty hot topic these days. Processor speeds have generally plateaued over the last decade, and
 multiple cores are now the default. Writing software to take advantage of these cores requires a different approach
@@ -23,8 +23,8 @@ with a host of other valuable concurrency constructs, all of which make it easie
     </item>
     <item>
       <title>Chiron: Easier with Computation Expressions</title>
-      <guid>https://neoeinstein.github.io//blog/2016/04-02-chiron-computation-expressions</guid>
-      <link>https://neoeinstein.github.io//blog/2016/04-02-chiron-computation-expressions/index.html</link>
+      <guid>2445e52a9872e61b88b6cab6a7c29227179ac17b61538740fd95e005184bc919</guid>
+      <link>https://neoeinstein.github.io/blog/2016/04-02-chiron-computation-expressions/index.html</link>
       <pubDate>Sat, 02 Apr 2016 18:30:00 GMT</pubDate>
       <description>&lt;p&gt;Back in my first &lt;a href="/blog/2015/12-13-chiron-json-ducks-monads/index.html"&gt;Chiron article&lt;/a&gt;, I made a bit of a mistake. I started with all the things
 that scare off new functional programmers. Things like &lt;code&gt;&amp;gt;&amp;gt;=&lt;/code&gt; and monads. We're going to take a step
@@ -35,8 +35,8 @@ back from that precipice and talk about the &lt;code&gt;json{}&lt;/code&gt; comp
     </item>
     <item>
       <title>Chiron: Taming Types in the Wild</title>
-      <guid>https://neoeinstein.github.io//blog/2015/12-15-chiron-taming-types-in-the-wild</guid>
-      <link>https://neoeinstein.github.io//blog/2015/12-15-chiron-taming-types-in-the-wild/index.html</link>
+      <guid>fdaaec7b0f4f645e65b37ba28719174f410000d36ed69c589d141deb8b5f51a8</guid>
+      <link>https://neoeinstein.github.io/blog/2015/12-15-chiron-taming-types-in-the-wild/index.html</link>
       <pubDate>Tue, 15 Dec 2015 05:00:00 GMT</pubDate>
       <description>&lt;p&gt;In my &lt;a href="/blog/2015/12-13-chiron-json-ducks-monads/index.html"&gt;last post&lt;/a&gt;, I gave an overview of &lt;a href="https://xyncro.tech/chiron/"&gt;Chiron&lt;/a&gt;, described how to parse JSON, and demonstrated how to
 write &lt;code&gt;ToJson&lt;/code&gt; and &lt;code&gt;FromJson&lt;/code&gt; static methods to support serialization of custom types. At the end of the article, I
@@ -48,8 +48,8 @@ static &lt;code&gt;ToJson&lt;/code&gt;/&lt;code&gt;FromJson&lt;/code&gt; methods
     </item>
     <item>
       <title>Chiron: JSON + Ducks + Monads</title>
-      <guid>https://neoeinstein.github.io//blog/2015/12-13-chiron-json-ducks-monads</guid>
-      <link>https://neoeinstein.github.io//blog/2015/12-13-chiron-json-ducks-monads/index.html</link>
+      <guid>d6eafc5d324f28e93c5a3da53c701ddb101accd72989c26f3ba69882c5b8194d</guid>
+      <link>https://neoeinstein.github.io/blog/2015/12-13-chiron-json-ducks-monads/index.html</link>
       <pubDate>Sun, 13 Dec 2015 19:15:16 GMT</pubDate>
       <description>&lt;p&gt;There are a multitude of ways to handle JSON data on the .NET framework. You can pull in &lt;a href="http://www.newtonsoft.com/json"&gt;Json.NET&lt;/a&gt;, use the
 &lt;code&gt;JsonSerializer&lt;/code&gt; from the now proprietary &lt;a href="https://servicestack.net/text"&gt;ServiceStack.Text&lt;/a&gt;, or use the &lt;code&gt;JsonDataContractSerializer&lt;/code&gt;
@@ -62,8 +62,8 @@ JSON serializer in a compact, &lt;a href="https://github.com/xyncro/chiron/blob/
     </item>
     <item>
       <title>Hello, FsBlog!</title>
-      <guid>https://neoeinstein.github.io//blog/2015/11-29-hello-fsblog</guid>
-      <link>https://neoeinstein.github.io//blog/2015/11-29-hello-fsblog/index.html</link>
+      <guid>8b6789c0fca9b1bbac3e4954a6c5e113b08f2b874dbe865fa59dce299f925f01</guid>
+      <link>https://neoeinstein.github.io/blog/2015/11-29-hello-fsblog/index.html</link>
       <pubDate>Mon, 30 Nov 2015 04:27:31 GMT</pubDate>
       <description>&lt;p&gt;It has been a long time since I have done any sort of blogging. Now that I've committed to an F# Advent post, it's time that I pulled a fork off &lt;a href="https://github.com/fsprojects/FsBlog"&gt;FsBlog&lt;/a&gt; and set up shop on &lt;code&gt;gh‑pages&lt;/code&gt;.&lt;/p&gt;
 

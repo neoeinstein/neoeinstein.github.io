@@ -3,7 +3,7 @@
 
 body {
   padding:50px;
-  font:10pt/1.5 'Fira Sans','Helvetica Neue',Helvetica,Arial,sans-serif;
+  font:9pt/1.5 'Fira Sans','Helvetica Neue',Helvetica,Arial,sans-serif;
   color:#444;
   font-weight:300;
   text-rendering: optimizeLegibility;
@@ -93,7 +93,7 @@ table.pre pre, table.pre code {
 }
 
 table.pre pre, table.pre code, table.pre span {
-  font-size: 12pt;
+  font-size: 10pt;
   line-height: 1.35;
 }
 
@@ -159,7 +159,7 @@ header li {
 
 header ul a {
   line-height:1;
-  font-size:90%;
+  /*font-size:90%;*/
   color:#999;
   display:block;
   text-align:center;
@@ -218,8 +218,10 @@ footer {
   width:270px;
   float:left;
   position:fixed;
-  bottom:10px;
+  bottom:0;
   font-size:90%;
+  background: #fff;
+  padding: 10px 0;
 }
 
 footer p, footer ul {
